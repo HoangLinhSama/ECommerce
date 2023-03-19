@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout_main_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -37,8 +38,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="3sp"
-                    android:paddingEnd="3sp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@string/text_view_title"
                     android:textColor="#FFFFFF"
                     android:textSize="21sp" />
@@ -60,7 +61,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:menu="@menu/menu_activity_main">
-        </com.google.android.material.navigation.NavigationView>
+            app:menu="@menu/menu_activity_main" />
     </androidx.drawerlayout.widget.DrawerLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
