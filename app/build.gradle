@@ -26,6 +26,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures { // phai enable ViewBinding thi moi su dung duoc
+        viewBinding = true
+    }
 }
 
 dependencies {
