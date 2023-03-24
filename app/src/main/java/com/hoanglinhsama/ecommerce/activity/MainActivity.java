@@ -1,11 +1,11 @@
 package com.hoanglinhsama.ecommerce.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -53,9 +53,29 @@ public class MainActivity extends AppCompatActivity {
         if (isConnected(this)) {
             setUpViewFlipper();
             getProduct();
+            getEventClickNavigationMenu();
         } else {
             Toast.makeText(this, "No Internet ! Please connect !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * Bat su kien khi click vao menu cua navigation view
+     */
+    private void getEventClickNavigationMenu() {
+        activityMainBinding.listViewMainScreen.setOnItemClickListener((parent, view, position, id) -> {
+            switch (position) {
+                case 0:
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                    break;
+                case 1:
+                    startActivity(new Intent(MainActivity.this, PhoneActivity.class));
+                    break;
+                case 2:
+                    startActivity(new Intent(MainActivity.this, LaptopActivity.class));
+                    break;
+            }
+        });
     }
 
     /**
@@ -133,12 +153,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(activityMainBinding.toolBarMainScreen);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // setDisplayHomeAsUpEnabled() de kich hoat se quay lai activity truoc khi chon Up
         activityMainBinding.toolBarMainScreen.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
-        activityMainBinding.toolBarMainScreen.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activityMainBinding.drawerLayoutMainScreen.openDrawer(GravityCompat.START);
-            }
-        });
+        activityMainBinding.toolBarMainScreen.setNavigationOnClickListener(v -> activityMainBinding.drawerLayoutMainScreen.openDrawer(GravityCompat.START));
     }
 
     /**
