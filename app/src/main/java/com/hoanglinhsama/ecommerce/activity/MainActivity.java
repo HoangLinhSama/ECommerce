@@ -1,46 +1,103 @@
 package com.hoanglinhsama.ecommerce.activity;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.hoanglinhsama.ecommerce.ItemDecoration;
 import com.hoanglinhsama.ecommerce.R;
+import com.hoanglinhsama.ecommerce.adapter.ProductAdapter;
 import com.hoanglinhsama.ecommerce.adapter.TypeProductAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityMainBinding;
+import com.hoanglinhsama.ecommerce.model.Product;
 import com.hoanglinhsama.ecommerce.model.TypeProduct;
+import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
+import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding activityMainBinding;
     private TypeProductAdapter typeProductAdapter;
-    private List<TypeProduct> typeProductList;
+    private List<TypeProduct> listTypeProduct;
+    private List<Product> listProduct;
+    private ProductAdapter productAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(activityMainBinding.getRoot());
+
         setUpActionBar();
-        setUpViewFlipper();
-        initializationAdapter();
+        getTypeProduct();
+        if (isConnected(this)) {
+            setUpViewFlipper();
+            getProduct();
+        } else {
+            Toast.makeText(this, "No Internet ! Please connect !", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void initializationAdapter() {
-        this.typeProductList = new ArrayList<TypeProduct>();
-        this.typeProductList.add(new TypeProduct("Trang Chủ", R.drawable.ic_home_page));
-        this.typeProductList.add(new TypeProduct("Điện Thoại", R.drawable.ic_phone));
-        this.typeProductList.add(new TypeProduct("LapTop", R.drawable.ic_laptop));
-        this.typeProductList.add(new TypeProduct("Thông Tin", R.drawable.ic_information));
-        this.typeProductList.add(new TypeProduct("Liên hệ", R.drawable.ic_contact));
-        typeProductAdapter = new TypeProductAdapter(getApplicationContext(), R.layout.item_type_product, typeProductList);
+    /**
+     * Hien thi san pham moi len Recycler View
+     */
+    private void getProduct() {
+        DataClient dataClientGetProduct = ApiUtils.getData();
+        Call<List<Product>> callbackGetProduct = dataClientGetProduct.getProduct();
+        callbackGetProduct.enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                if (response != null) {
+                    listProduct = response.body();
+                    productAdapter = new ProductAdapter(listProduct, R.layout.item_product, getApplicationContext());
+                    activityMainBinding.recyclerViewMainScreen.setAdapter(productAdapter);
+                    RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
+                    activityMainBinding.recyclerViewMainScreen.setLayoutManager(layoutManager);
+                    activityMainBinding.recyclerViewMainScreen.setHasFixedSize(true);
+                    activityMainBinding.recyclerViewMainScreen.addItemDecoration(new ItemDecoration(10));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Product>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Failed To Get Product ! ", Toast.LENGTH_SHORT).show();
+                Log.d("getProduct", t.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Tao menu cho Navigation View
+     */
+    private void getTypeProduct() {
+        this.listTypeProduct = new ArrayList<TypeProduct>();
+        this.listTypeProduct.add(new TypeProduct("Trang Chủ", R.drawable.ic_home_page));
+        this.listTypeProduct.add(new TypeProduct("Điện Thoại", R.drawable.ic_phone));
+        this.listTypeProduct.add(new TypeProduct("LapTop", R.drawable.ic_laptop));
+        this.listTypeProduct.add(new TypeProduct("Liên hệ", R.drawable.ic_contact));
+        this.listTypeProduct.add(new TypeProduct("Thông Tin", R.drawable.ic_information));
+        typeProductAdapter = new TypeProductAdapter(getApplicationContext(), R.layout.item_type_product, listTypeProduct);
         activityMainBinding.listViewMainScreen.setAdapter(typeProductAdapter);
     }
 
@@ -82,5 +139,18 @@ public class MainActivity extends AppCompatActivity {
                 activityMainBinding.drawerLayoutMainScreen.openDrawer(GravityCompat.START);
             }
         });
+    }
+
+    /**
+     * Kiem tra xem co ket noi internet khong ?
+     */
+    private boolean isConnected(@NonNull Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+        if (networkCapabilities != null) { // neu co ket noi (wifi hoac mobile data)
+            return true;
+        } else {
+            return false;
+        }
     }
 }
