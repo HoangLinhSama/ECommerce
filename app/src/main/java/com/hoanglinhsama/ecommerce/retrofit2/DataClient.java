@@ -11,6 +11,6 @@ public interface DataClient {
     /**
      * Lay du lieu san pham tu server ve
      */
-    @GET("getproduct.php")
-    Call<List<Product>> getProduct();
+    @GET("getnewproduct.php")
+    Call<List<Product>> getNewProduct();
 }

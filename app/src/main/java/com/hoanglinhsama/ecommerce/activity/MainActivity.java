@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hoanglinhsama.ecommerce.ItemDecoration;
 import com.hoanglinhsama.ecommerce.R;
-import com.hoanglinhsama.ecommerce.adapter.ProductAdapter;
+import com.hoanglinhsama.ecommerce.adapter.NewProductAdapter;
 import com.hoanglinhsama.ecommerce.adapter.TypeProductAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityMainBinding;
 import com.hoanglinhsama.ecommerce.model.Product;
@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding activityMainBinding;
     private TypeProductAdapter typeProductAdapter;
     private List<TypeProduct> listTypeProduct;
-    private List<Product> listProduct;
-    private ProductAdapter productAdapter;
+    private List<Product> listNewProduct;
+    private NewProductAdapter productAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         getTypeProduct();
         if (isConnected(this)) {
             setUpViewFlipper();
-            getProduct();
+            getNewProduct();
             getEventClickNavigationMenu();
         } else {
             Toast.makeText(this, "No Internet ! Please connect !", Toast.LENGTH_SHORT).show();
@@ -81,27 +81,28 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Hien thi san pham moi len Recycler View
      */
-    private void getProduct() {
+    private void getNewProduct() {
         DataClient dataClientGetProduct = ApiUtils.getData();
-        Call<List<Product>> callbackGetProduct = dataClientGetProduct.getProduct();
+        Call<List<Product>> callbackGetProduct = dataClientGetProduct.getNewProduct();
         callbackGetProduct.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                if (response != null) {
-                    listProduct = response.body();
-                    productAdapter = new ProductAdapter(listProduct, R.layout.item_product, getApplicationContext());
+                if (response.body().equals("Fail !")) {
+                    Toast.makeText(MainActivity.this, "Failed To Get New Product", Toast.LENGTH_SHORT).show();
+                } else {
+                    listNewProduct = response.body();
+                    productAdapter = new NewProductAdapter(listNewProduct, R.layout.item_new_product, getApplicationContext());
                     activityMainBinding.recyclerViewMainScreen.setAdapter(productAdapter);
                     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
                     activityMainBinding.recyclerViewMainScreen.setLayoutManager(layoutManager);
                     activityMainBinding.recyclerViewMainScreen.setHasFixedSize(true);
                     activityMainBinding.recyclerViewMainScreen.addItemDecoration(new ItemDecoration(10));
                 }
-
             }
 
             @Override
             public void onFailure(Call<List<Product>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Failed To Get Product ! ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Failed To Get New Product ! ", Toast.LENGTH_SHORT).show();
                 Log.d("getProduct", t.getMessage());
             }
         });

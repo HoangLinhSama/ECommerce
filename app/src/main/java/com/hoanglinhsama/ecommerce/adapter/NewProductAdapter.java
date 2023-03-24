@@ -14,36 +14,31 @@ import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.List;
-import java.util.Locale;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
-    private List<Product> listProduct;
+public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.ViewHolder> {
+    private List<Product> listNewProduct;
     private int layout;
     private Context context;
 
-    public ProductAdapter(List<Product> listProduct, int layout, Context context) {
-        this.listProduct = listProduct;
+    public NewProductAdapter(List<Product> listProduct, int layout, Context context) {
+        this.listNewProduct = listProduct;
         this.layout = layout;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public ProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NewProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(layout, null);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductAdapter.ViewHolder holder, int position) {
-        Product product = listProduct.get(position);
+    public void onBindViewHolder(@NonNull NewProductAdapter.ViewHolder holder, int position) {
+        Product product = listNewProduct.get(position);
         Picasso.get().load(product.getPicture()).into(holder.imageViewPictureProduct);
         holder.textViewNameProduct.setText(product.getName());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###"); // tao mau dinh dang nnn.nnn.nnn
@@ -53,7 +48,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return listProduct.size();
+        return listNewProduct.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -63,9 +58,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.imageViewPictureProduct = itemView.findViewById(R.id.image_view_picture_product);
-            this.textViewNameProduct = itemView.findViewById(R.id.text_view_name_product);
-            this.textViewPriceProduct = itemView.findViewById(R.id.text_view_price_product);
+            this.imageViewPictureProduct = itemView.findViewById(R.id.image_view_picture_new_product);
+            this.textViewNameProduct = itemView.findViewById(R.id.text_view_name_new_product);
+            this.textViewPriceProduct = itemView.findViewById(R.id.text_view_price_new_product);
         }
     }
 }
