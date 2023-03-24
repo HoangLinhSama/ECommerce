@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private TypeProductAdapter typeProductAdapter;
     private List<TypeProduct> listTypeProduct;
     private List<Product> listNewProduct;
-    private NewProductAdapter productAdapter;
+    private NewProductAdapter newProductAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
 
         setUpActionBar();
         getTypeProduct();
-        if (isConnected(this)) {
-            setUpViewFlipper();
-            getNewProduct();
-            getEventClickNavigationMenu();
+        if (this.isConnected(this)) {
+            this.setUpViewFlipper();
+            this.getNewProduct();
+            this.getEventClickNavigationMenu();
         } else {
             Toast.makeText(this, "No Internet ! Please connect !", Toast.LENGTH_SHORT).show();
         }
@@ -82,17 +82,17 @@ public class MainActivity extends AppCompatActivity {
      * Hien thi san pham moi len Recycler View
      */
     private void getNewProduct() {
-        DataClient dataClientGetProduct = ApiUtils.getData();
-        Call<List<Product>> callbackGetProduct = dataClientGetProduct.getNewProduct();
-        callbackGetProduct.enqueue(new Callback<List<Product>>() {
+        DataClient dataClientGetNewProduct = ApiUtils.getData();
+        Call<List<Product>> callbackGetNewProduct = dataClientGetNewProduct.getNewProduct();
+        callbackGetNewProduct.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 if (response.body().equals("Fail !")) {
-                    Toast.makeText(MainActivity.this, "Failed To Get New Product", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Không thể hiển thị được sản phẩm mới !", Toast.LENGTH_SHORT).show();
                 } else {
                     listNewProduct = response.body();
-                    productAdapter = new NewProductAdapter(listNewProduct, R.layout.item_new_product, getApplicationContext());
-                    activityMainBinding.recyclerViewMainScreen.setAdapter(productAdapter);
+                    newProductAdapter = new NewProductAdapter(listNewProduct, R.layout.item_new_product, getApplicationContext());
+                    activityMainBinding.recyclerViewMainScreen.setAdapter(newProductAdapter);
                     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
                     activityMainBinding.recyclerViewMainScreen.setLayoutManager(layoutManager);
                     activityMainBinding.recyclerViewMainScreen.setHasFixedSize(true);
@@ -102,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Product>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Failed To Get New Product ! ", Toast.LENGTH_SHORT).show();
-                Log.d("getProduct", t.getMessage());
+                Toast.makeText(MainActivity.this, "Không thể hiển thị được sản phẩm mới ! ", Toast.LENGTH_SHORT).show();
+                Log.d("getNewProduct", t.getMessage());
             }
         });
     }
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setUpActionBar() {
         setSupportActionBar(activityMainBinding.toolBarMainScreen);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // setDisplayHomeAsUpEnabled() de kich hoat se quay lai activity truoc khi chon Up
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // setDisplayHomeAsUpEnabled() de cho phep kich hoat se quay lai activity truoc khi chon Up
         activityMainBinding.toolBarMainScreen.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
         activityMainBinding.toolBarMainScreen.setNavigationOnClickListener(v -> activityMainBinding.drawerLayoutMainScreen.openDrawer(GravityCompat.START));
     }

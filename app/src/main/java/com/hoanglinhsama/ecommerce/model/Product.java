@@ -25,7 +25,7 @@ public class Product {
     private String type;
 
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(String id) {
@@ -33,7 +33,7 @@ public class Product {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -41,7 +41,7 @@ public class Product {
     }
 
     public String getPrice() {
-        return price;
+        return this.price;
     }
 
     public void setPrice(String price) {
@@ -49,7 +49,7 @@ public class Product {
     }
 
     public String getPicture() {
-        return picture;
+        return this.picture;
     }
 
     public void setPicture(String picture) {
@@ -57,7 +57,7 @@ public class Product {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(String description) {
@@ -65,7 +65,7 @@ public class Product {
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(String type) {
