@@ -1,6 +1,7 @@
 package com.hoanglinhsama.ecommerce.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hoanglinhsama.ecommerce.Interface.OnItemClickListener;
 import com.hoanglinhsama.ecommerce.R;
+import com.hoanglinhsama.ecommerce.activity.ProductDetailActivity;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.squareup.picasso.Picasso;
 
@@ -52,6 +55,17 @@ public class ProductDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             myViewHolder.textViewNameProduct.setText(product.getName());
             DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
             myViewHolder.textViewPriceProduct.setText(decimalFormat.format(Double.parseDouble(product.getPrice())) + "₫");
+
+            myViewHolder.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onClick(View view, int position, boolean isLongClick) {
+                    if (!isLongClick) {
+                        Intent intent = new Intent(context, ProductDetailActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                }
+            });
         } else {
             LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
             loadingViewHolder.progressBar.setIndeterminate(true);
@@ -83,16 +97,28 @@ public class ProductDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     /**
      * ViewHolder dung cho item co data (VIEW_TYPE_DATA)
      */
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { // chi co MyViewHolder moi can bat event, vi LoadingViewHolder chi de hien thi mot cai progressbar
         private ImageView imageViewPictureProduct;
         private TextView textViewNameProduct;
         private TextView textViewPriceProduct;
+        private OnItemClickListener onItemClickListener;
+
+        public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+            this.onItemClickListener = onItemClickListener;
+        }
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             this.imageViewPictureProduct = itemView.findViewById(R.id.image_view_picture_product_detail);
             this.textViewNameProduct = itemView.findViewById(R.id.text_view_name_product_detail);
             this.textViewPriceProduct = itemView.findViewById(R.id.text_view_price_product_detail);
+
+            itemView.setOnClickListener(this); // this o day la callback se duoc chay
+        }
+
+        @Override
+        public void onClick(View v) {
+            onItemClickListener.onClick(v, getAdapterPosition(), false);
         }
     }
 }
