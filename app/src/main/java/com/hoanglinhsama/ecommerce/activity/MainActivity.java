@@ -6,8 +6,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "No Internet ! Please connect !", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     /**
      * Bat su kien khi click vao menu cua navigation view

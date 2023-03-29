@@ -1,6 +1,7 @@
 package com.hoanglinhsama.ecommerce.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hoanglinhsama.ecommerce.Interface.OnItemClickListener;
 import com.hoanglinhsama.ecommerce.R;
+import com.hoanglinhsama.ecommerce.activity.ProductDetailActivity;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.squareup.picasso.Picasso;
 
@@ -44,6 +47,16 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Vi
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###"); // tao mau dinh dang nnn.nnn.nnn
         holder.textViewPriceProduct.setText(decimalFormat.format(Double.parseDouble(product.getPrice())) + "₫");
 
+        holder.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position, boolean isLongClick) {
+                if (!isLongClick) {
+                    Intent intent = new Intent(context, ProductDetailActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override
@@ -51,16 +64,28 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Vi
         return listNewProduct.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView imageViewPictureProduct;
         private TextView textViewNameProduct;
         private TextView textViewPriceProduct;
+        private OnItemClickListener onItemClickListener;
+
+        public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+            this.onItemClickListener = onItemClickListener;
+        }
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.imageViewPictureProduct = itemView.findViewById(R.id.image_view_picture_new_product);
             this.textViewNameProduct = itemView.findViewById(R.id.text_view_name_new_product);
             this.textViewPriceProduct = itemView.findViewById(R.id.text_view_price_new_product);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onItemClickListener.onClick(v, getAdapterPosition(), false);
         }
     }
 }

@@ -61,7 +61,7 @@ public class ProductDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 public void onClick(View view, int position, boolean isLongClick) {
                     if (!isLongClick) {
                         Intent intent = new Intent(context, ProductDetailActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // FLAG_ACTIVITY_NEW_TASK la flag de thiet lap cac thuoc tinh khi mo activity moi tu mot context khac
                         context.startActivity(intent);
                     }
                 }

@@ -7,4 +7,7 @@
     <string name="nav_header_subtitle">quanglinhhoangnguyen@gmail.com</string>
     <string name="tool_bar_phone_screen_title">Điện Thoại</string>
     <string name="tool_bar_laptop_screen_title">Laptop</string>
+    <string name="tool_bar_product_detail_screen_title">Chi tiết sản phẩm</string>
+    <string name="button_product_detail_screen">Thêm vào Giỏ Hàng</string>
+    <string name="text_view_description_product">Mô tả chi tiết sản phẩm</string>
 </resources>
