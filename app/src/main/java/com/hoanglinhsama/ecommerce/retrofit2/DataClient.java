@@ -23,5 +23,6 @@ public interface DataClient {
     @FormUrlEncoded
     @POST("getproductdetail.php")
     Call<List<Product>> getProductDetail(@Field("page") int page
-            , @Field("type") int type);
+            , @Field("type") int type
+            , @Field("total") int total);
 }

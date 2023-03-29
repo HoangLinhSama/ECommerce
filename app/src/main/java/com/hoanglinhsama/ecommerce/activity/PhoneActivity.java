@@ -1,16 +1,16 @@
 package com.hoanglinhsama.ecommerce.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hoanglinhsama.ecommerce.ItemDecoration;
-import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.ProductDetailAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityPhoneBinding;
 import com.hoanglinhsama.ecommerce.model.Product;
@@ -27,6 +27,12 @@ public class PhoneActivity extends AppCompatActivity {
     private ActivityPhoneBinding activityPhoneBinding;
     private List<Product> listPhone;
     private ProductDetailAdapter phoneAdapter;
+    private boolean isLoading = true; // isLoading la de kiem tra xem co dang load du lieu tu adapter len recyclerview khong, true la van con du lieu de load, false la da het du lieu va phai load more
+    private Handler handler = new Handler();
+    private LinearLayoutManager layoutManager;
+    int page = 1; // so trang bat dau tu trang so 1
+    int type = 1; // phone type 1, laptop type 2
+    int total = 3; // hien thi 3 phone tren mot trang
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,42 +41,87 @@ public class PhoneActivity extends AppCompatActivity {
         setContentView(activityPhoneBinding.getRoot());
 
         setUpActionBar();
-        this.getPhone();
+        if (MainActivity.isConnected(getApplicationContext())) {
+            this.getPhone(page);
+            this.addEventLoadMore();
+        } else {
+            Toast.makeText(this, "No Internet ! Please connect !", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void setUpActionBar() {
+    private void addEventLoadMore() {
+        activityPhoneBinding.recyclerViewPhoneScreen.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (isLoading) {
+                    if (layoutManager.findLastCompletelyVisibleItemPosition() == listPhone.size() - 1) { // da scroll den phan tu cuoi cung hien co thi load them du lieu
+                        isLoading = false; // can phai load them du lieu moi tu server ve
+                        loadMore();
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Load them phone khi da het phone cho recyclerview
+     */
+    private void loadMore() {
+        handler.post(() -> {
+            /* add null */
+            listPhone.add(null);
+            phoneAdapter.notifyItemInserted(listPhone.size() - 1);
+        });
+        handler.postDelayed(() -> {
+            /* remove null */
+            listPhone.remove(listPhone.size() - 1);
+            phoneAdapter.notifyItemRemoved(listPhone.size());
+            page = page + 1; // load du lieu cho trang tiep theo
+            getPhone(page);
+            isLoading = true; // da co them du lieu moi de load tu adapter len recyclerview
+        }, 3000);
+    }
+
+    public void setUpActionBar() {
         setSupportActionBar(activityPhoneBinding.toolBarPhoneScreen);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // setDisplayHomeAsUpEnabled() de cho phpe kich hoat se quay lai activity truoc khi chon Up
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // setDisplayHomeAsUpEnabled() de cho phep kich hoat se quay lai activity truoc khi chon Up
         activityPhoneBinding.toolBarPhoneScreen.setNavigationOnClickListener(v -> finish());
     }
 
     /**
      * Hien thi phone len recyclerview
      */
-    private void getPhone() {
-        int page = 1;
-        int type = 1; // phone type 1, laptop type 2
+    private void getPhone(int page) {
         DataClient dataClientGetPhone = ApiUtils.getData();
-        Call<List<Product>> callBackGetPhone = dataClientGetPhone.getProductDetail(page, type);
+        Call<List<Product>> callBackGetPhone = dataClientGetPhone.getProductDetail(page, type, total);
         callBackGetPhone.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                if (response.body().equals("Fail !")) {
-                    Toast.makeText(PhoneActivity.this, "Không thể hiển thị được điện thoại !", Toast.LENGTH_SHORT).show();
-                } else {
-                    listPhone = response.body();
-                    phoneAdapter = new ProductDetailAdapter(getApplicationContext(), R.layout.item_product_detail, listPhone);
-                    activityPhoneBinding.recyclerViewPhoneScreen.setAdapter(phoneAdapter);
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                    activityPhoneBinding.recyclerViewPhoneScreen.setLayoutManager(layoutManager);
-                    activityPhoneBinding.recyclerViewPhoneScreen.setHasFixedSize(true);
-                    activityPhoneBinding.recyclerViewPhoneScreen.addItemDecoration(new ItemDecoration(15));
+                if (response.isSuccessful()) {
+                    if (phoneAdapter == null) {
+                        listPhone = response.body();
+                        phoneAdapter = new ProductDetailAdapter(getApplicationContext(), listPhone);
+                        activityPhoneBinding.recyclerViewPhoneScreen.setAdapter(phoneAdapter);
+                        layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                        activityPhoneBinding.recyclerViewPhoneScreen.setLayoutManager(layoutManager);
+                        activityPhoneBinding.recyclerViewPhoneScreen.addItemDecoration(new ItemDecoration(15));
+                    } else {
+                        listPhone.addAll(listPhone.size() - 1, response.body());
+                        phoneAdapter.notifyDataSetChanged();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<List<Product>> call, Throwable t) {
-                Toast.makeText(PhoneActivity.this, "Không thể hiển thị được điện thoại !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PhoneActivity.this, "Không còn điện thoại để hiển thị !", Toast.LENGTH_SHORT).show();
+                isLoading = false;
                 Log.d("getPhone", t.getMessage());
             }
         });

@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         setUpActionBar();
         getTypeProduct();
-        if (this.isConnected(this)) {
+        if (isConnected(this)) {
             this.setUpViewFlipper();
             this.getNewProduct();
             this.getEventClickNavigationMenu();
@@ -87,9 +87,7 @@ public class MainActivity extends AppCompatActivity {
         callbackGetNewProduct.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                if (response.body().equals("Fail !")) {
-                    Toast.makeText(MainActivity.this, "Không thể hiển thị được sản phẩm mới !", Toast.LENGTH_SHORT).show();
-                } else {
+                if (response.isSuccessful()) {
                     listNewProduct = response.body();
                     newProductAdapter = new NewProductAdapter(listNewProduct, R.layout.item_new_product, getApplicationContext());
                     activityMainBinding.recyclerViewMainScreen.setAdapter(newProductAdapter);
@@ -160,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Kiem tra xem co ket noi internet khong ?
      */
-    private boolean isConnected(@NonNull Context context) {
+    public static boolean isConnected(@NonNull Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
         if (networkCapabilities != null) { // neu co ket noi (wifi hoac mobile data)
