@@ -17,6 +17,7 @@ import com.hoanglinhsama.ecommerce.activity.ProductDetailActivity;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Vi
             public void onClick(View view, int position, boolean isLongClick) {
                 if (!isLongClick) {
                     Intent intent = new Intent(context, ProductDetailActivity.class);
+                    intent.putExtra("data", product);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }

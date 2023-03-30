@@ -6,10 +6,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             this.getNewProduct();
             this.getEventClickNavigationMenu();
         } else {
-            Toast.makeText(this, "No Internet ! Please connect !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
     }
 

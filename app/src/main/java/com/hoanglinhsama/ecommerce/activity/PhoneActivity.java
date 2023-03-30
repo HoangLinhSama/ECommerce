@@ -45,7 +45,7 @@ public class PhoneActivity extends AppCompatActivity {
             this.getPhone(page);
             this.addEventLoadMore();
         } else {
-            Toast.makeText(this, "No Internet ! Please connect !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
     }
 
