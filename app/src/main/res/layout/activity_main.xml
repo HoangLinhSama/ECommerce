@@ -22,7 +22,27 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="#304FFE"
                 app:title="@string/tool_bar_main_screen_title"
-                app:titleTextColor="#FFFFFF" />
+                app:titleTextColor="#FFFFFF">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="10dp">
+
+                    <ImageView
+                        android:id="@+id/image_view_cart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_cart" />
+
+                    <com.nex3z.notificationbadge.NotificationBadge
+                        android:id="@+id/ntf_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|right" />
+                </FrameLayout>
+            </androidx.appcompat.widget.Toolbar>
 
             <ViewFlipper
                 android:id="@+id/view_flipper_main_screen"

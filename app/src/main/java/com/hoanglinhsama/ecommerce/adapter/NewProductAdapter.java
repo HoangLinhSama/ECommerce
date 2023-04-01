@@ -17,11 +17,10 @@ import com.hoanglinhsama.ecommerce.activity.ProductDetailActivity;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.ViewHolder> {
+public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.MyViewHolder> {
     private List<Product> listNewProduct;
     private int layout;
     private Context context;
@@ -34,14 +33,14 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Vi
 
     @NonNull
     @Override
-    public NewProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NewProductAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(layout, null);
-        return new ViewHolder(view);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NewProductAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NewProductAdapter.MyViewHolder holder, int position) {
         Product product = listNewProduct.get(position);
         Picasso.get().load(product.getPicture()).into(holder.imageViewPictureProduct);
         holder.textViewNameProduct.setText(product.getName());
@@ -66,7 +65,7 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Vi
         return listNewProduct.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView imageViewPictureProduct;
         private TextView textViewNameProduct;
         private TextView textViewPriceProduct;
@@ -76,7 +75,7 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Vi
             this.onItemClickListener = onItemClickListener;
         }
 
-        public ViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             this.imageViewPictureProduct = itemView.findViewById(R.id.image_view_picture_new_product);
             this.textViewNameProduct = itemView.findViewById(R.id.text_view_name_new_product);

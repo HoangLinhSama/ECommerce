@@ -14,23 +14,24 @@
         app:title="@string/tool_bar_product_detail_screen_title"
         app:titleTextColor="#FFFFFF">
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="10dp">
+<!--        <FrameLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="right"-->
+<!--            android:layout_marginRight="10dp">-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_cart" />
+<!--            <ImageView-->
+<!--                android:id="@+id/image_view_cart"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/ic_cart" />-->
 
-            <com.nex3z.notificationbadge.NotificationBadge
-                android:id="@+id/ntf_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|right" />
-        </FrameLayout>
+<!--            <com.nex3z.notificationbadge.NotificationBadge-->
+<!--                android:id="@+id/ntf_count"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="top|right" />-->
+<!--        </FrameLayout>-->
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
@@ -93,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:backgroundTint="#304FFE"
-                android:text="@string/button_product_detail_screen"
+                android:text="@string/button_add_to_cart"
                 android:textAllCaps="false" />
 
         </LinearLayout>

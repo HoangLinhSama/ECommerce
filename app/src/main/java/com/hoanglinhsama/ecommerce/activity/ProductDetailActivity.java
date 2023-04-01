@@ -83,6 +83,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
                     MainActivity.getCartDetail();
+                    Toast.makeText(ProductDetailActivity.this, "Thêm sản phẩm vào giỏ hàng thành công !", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -106,6 +107,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     /* Load lai du lieu cac loai san pham hien co trong gio hang tu server ve */
                     MainActivity.getCartDetail();
+                    Toast.makeText(ProductDetailActivity.this, "Thêm sản phẩm vào giỏ hàng thành công !", Toast.LENGTH_SHORT).show();
                 }
             }
 

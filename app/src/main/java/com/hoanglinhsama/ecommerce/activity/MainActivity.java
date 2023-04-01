@@ -1,13 +1,12 @@
 package com.hoanglinhsama.ecommerce.activity;
 
-import static com.hoanglinhsama.ecommerce.activity.ProductDetailActivity.activityProductDetailBinding;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -24,7 +23,6 @@ import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.NewProductAdapter;
 import com.hoanglinhsama.ecommerce.adapter.TypeProductAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityMainBinding;
-import com.hoanglinhsama.ecommerce.databinding.ActivityProductDetailBinding;
 import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.hoanglinhsama.ecommerce.model.TypeProduct;
@@ -40,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding activityMainBinding;
+    public static ActivityMainBinding activityMainBinding;
     private TypeProductAdapter typeProductAdapter;
     private List<TypeProduct> listTypeProduct;
     private List<Product> listNewProduct;
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        activityProductDetailBinding = ActivityProductDetailBinding.inflate(getLayoutInflater()); // phai khoi tao activityProductDetailBinding o day de co the truy xuat duoc nhung cai view trong activityProductDetailBinding khi MainActivity chay ma ProductDetailActivity chua chay
+//        activityProductDetailBinding = ActivityProductDetailBinding.inflate(getLayoutInflater()); // phai khoi tao activityProductDetailBinding o day de co the truy xuat duoc nhung cai view trong activityProductDetailBinding khi MainActivity chay ma ProductDetailActivity chua chay
         setContentView(activityMainBinding.getRoot());
 
         setUpActionBar();
@@ -62,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
             this.getNewProduct();
             this.getEventClickNavigationMenu();
             getCartDetail();
+            activityMainBinding.imageViewCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                    startActivity(intent);
+                }
+            });
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
@@ -81,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<Cart>> call, Response<List<Cart>> response) {
                 if (response.isSuccessful()) {
                     listCart = response.body();
-                    activityProductDetailBinding.ntfCount.setText(String.valueOf(listCart.size()));
+                    activityMainBinding.ntfCount.setText(String.valueOf(listCart.size()));
                 }
             }
 
