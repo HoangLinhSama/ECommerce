@@ -1,5 +1,6 @@
 package com.hoanglinhsama.ecommerce.retrofit2;
 
+import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.Product;
 
 import java.util.List;
@@ -25,4 +26,29 @@ public interface DataClient {
     Call<List<Product>> getProductDetail(@Field("page") int page
             , @Field("type") int type
             , @Field("total") int total);
+
+    /**
+     * Lay du lieu ve gio hang cua nguoi dung dua vao userId di kem theo bo username password khi dang nhap thanh cong
+     */
+    @FormUrlEncoded
+    @POST("getcartdetail.php")
+    Call<List<Cart>> getCartDetail(@Field("userId") int userId);
+
+    /**
+     * Them du lieu vao bang cart_detail tren server
+     */
+    @FormUrlEncoded
+    @POST("insertcartdetail.php")
+    Call<String> insertCartDetail(@Field("userId") int userId
+            , @Field("productId") int productId
+            , @Field("quantity") int quantity);
+
+    /**
+     * Update du lieu vao bang cart_detail tren server
+     */
+    @FormUrlEncoded
+    @POST("updatecartdetail.php")
+    Call<String> updateCartDetail(@Field("userId") int userId
+            , @Field("productId") int productId
+            , @Field("quantity") int quantity);
 }

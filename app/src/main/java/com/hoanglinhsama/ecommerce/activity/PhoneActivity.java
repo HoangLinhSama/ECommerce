@@ -1,5 +1,6 @@
 package com.hoanglinhsama.ecommerce.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -30,9 +31,9 @@ public class PhoneActivity extends AppCompatActivity {
     private boolean isLoading = true; // isLoading la de kiem tra xem co dang load du lieu tu adapter len recyclerview khong, true la van con du lieu de load, false la da het du lieu va phai load more
     private Handler handler = new Handler();
     private LinearLayoutManager layoutManager;
-    int page = 1; // so trang bat dau tu trang so 1
-    int type = 1; // phone type 1, laptop type 2
-    int total = 3; // hien thi 3 phone tren mot trang
+    private int page = 1; // so trang bat dau tu trang so 1
+    private int type = 1; // phone type 1, laptop type 2
+    private int total = 3; // hien thi 3 phone tren mot trang
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

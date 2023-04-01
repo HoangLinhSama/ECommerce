@@ -18,7 +18,6 @@ import com.hoanglinhsama.ecommerce.activity.ProductDetailActivity;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class ProductDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             Picasso.get().load(product.getPicture()).into(myViewHolder.imageViewPictureProduct);
             myViewHolder.textViewNameProduct.setText(product.getName());
             DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-            myViewHolder.textViewPriceProduct.setText(decimalFormat.format(Double.parseDouble(product.getPrice())) + "₫");
+            myViewHolder.textViewPriceProduct.setText(decimalFormat.format(Double.parseDouble(String.valueOf(product.getPrice()))) + "₫");
 
             myViewHolder.setOnItemClickListener(new OnItemClickListener() {
                 @Override

@@ -9,13 +9,13 @@ public class Product implements Serializable {
 
     @SerializedName("id")
     @Expose
-    private String id;
+    private int id;
     @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("price")
     @Expose
-    private String price;
+    private long price;
     @SerializedName("picture")
     @Expose
     private String picture;
@@ -24,13 +24,24 @@ public class Product implements Serializable {
     private String description;
     @SerializedName("type")
     @Expose
-    private String type;
+    private int type;
+    @SerializedName("quantity")
+    @Expose
+    private int quantity;
 
-    public String getId() {
+    public int getQuantity() {
+        return this.quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -42,11 +53,11 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public String getPrice() {
+    public long getPrice() {
         return this.price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 
@@ -66,11 +77,11 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public String getType() {
+    public int getType() {
         return this.type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 

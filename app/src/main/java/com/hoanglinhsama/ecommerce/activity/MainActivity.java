@@ -1,5 +1,7 @@
 package com.hoanglinhsama.ecommerce.activity;
 
+import static com.hoanglinhsama.ecommerce.activity.ProductDetailActivity.activityProductDetailBinding;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -22,6 +24,8 @@ import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.NewProductAdapter;
 import com.hoanglinhsama.ecommerce.adapter.TypeProductAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityMainBinding;
+import com.hoanglinhsama.ecommerce.databinding.ActivityProductDetailBinding;
+import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.hoanglinhsama.ecommerce.model.TypeProduct;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
@@ -41,11 +45,14 @@ public class MainActivity extends AppCompatActivity {
     private List<TypeProduct> listTypeProduct;
     private List<Product> listNewProduct;
     private NewProductAdapter newProductAdapter;
+    public static List<Cart> listCart; // list gio hang toan cuc chua thong tin cac san pham da them vao gio hang
+    public static int userId = 1; // du lieu gia su, sau nay se lay du lieu dua vao bo username, password
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        activityProductDetailBinding = ActivityProductDetailBinding.inflate(getLayoutInflater()); // phai khoi tao activityProductDetailBinding o day de co the truy xuat duoc nhung cai view trong activityProductDetailBinding khi MainActivity chay ma ProductDetailActivity chua chay
         setContentView(activityMainBinding.getRoot());
 
         setUpActionBar();
@@ -54,11 +61,36 @@ public class MainActivity extends AppCompatActivity {
             this.setUpViewFlipper();
             this.getNewProduct();
             this.getEventClickNavigationMenu();
+            getCartDetail();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * Lay du lieu gio hang cua nguoi dung tu server
+     */
+    public static void getCartDetail() {
+        if (listCart == null) {
+            listCart = new ArrayList<>();
+        }
+        DataClient dataClient = ApiUtils.getData();
+        Call<List<Cart>> call = dataClient.getCartDetail(userId);
+        call.enqueue(new Callback<List<Cart>>() {
+            @Override
+            public void onResponse(Call<List<Cart>> call, Response<List<Cart>> response) {
+                if (response.isSuccessful()) {
+                    listCart = response.body();
+                    activityProductDetailBinding.ntfCount.setText(String.valueOf(listCart.size()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Cart>> call, Throwable t) {
+                Log.d("getCartDetail", t.getMessage());
+            }
+        });
+    }
 
     /**
      * Bat su kien khi click vao menu cua navigation view

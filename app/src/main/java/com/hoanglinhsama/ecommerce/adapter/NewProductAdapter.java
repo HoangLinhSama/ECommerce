@@ -46,7 +46,7 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Vi
         Picasso.get().load(product.getPicture()).into(holder.imageViewPictureProduct);
         holder.textViewNameProduct.setText(product.getName());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###"); // tao mau dinh dang nnn.nnn.nnn
-        holder.textViewPriceProduct.setText(decimalFormat.format(Double.parseDouble(product.getPrice())) + "₫");
+        holder.textViewPriceProduct.setText(decimalFormat.format(Double.parseDouble(String.valueOf(product.getPrice()))) + "₫");
 
         holder.setOnItemClickListener(new OnItemClickListener() {
             @Override

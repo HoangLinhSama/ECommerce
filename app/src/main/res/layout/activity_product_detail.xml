@@ -12,7 +12,26 @@
         android:layout_height="?attr/actionBarSize"
         android:background="#304FFE"
         app:title="@string/tool_bar_product_detail_screen_title"
-        app:titleTextColor="#FFFFFF" />
+        app:titleTextColor="#FFFFFF">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cart" />
+
+            <com.nex3z.notificationbadge.NotificationBadge
+                android:id="@+id/ntf_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|right" />
+        </FrameLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:id="@+id/linear_layout_product_detail_1"
@@ -64,9 +83,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/spnr_number_product"
                 android:minHeight="48dp"
-                tools:ignore="SpeakableTextPresentCheck"
-                android:background="@drawable/spnr_number_product"/>
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <Button
                 android:id="@+id/button_add_to_cart"
