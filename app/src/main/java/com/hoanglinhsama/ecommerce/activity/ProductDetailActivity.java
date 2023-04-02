@@ -21,8 +21,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProductDetailActivity extends AppCompatActivity {
-    public static ActivityProductDetailBinding activityProductDetailBinding;
-    private Product product;
+    private ActivityProductDetailBinding activityProductDetailBinding;
+    public static Product product;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

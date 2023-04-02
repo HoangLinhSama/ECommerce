@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_item_home_page"
+        android:icon="@drawable/ic_home_page"
+        android:title="@string/tool_bar_main_screen_title" />
+    <item
+        android:id="@+id/menu_item_phone"
+        android:icon="@drawable/ic_phone"
+        android:title="@string/tool_bar_phone_screen_title" />
+    <item
+        android:id="@+id/menu_item_laptop"
+        android:icon="@drawable/ic_laptop"
+        android:title="@string/tool_bar_laptop_screen_title" />
+
+</menu>

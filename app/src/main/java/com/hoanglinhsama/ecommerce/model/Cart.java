@@ -20,6 +20,17 @@ public class Cart {
     @SerializedName("quantity")
     @Expose
     private int quantity;
+    @SerializedName("quantityRemain")
+    @Expose
+    private int quantityRemain;
+
+    public int getQuantityRemain() {
+        return this.quantityRemain;
+    }
+
+    public void setQuantityRemain(int quantityRemain) {
+        this.quantityRemain = quantityRemain;
+    }
 
     public int getIdProduct() {
         return this.idProduct;

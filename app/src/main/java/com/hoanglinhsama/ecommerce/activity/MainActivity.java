@@ -50,26 +50,56 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
-//        activityProductDetailBinding = ActivityProductDetailBinding.inflate(getLayoutInflater()); // phai khoi tao activityProductDetailBinding o day de co the truy xuat duoc nhung cai view trong activityProductDetailBinding khi MainActivity chay ma ProductDetailActivity chua chay
         setContentView(activityMainBinding.getRoot());
 
         setUpActionBar();
-        getTypeProduct();
+        getTypeMenu();
         if (isConnected(this)) {
             this.setUpViewFlipper();
             this.getNewProduct();
-            this.getEventClickNavigationMenu();
+            this.getEventClickNavigationDrawerMenu();
+            this.getEventClickBottomNavigationMenu();
             getCartDetail();
-            activityMainBinding.imageViewCart.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, CartActivity.class);
-                    startActivity(intent);
-                }
-            });
+            this.getEventClickImageViewCart();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getCartDetail();
+    }
+
+    private void getEventClickImageViewCart() {
+        activityMainBinding.imageViewCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    /**
+     * Bat su kien khi click vao menu cua bottom navigation bar
+     */
+    private void getEventClickBottomNavigationMenu() {
+        activityMainBinding.bottomNavigationMainScreen.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_item_home_page:
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                    return true;
+                case R.id.menu_item_phone:
+                    startActivity(new Intent(MainActivity.this, PhoneActivity.class));
+                    return true;
+                case R.id.menu_item_laptop:
+                    startActivity(new Intent(MainActivity.this, LaptopActivity.class));
+                    return true;
+            }
+            return false;
+        });
     }
 
     /**
@@ -100,17 +130,11 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Bat su kien khi click vao menu cua navigation view
      */
-    private void getEventClickNavigationMenu() {
+    private void getEventClickNavigationDrawerMenu() {
         activityMainBinding.listViewMainScreen.setOnItemClickListener((parent, view, position, id) -> {
             switch (position) {
                 case 0:
                     startActivity(new Intent(MainActivity.this, MainActivity.class));
-                    break;
-                case 1:
-                    startActivity(new Intent(MainActivity.this, PhoneActivity.class));
-                    break;
-                case 2:
-                    startActivity(new Intent(MainActivity.this, LaptopActivity.class));
                     break;
             }
         });
@@ -145,13 +169,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Tao menu cho Navigation View
+     * Tao menu cho Navigation Drawer
      */
-    private void getTypeProduct() {
+    private void getTypeMenu() {
         this.listTypeProduct = new ArrayList<TypeProduct>();
         this.listTypeProduct.add(new TypeProduct("Trang Chủ", R.drawable.ic_home_page));
-        this.listTypeProduct.add(new TypeProduct("Điện Thoại", R.drawable.ic_phone));
-        this.listTypeProduct.add(new TypeProduct("LapTop", R.drawable.ic_laptop));
         this.listTypeProduct.add(new TypeProduct("Liên hệ", R.drawable.ic_contact));
         this.listTypeProduct.add(new TypeProduct("Thông Tin", R.drawable.ic_information));
         typeProductAdapter = new TypeProductAdapter(getApplicationContext(), R.layout.item_type_product, listTypeProduct);
@@ -189,6 +211,8 @@ public class MainActivity extends AppCompatActivity {
     private void setUpActionBar() {
         setSupportActionBar(activityMainBinding.toolBarMainScreen);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // setDisplayHomeAsUpEnabled() de cho phep kich hoat se quay lai activity truoc khi chon Up
+
+        // 2 dong duoi nay co the lam duoc viec nhu sau : neu tai khoan la loai cua nguoi ban thi chay 2 dong o duoi, con neu la tai khaon khach hang thi khong co 2 dong o duoi (vi du dinh dat chuc nang cua nguoi ban trong navigation drawer)
         activityMainBinding.toolBarMainScreen.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
         activityMainBinding.toolBarMainScreen.setNavigationOnClickListener(v -> activityMainBinding.drawerLayoutMainScreen.openDrawer(GravityCompat.START));
     }
