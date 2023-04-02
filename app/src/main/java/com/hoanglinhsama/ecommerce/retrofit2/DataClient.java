@@ -59,4 +59,15 @@ public interface DataClient {
     @POST("deletecartdetail.php")
     Call<String> deleteCartDetail(@Field("userId") int userId
             , @Field("productId") int productId);
+
+    /**
+     * Dang ky tai khoan
+     */
+    @FormUrlEncoded
+    @POST("signup.php")
+    Call<String> signUp(@Field("email") String email
+            , @Field("password") String password
+            , @Field("name") String name
+            , @Field("phoneNumber") String phoneNumber
+            , @Field("type") int type);
 }

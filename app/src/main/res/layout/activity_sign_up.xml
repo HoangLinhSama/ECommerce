@@ -7,7 +7,7 @@
     tools:context=".activity.SignUpActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tool_bar_login_screen"
+        android:id="@+id/tool_bar_signup_screen"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#304FFE"
@@ -17,33 +17,22 @@
         app:title="@string/tool_bar_signup_screen_title"
         app:titleTextColor="#FFFFFF" />
 
-    <ImageView
-        android:id="@+id/image_view_signup_screen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_application"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tool_bar_login_screen" />
-
     <EditText
-        android:id="@+id/edit_text_user_name_signup_screen"
+        android:id="@+id/edit_text_email_signup_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:drawableLeft="@drawable/ic_email"
-        android:hint="@string/edit_text_user_name_hint_login_screen"
+        android:hint="@string/edit_text_email_hint_login_screen"
         android:inputType="textEmailAddress"
         android:textColor="#000000"
         android:textColorHint="#9E9E9E"
         android:textSize="21sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_view_signup_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar_signup_screen" />
 
     <EditText
         android:id="@+id/edit_text_password_signup_screen"
@@ -61,10 +50,10 @@
         android:textSize="21sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_user_name_signup_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_email_signup_screen" />
 
     <EditText
-        android:id="@+id/edit_text_password2_signup_screen"
+        android:id="@+id/edit_text_repassword_signup_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -72,7 +61,7 @@
         android:layout_marginRight="10dp"
         android:drawableLeft="@drawable/ic_password"
         android:drawableRight="@drawable/ic_watch"
-        android:hint="@string/edit_text_password2_hint_login_screen"
+        android:hint="@string/edit_text_repassword_hint_login_screen"
         android:inputType="textPassword"
         android:textColor="#000000"
         android:textColorHint="#9E9E9E"
@@ -81,6 +70,40 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_password_signup_screen" />
 
+    <EditText
+        android:id="@+id/edit_text_name_signup_screen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:drawableLeft="@drawable/ic_person"
+        android:hint="@string/edit_text_name_hint_login_screen"
+        android:inputType="text"
+        android:textColor="#000000"
+        android:textColorHint="#9E9E9E"
+        android:textSize="21sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_repassword_signup_screen" />
+
+    <EditText
+        android:id="@+id/edit_text_phone_number_signup_screen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:drawableLeft="@drawable/ic_phone"
+        android:hint="@string/edit_text_phone_number_hint_login_screen"
+        android:inputType="number"
+        android:textColor="#000000"
+        android:textColorHint="#9E9E9E"
+        android:textSize="21sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_name_signup_screen" />
+
     <CheckBox
         android:id="@+id/checkbox_signup_screen"
         android:layout_width="wrap_content"
@@ -88,7 +111,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_password2_signup_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_phone_number_signup_screen" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -99,7 +122,7 @@
         android:textColor="#304FFE"
         android:textSize="21sp"
         app:layout_constraintStart_toEndOf="@+id/checkbox_signup_screen"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_password2_signup_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_phone_number_signup_screen" />
 
     <Button
         android:id="@+id/button_signup_screen"
@@ -114,6 +137,7 @@
         android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkbox_signup_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_signup_screen"
+        tools:ignore="TextSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

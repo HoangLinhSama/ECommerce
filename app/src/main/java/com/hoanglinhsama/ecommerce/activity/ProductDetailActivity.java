@@ -1,6 +1,7 @@
 package com.hoanglinhsama.ecommerce.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -89,7 +90,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
+                Log.d("updateProductToCart", t.getMessage());
             }
         });
     }
@@ -113,7 +114,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
+                Log.d("addNewProductToCart", t.getMessage());
             }
         });
     }

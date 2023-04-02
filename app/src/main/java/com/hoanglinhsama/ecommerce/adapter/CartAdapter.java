@@ -124,7 +124,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
+                Log.d("deleteProductToCart", t.getMessage());
             }
         });
     }
@@ -145,7 +145,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
+                Log.d("updateProductToCart", t.getMessage());
             }
         });
     }

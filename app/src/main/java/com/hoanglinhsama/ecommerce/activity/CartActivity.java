@@ -12,8 +12,6 @@ import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.CartAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityCartBinding;
 import com.hoanglinhsama.ecommerce.eventbus.NotifyDataEvent;
-import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
-import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -21,10 +19,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.atomic.AtomicLong;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity {
     private CartAdapter cartAdapter;
