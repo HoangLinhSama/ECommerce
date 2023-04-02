@@ -51,4 +51,12 @@ public interface DataClient {
     Call<String> updateCartDetail(@Field("userId") int userId
             , @Field("productId") int productId
             , @Field("quantity") int quantity);
+
+    /**
+     * Delete du lieu trong bang cart_detail tren server
+     */
+    @FormUrlEncoded
+    @POST("deletecartdetail.php")
+    Call<String> deleteCartDetail(@Field("userId") int userId
+            , @Field("productId") int productId);
 }

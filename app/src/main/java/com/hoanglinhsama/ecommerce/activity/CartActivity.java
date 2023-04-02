@@ -12,6 +12,8 @@ import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.CartAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityCartBinding;
 import com.hoanglinhsama.ecommerce.eventbus.NotifyDataEvent;
+import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
+import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -19,6 +21,10 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.atomic.AtomicLong;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity {
     private CartAdapter cartAdapter;
@@ -34,11 +40,9 @@ public class CartActivity extends AppCompatActivity {
         setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
             this.getCart();
-            this.totalMoney();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void totalMoney() {
@@ -64,6 +68,7 @@ public class CartActivity extends AppCompatActivity {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
             activityCartBinding.recyclerViewCartScreen.setLayoutManager(layoutManager);
             activityCartBinding.recyclerViewCartScreen.addItemDecoration(new ItemDecoration(15));
+            this.totalMoney();
         }
     }
 
@@ -94,7 +99,8 @@ public class CartActivity extends AppCompatActivity {
     /**
      * Xu ly su kien
      */
-    @Subscribe(threadMode = ThreadMode.MAIN) // dinh nghia luong ma method nay se duoc goi boi EventBus
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    // dinh nghia luong ma method nay se duoc goi boi EventBus
     public void onNotifyDataEvent(NotifyDataEvent event) {
         if (event != null) {
             totalMoney();

@@ -13,4 +13,13 @@
     <string name="tool_bar_cart_screen_title">Giỏ hàng</string>
     <string name="text_view_total_price">Tổng tiền</string>
     <string name="button_buy">Mua hàng</string>
+    <string name="button_delete">Xóa</string>
+    <string name="tool_bar_login_screen_title">Đăng Nhập</string>
+    <string name="edit_text_user_name_hint_login_screen">Email</string>
+    <string name="edit_text_password_hint_login_screen">Mật khẩu</string>
+    <string name="text_view_sign_up">Đăng ký</string>
+    <string name="text_view_forget_password_login_screen">Quên mật khẩu ?</string>
+    <string name="tool_bar_signup_screen_title">Đăng ký</string>
+    <string name="edit_text_password2_hint_login_screen">Nhập lại mật khẩu</string>
+    <string name="text_view_type_user">Người bán</string>
 </resources>
