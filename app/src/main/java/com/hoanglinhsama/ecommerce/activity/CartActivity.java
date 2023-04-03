@@ -12,6 +12,7 @@ import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.CartAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityCartBinding;
 import com.hoanglinhsama.ecommerce.eventbus.NotifyDataEvent;
+import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,7 +42,7 @@ public class CartActivity extends AppCompatActivity {
 
     private void totalMoney() {
         AtomicLong totalMoney = new AtomicLong();
-        MainActivity.listCart.forEach(cart -> {
+        ApiUtils.listCart.forEach(cart -> {
             totalMoney.set(totalMoney.get() + cart.getTotalPrice());
         });
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
@@ -52,7 +53,7 @@ public class CartActivity extends AppCompatActivity {
      * Do du lieu len recyclerView
      */
     private void getCart() {
-        if (MainActivity.listCart.size() == 0) { // neu gio hang trong
+        if (ApiUtils.listCart.size() == 0) { // neu gio hang trong
             activityCartBinding.textViewCartEmpty.setVisibility(View.VISIBLE);
         } else {
             activityCartBinding.linearLayoutCartScreen.setVisibility(View.VISIBLE); // khi co du lieu thi moi hien thi no thi se truc quan hon
@@ -97,8 +98,13 @@ public class CartActivity extends AppCompatActivity {
     // dinh nghia luong ma method nay se duoc goi boi EventBus
     public void onNotifyDataEvent(NotifyDataEvent event) {
         if (event != null) {
-            totalMoney();
-            cartAdapter.notifyDataSetChanged();
+            if (ApiUtils.listCart.size() == 0) { // truong hop nhan duoc event : chi khi xoa het tat ca san pham khoi gio hang
+                activityCartBinding.textViewCartEmpty.setVisibility(View.VISIBLE);
+                activityCartBinding.linearLayoutCartScreen.setVisibility(View.INVISIBLE); // khi co du lieu thi moi hien thi no thi se truc quan hon
+                activityCartBinding.buttonBuy.setVisibility(View.INVISIBLE);
+            } else {
+                totalMoney();
+            }
         }
     }
 }

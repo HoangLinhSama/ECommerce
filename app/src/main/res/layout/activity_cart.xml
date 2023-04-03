@@ -53,6 +53,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:weightSum="2"
         app:layout_constraintBottom_toTopOf="@id/button_buy"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,6 +93,7 @@
         android:text="@string/button_buy"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

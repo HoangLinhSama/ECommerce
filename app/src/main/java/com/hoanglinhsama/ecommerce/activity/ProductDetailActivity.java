@@ -49,9 +49,9 @@ public class ProductDetailActivity extends AppCompatActivity {
             if (quantity.get() > product.getQuantity()) {
                 Toast.makeText(this, "Số lượng sản phẩm còn lại không đủ để thêm vào giỏ hàng !", Toast.LENGTH_SHORT).show();
             } else {
-                if (MainActivity.listCart.size() > 0) { // da co it nhat 1 san pham trong gio hang
+                if (ApiUtils.listCart.size() > 0) { // da co it nhat 1 san pham trong gio hang
                     AtomicBoolean exist = new AtomicBoolean(false);
-                    MainActivity.listCart.forEach(cart -> {
+                    ApiUtils.listCart.forEach(cart -> {
                         if (product.getId() == cart.getIdProduct()) {
                             quantity.set(cart.getQuantity() + quantity.get());
                             if (quantity.get() > product.getQuantity()) {
@@ -136,7 +136,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         activityProductDetailBinding.spinnerProductDetailScreen.setAdapter(adapterSpinner);
 
         /* Cap nhat so luong loai san pham trong gio hang moi khi hien thi ProductDetailActivity */
-        if (MainActivity.listCart != null) {
+        if (ApiUtils.listCart != null) {
             MainActivity.getCartDetail();
         }
     }

@@ -3,11 +3,12 @@ package com.hoanglinhsama.ecommerce.adapter;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,9 +37,6 @@ import retrofit2.Response;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> {
     private Context context;
     private int layout;
-    private MyViewHolder myViewHolder;
-    private int myPosition;
-    private int size; // bien de theo doi kich thuoc cua list tai cac thoi diem
 
     public CartAdapter(Context context, int layout) {
         this.context = context;
@@ -55,10 +53,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        myPosition = position;
-        myViewHolder = holder;
-        size = MainActivity.listCart.size();
-        Cart cart = MainActivity.listCart.get(position);
+//        myPosition = position;
+//        myViewHolder = holder;
+//        size = ApiUtils.listCart.size();
+        Cart cart = ApiUtils.listCart.get(position);
         Picasso.get().load(cart.getPictureProduct()).into(holder.imageViewPictureCart);
         holder.textViewNameCart.setText(cart.getNameProduct());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
@@ -69,42 +67,40 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             public void onClick(View view, int position, int value) { // view o day la imageViewButton tang hoac giam
                 if (value == 1) // giam
                 {
-                    if (MainActivity.listCart.get(position).getQuantity() > 1) { // so luong toi thieu phai la 1
-                        int quantity = MainActivity.listCart.get(position).getQuantity() - 1;
-                        updateProductToCart(quantity, MainActivity.listCart.get(position).getIdProduct()); // cap nhat lai len server
+                    if (ApiUtils.listCart.get(position).getQuantity() > 1) { // so luong toi thieu phai la 1
+                        int quantity = ApiUtils.listCart.get(position).getQuantity() - 1;
+                        updateProductToCart(quantity, ApiUtils.listCart.get(position).getIdProduct()); // cap nhat lai len server
                     } else { // neu so luong con 1 ma giam nua thi se xoa san pham ra khoi gio hang
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getRootView().getContext());
-                        alertDialog.setTitle("Thông báo xóa sản phẩm");
-                        alertDialog.setMessage("Xóa sản phẩm khỏi giỏ hàng ?");
-                        alertDialog.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                deleteProductToCart(MainActivity.userId, MainActivity.listCart.get(position).getIdProduct());
-                            }
-                        });
-                        alertDialog.setNegativeButton("Huỷ", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        alertDialog.show();
+                        delete(view, position);
                     }
-                } else { // tang
-                    if (MainActivity.listCart.get(position).getQuantity() < MainActivity.listCart.get(position).getQuantityRemain()) { // so luong toi da la so luong con lai cua san pham
-                        int quantity = MainActivity.listCart.get(position).getQuantity() + 1;
-                        updateProductToCart(quantity, MainActivity.listCart.get(position).getIdProduct()); // cap nhat lai len server
-                    } else {
-                        Toast.makeText(context, "Số lượng sản phẩm còn lại không đủ để thêm vào giỏ hàng !", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (value == 2) { // tang
+                        if (ApiUtils.listCart.get(position).getQuantity() < ApiUtils.listCart.get(position).getQuantityRemain()) { // so luong toi da la so luong con lai cua san pham
+                            int quantity = ApiUtils.listCart.get(position).getQuantity() + 1;
+                            updateProductToCart(quantity, ApiUtils.listCart.get(position).getIdProduct()); // cap nhat lai len server
+                        } else {
+                            Toast.makeText(context, "Số lượng sản phẩm còn lại không đủ để thêm vào giỏ hàng !", Toast.LENGTH_SHORT).show();
+                        }
+                    } else { // button xoa
+                        delete(view, position);
                     }
                 }
             }
         });
     }
 
+    private void delete(View view, int position) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getRootView().getContext());
+        alertDialog.setTitle("Thông báo xóa sản phẩm");
+        alertDialog.setMessage("Xóa sản phẩm khỏi giỏ hàng ?");
+        alertDialog.setPositiveButton("Đồng ý", (dialog, which) -> deleteProductToCart(MainActivity.userId, ApiUtils.listCart.get(position).getIdProduct()));
+        alertDialog.setNegativeButton("Huỷ", (dialog, which) -> dialog.cancel());
+        alertDialog.show();
+    }
+
     @Override
     public int getItemCount() {
-        return MainActivity.listCart.size();
+        return ApiUtils.listCart.size();
     }
 
     /**
@@ -160,20 +156,20 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             @Override
             public void onResponse(Call<List<Cart>> call, Response<List<Cart>> response) {
                 if (response.isSuccessful()) {
-                    MainActivity.listCart = response.body();
-                    EventBus.getDefault().post(new NotifyDataEvent()); // post event den eventbus
-                    if (MainActivity.listCart.size() == size) { // size list khong thay doi thi chi la tang giam so luong loai san pham trong gio hang
-                        Cart cart = MainActivity.listCart.get(myPosition);
-                        myViewHolder.textViewQuantityCart.setText(String.valueOf(cart.getQuantity())); // cap nhat lai so luong cua loai san pham trong gio hang
-                    } else { // nguoc lai kich thuoc thay doi thi la da xoa san pham
-                        notifyDataSetChanged();
-                    }
+                    ApiUtils.listCart = response.body();
+                    notifyDataSetChanged();
+                    EventBus.getDefault().post(new NotifyDataEvent()); // post event den eventbus de tinh toan lai tong tien,...
                 }
             }
 
             @Override
             public void onFailure(Call<List<Cart>> call, Throwable t) {
                 Log.d("getCartDetail", t.getMessage());
+                if (t.getMessage().equals("Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $") || t.getMessage().equals("End of input at line 1 column 1 path $")) { // loi xay ra khi khong get duoc data tu table cart_detail (khi xoa tat ca san pham ra khoi gio hang), cach xu ly nay khong tot
+                    ApiUtils.listCart.clear();
+                    notifyDataSetChanged();
+                    EventBus.getDefault().post(new NotifyDataEvent());
+                }
             }
         });
     }
@@ -185,6 +181,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         private TextView textViewQuantityCart;
         private ImageView imageViewDecreaseCart;
         private ImageView imageViewIncreaseCart;
+        private CheckBox checkBoxChoose;
+        private Button buttonDelete;
         private OnImageViewClickListener onImageViewClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -195,10 +193,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             this.textViewQuantityCart = itemView.findViewById(R.id.text_view_quantity_cart);
             this.imageViewIncreaseCart = itemView.findViewById(R.id.image_view_increase_cart);
             this.imageViewDecreaseCart = itemView.findViewById(R.id.image_view_decrease_cart);
+            this.checkBoxChoose = itemView.findViewById(R.id.checkbox_choose);
+            this.buttonDelete = itemView.findViewById(R.id.button_delete);
 
             /* event click */
             this.imageViewIncreaseCart.setOnClickListener(this);
             this.imageViewDecreaseCart.setOnClickListener(this);
+            this.buttonDelete.setOnClickListener(this);
         }
 
         public void setOnImageViewClickListener(OnImageViewClickListener onImageViewClickListener) {
@@ -208,10 +209,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         @Override
         public void onClick(View v) {
             if (v == this.imageViewDecreaseCart) {
-                this.onImageViewClickListener.onClick(v, getAdapterPosition(), 1); // 1 la giam, 2 la tang
+                this.onImageViewClickListener.onClick(v, getAdapterPosition(), 1); // 1 la giam
             }
             if (v == this.imageViewIncreaseCart) {
-                this.onImageViewClickListener.onClick(v, getAdapterPosition(), 2);
+                this.onImageViewClickListener.onClick(v, getAdapterPosition(), 2); // 2 la tang
+            }
+            if (v == this.buttonDelete) {
+                this.onImageViewClickListener.onClick(v, getAdapterPosition(), 3); // 3 la button delete
             }
         }
     }

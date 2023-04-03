@@ -2,7 +2,6 @@ package com.hoanglinhsama.ecommerce.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,9 +18,16 @@ public class LogInActivity extends AppCompatActivity {
         setContentView(activityLogInBinding.getRoot());
         if (MainActivity.isConnected(getApplicationContext())) {
             this.getEventSignUp();
+            this.getEventLogin();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getEventLogin() {
+        activityLogInBinding.buttonLoginScreen.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        });
     }
 
     private void getEventSignUp() {

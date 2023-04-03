@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private List<TypeProduct> listTypeProduct;
     private List<Product> listNewProduct;
     private NewProductAdapter newProductAdapter;
-    public static List<Cart> listCart; // list gio hang toan cuc chua thong tin cac san pham da them vao gio hang
+    //    public static List<Cart> listCart; // list gio hang toan cuc chua thong tin cac san pham da them vao gio hang
     public static int userId = 1; // du lieu gia su, sau nay se lay du lieu dua vao bo username, password
 
     @Override
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         getCartDetail();
     }
+
 
     private void getEventClickImageViewCart() {
         activityMainBinding.imageViewCart.setOnClickListener(new View.OnClickListener() {
@@ -106,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
      * Lay du lieu gio hang cua nguoi dung tu server
      */
     public static void getCartDetail() {
-        if (listCart == null) {
-            listCart = new ArrayList<>();
+        if (ApiUtils.listCart == null) {
+            ApiUtils.listCart = new ArrayList<>();
         }
         DataClient dataClient = ApiUtils.getData();
         Call<List<Cart>> call = dataClient.getCartDetail(userId);
@@ -115,14 +116,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Cart>> call, Response<List<Cart>> response) {
                 if (response.isSuccessful()) {
-                    listCart = response.body();
-                    activityMainBinding.ntfCount.setText(String.valueOf(listCart.size()));
+                    ApiUtils.listCart = response.body();
+                    activityMainBinding.ntfCount.setText(String.valueOf(ApiUtils.listCart.size()));
                 }
             }
 
             @Override
             public void onFailure(Call<List<Cart>> call, Throwable t) {
                 Log.d("getCartDetail", t.getMessage());
+
+                /* hien thi so san pham trong gio hang khi xoa het tat ca san pham khoi gio hang, sau do bam quay lai Main Activity, khi do onResume() cua MainActivity se chay */
+                if (t.getMessage().equals("Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $") || t.getMessage().equals("End of input at line 1 column 1 path $")) { // loi xay ra khi khong get duoc data tu table cart_detail (khi xoa tat ca san pham ra khoi gio hang)
+                    activityMainBinding.ntfCount.clear();
+                }
             }
         });
     }

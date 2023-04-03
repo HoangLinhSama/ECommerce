@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
@@ -16,12 +17,20 @@
         android:orientation="horizontal"
         android:weightSum="10">
 
+        <CheckBox
+            android:id="@+id/checkbox_choose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            tools:ignore="TouchTargetSizeCheck" />
+
         <ImageView
             android:id="@+id/image_view_picture_cart"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:layout_weight="5"
+            android:layout_weight="4"
             android:scaleType="centerInside" />
 
         <LinearLayout
@@ -59,7 +68,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_decrease" />
+                    android:src="@drawable/ic_decrease"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:id="@+id/text_view_quantity_cart"
@@ -76,7 +86,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_increase" />
+                    android:src="@drawable/ic_increase"
+                    android:layout_gravity="center"/>
+
+                <Button
+                    android:id="@+id/button_delete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:backgroundTint="#304FFE"
+                    android:gravity="center"
+                    android:text="@string/button_delete"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"/>
 
             </LinearLayout>
 
