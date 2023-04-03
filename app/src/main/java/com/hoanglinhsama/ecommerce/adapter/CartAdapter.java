@@ -53,21 +53,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
-//        myPosition = position;
-//        myViewHolder = holder;
-//        size = ApiUtils.listCart.size();
         Cart cart = ApiUtils.listCart.get(position);
         Picasso.get().load(cart.getPictureProduct()).into(holder.imageViewPictureCart);
         holder.textViewNameCart.setText(cart.getNameProduct());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         holder.textViewPriceCart.setText(decimalFormat.format(Double.parseDouble(String.valueOf(cart.getTotalPrice() / cart.getQuantity()))) + "₫");
         holder.textViewQuantityCart.setText(String.valueOf(cart.getQuantity()));
+        if (ApiUtils.listCart.get(position).getQuantity() < ApiUtils.listCart.get(position).getQuantityRemain()) {
+            holder.imageViewIncreaseCart.setVisibility(View.VISIBLE);
+        } else {
+            holder.imageViewIncreaseCart.setVisibility(View.INVISIBLE);
+            Toast.makeText(context, "Sản phẩm đã đạt số lượng tối đa !", Toast.LENGTH_SHORT).show();
+        }
         holder.setOnImageViewClickListener(new OnImageViewClickListener() { // bat su kien thi click vao image button tang hoac giam so luong
             @Override
             public void onClick(View view, int position, int value) { // view o day la imageViewButton tang hoac giam
                 if (value == 1) // giam
                 {
-                    if (ApiUtils.listCart.get(position).getQuantity() > 1) { // so luong toi thieu phai la 1
+                    if (ApiUtils.listCart.get(position).getQuantity() > 1) {
                         int quantity = ApiUtils.listCart.get(position).getQuantity() - 1;
                         updateProductToCart(quantity, ApiUtils.listCart.get(position).getIdProduct()); // cap nhat lai len server
                     } else { // neu so luong con 1 ma giam nua thi se xoa san pham ra khoi gio hang
@@ -75,12 +78,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                     }
                 } else {
                     if (value == 2) { // tang
-                        if (ApiUtils.listCart.get(position).getQuantity() < ApiUtils.listCart.get(position).getQuantityRemain()) { // so luong toi da la so luong con lai cua san pham
-                            int quantity = ApiUtils.listCart.get(position).getQuantity() + 1;
-                            updateProductToCart(quantity, ApiUtils.listCart.get(position).getIdProduct()); // cap nhat lai len server
-                        } else {
-                            Toast.makeText(context, "Số lượng sản phẩm còn lại không đủ để thêm vào giỏ hàng !", Toast.LENGTH_SHORT).show();
-                        }
+                        int quantity = ApiUtils.listCart.get(position).getQuantity() + 1;
+                        updateProductToCart(quantity, ApiUtils.listCart.get(position).getIdProduct()); // cap nhat lai len server
                     } else { // button xoa
                         delete(view, position);
                     }

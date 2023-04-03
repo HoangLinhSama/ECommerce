@@ -46,29 +46,26 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void addToCart() {
         activityProductDetailBinding.buttonAddToCart.setOnClickListener(v -> {
             AtomicInteger quantity = new AtomicInteger(Integer.parseInt(activityProductDetailBinding.spinnerProductDetailScreen.getSelectedItem().toString()));
+
+            /* So luong toi da cua san pham co them vao gio hang */
             if (quantity.get() > product.getQuantity()) {
-                Toast.makeText(this, "Số lượng sản phẩm còn lại không đủ để thêm vào giỏ hàng !", Toast.LENGTH_SHORT).show();
-            } else {
-                if (ApiUtils.listCart.size() > 0) { // da co it nhat 1 san pham trong gio hang
-                    AtomicBoolean exist = new AtomicBoolean(false);
-                    ApiUtils.listCart.forEach(cart -> {
-                        if (product.getId() == cart.getIdProduct()) {
-                            quantity.set(cart.getQuantity() + quantity.get());
-                            if (quantity.get() > product.getQuantity()) {
-                                Toast.makeText(this, "Số lượng sản phẩm còn lại không đủ để thêm vào giỏ hàng !", Toast.LENGTH_SHORT).show();
-                                exist.set(true);
-                            } else {
-                                updateProductToCart(quantity.get());
-                                exist.set(true);
-                            }
-                        }
-                    });
-                    if (exist.get() == false) { // loai san pham moi them vao chua ton tai trong gio hang
-                        addNewProductToCart(quantity.get());
+                Toast.makeText(this, "Số lượng muốn thêm vào giỏ hàng vượt quá số lượng còn lại !", Toast.LENGTH_SHORT).show();
+                quantity.set(product.getQuantity());
+            }
+            if (ApiUtils.listCart.size() > 0) { // da co it nhat 1 san pham trong gio hang
+                AtomicBoolean exist = new AtomicBoolean(false);
+                ApiUtils.listCart.forEach(cart -> {
+                    if (product.getId() == cart.getIdProduct()) {
+                        quantity.set(cart.getQuantity() + quantity.get());
+                        updateProductToCart(quantity.get());
+                        exist.set(true);
                     }
-                } else { // gio hang hien dang trong
+                });
+                if (exist.get() == false) { // loai san pham moi them vao chua ton tai trong gio hang
                     addNewProductToCart(quantity.get());
                 }
+            } else { // gio hang hien dang trong
+                addNewProductToCart(quantity.get());
             }
         });
     }
