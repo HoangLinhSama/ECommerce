@@ -63,7 +63,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             holder.imageViewIncreaseCart.setVisibility(View.VISIBLE);
         } else {
             holder.imageViewIncreaseCart.setVisibility(View.INVISIBLE);
-            Toast.makeText(context, "Sản phẩm đã đạt số lượng tối đa !", Toast.LENGTH_SHORT).show();
         }
         holder.setOnImageViewClickListener(new OnImageViewClickListener() { // bat su kien thi click vao image button tang hoac giam so luong
             @Override

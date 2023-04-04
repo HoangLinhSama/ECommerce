@@ -45,27 +45,31 @@ public class ProductDetailActivity extends AppCompatActivity {
      */
     private void addToCart() {
         activityProductDetailBinding.buttonAddToCart.setOnClickListener(v -> {
-            AtomicInteger quantity = new AtomicInteger(Integer.parseInt(activityProductDetailBinding.spinnerProductDetailScreen.getSelectedItem().toString()));
-
-            /* So luong toi da cua san pham co them vao gio hang */
-            if (quantity.get() > product.getQuantity()) {
+            AtomicInteger quantityChoose = new AtomicInteger(Integer.parseInt(activityProductDetailBinding.spinnerProductDetailScreen.getSelectedItem().toString())); // so luong san pham chon
+            AtomicInteger quantity = new AtomicInteger(); // so luong thuc te cua san pham trong gio hang
+            /* So luong toi da cua san pham co the them vao gio hang */
+            if (quantityChoose.get() > product.getQuantity()) {
                 Toast.makeText(this, "Số lượng muốn thêm vào giỏ hàng vượt quá số lượng còn lại !", Toast.LENGTH_SHORT).show();
-                quantity.set(product.getQuantity());
+                quantityChoose.set(product.getQuantity());
             }
             if (ApiUtils.listCart.size() > 0) { // da co it nhat 1 san pham trong gio hang
                 AtomicBoolean exist = new AtomicBoolean(false);
                 ApiUtils.listCart.forEach(cart -> {
                     if (product.getId() == cart.getIdProduct()) {
-                        quantity.set(cart.getQuantity() + quantity.get());
+                        quantity.set(cart.getQuantity() + quantityChoose.get());
+                        if (quantity.get() > product.getQuantity()) {
+                            Toast.makeText(this, "Sản phẩm đã đạt số lượng tối đa !", Toast.LENGTH_SHORT).show();
+                            quantity.set(product.getQuantity());
+                        }
                         updateProductToCart(quantity.get());
                         exist.set(true);
                     }
                 });
                 if (exist.get() == false) { // loai san pham moi them vao chua ton tai trong gio hang
-                    addNewProductToCart(quantity.get());
+                    addNewProductToCart(quantityChoose.get());
                 }
             } else { // gio hang hien dang trong
-                addNewProductToCart(quantity.get());
+                addNewProductToCart(quantityChoose.get());
             }
         });
     }
