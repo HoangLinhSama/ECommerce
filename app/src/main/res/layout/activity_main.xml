@@ -20,9 +20,9 @@
                 android:id="@+id/tool_bar_main_screen"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#304FFE"
+                android:background="@color/indigo_700"
                 app:title="@string/tool_bar_main_screen_title"
-                app:titleTextColor="#FFFFFF">
+                app:titleTextColor="@color/white">
 
                 <FrameLayout
                     android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#304FFE">
+                android:background="@color/indigo_700">
 
                 <TextView
                     android:id="@+id/text_view_new_product_main_screen"
@@ -62,7 +62,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:text="@string/text_view_title"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/white"
                     android:textSize="21sp"
                     android:textStyle="bold" />
 
@@ -82,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:background="#FFFFFF"
+                    android:background="@color/white"
                     app:itemIconTint="@drawable/bottom_navigation_item_selected"
                     app:itemTextColor="@drawable/bottom_navigation_text_color"
                     app:menu="@menu/bottom_navigation_menu" />

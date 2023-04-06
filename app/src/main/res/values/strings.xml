@@ -12,7 +12,7 @@
     <string name="text_view_cart_empty">Giỏ hàng trống</string>
     <string name="tool_bar_cart_screen_title">Giỏ hàng</string>
     <string name="text_view_total_price">Tổng tiền</string>
-    <string name="button_buy">Mua hàng</string>
+    <string name="button_buy">Đặt hàng</string>
     <string name="button_delete">Xóa</string>
     <string name="tool_bar_login_screen_title">Đăng Nhập</string>
     <string name="edit_text_email_hint_login_screen">Email</string>
@@ -28,4 +28,7 @@
     <string name="button_cancel_signup_screen_title">Hủy</string>
     <string name="tool_bar_reset_password_screen_title">Đặt lại mật khẩu</string>
     <string name="text_view_reset_password">Đặt lại mật khẩu</string>
+    <string name="tool_bar_order_screen_title">Đặt hàng</string>
+    <string name="text_view_phone_order_screen">Số điện thoại</string>
+    <string name="edit_text_address_order_screen">Nhập địa chỉ giao hàng</string>
 </resources>

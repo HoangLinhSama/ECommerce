@@ -10,9 +10,10 @@
         android:id="@+id/tool_bar_product_detail_screen"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#304FFE"
+        android:background="@color/indigo_700"
         app:title="@string/tool_bar_product_detail_screen_title"
-        app:titleTextColor="#FFFFFF">
+        app:titleTextColor="@color/white">
+
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="#000000"
+                android:textColor="@color/black"
                 android:textSize="21sp" />
 
             <TextView
@@ -75,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:textColor="#D50000"
+                android:textColor="@color/red_700"
                 android:textSize="21sp"
                 android:textStyle="bold" />
 
@@ -93,7 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:backgroundTint="#304FFE"
+                android:backgroundTint="@color/indigo_700"
                 android:text="@string/button_add_to_cart"
                 android:textAllCaps="false" />
 
@@ -117,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/text_view_description_product"
-            android:textColor="#304FFE"
+            android:textColor="@color/indigo_700"
             android:textSize="21sp"
             android:textStyle="bold" />
 

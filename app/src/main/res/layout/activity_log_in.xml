@@ -10,12 +10,12 @@
         android:id="@+id/tool_bar_login_screen"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#304FFE"
+        android:background="@color/indigo_700"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/tool_bar_login_screen_title"
-        app:titleTextColor="#FFFFFF" />
+        app:titleTextColor="@color/white" />
 
     <ImageView
         android:id="@+id/image_view_login_screen"
@@ -38,8 +38,8 @@
         android:drawableLeft="@drawable/ic_email"
         android:hint="@string/edit_text_email_hint_login_screen"
         android:inputType="textEmailAddress"
-        android:textColor="#000000"
-        android:textColorHint="#9E9E9E"
+        android:textColor="@color/black"
+        android:textColorHint="@color/unselected_color"
         android:textSize="21sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -56,8 +56,8 @@
         android:drawableRight="@drawable/ic_show"
         android:hint="@string/edit_text_password_hint_login_screen"
         android:inputType="textPassword"
-        android:textColor="#000000"
-        android:textColorHint="#9E9E9E"
+        android:textColor="@color/black"
+        android:textColorHint="@color/unselected_color"
         android:textSize="21sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -70,7 +70,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
-        android:backgroundTint="#304FFE"
+        android:backgroundTint="@color/indigo_700"
         android:gravity="center"
         android:text="@string/tool_bar_login_screen_title"
         android:textAllCaps="false"
@@ -86,7 +86,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/text_view_sign_up"
-        android:textColor="#304FFE"
+        android:textColor="@color/indigo_700"
         android:textSize="21sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_login_screen" />
@@ -99,7 +99,7 @@
         android:layout_marginRight="10dp"
         android:gravity="center"
         android:text="@string/text_view_forget_password_login_screen"
-        android:textColor="#304FFE"
+        android:textColor="@color/indigo_700"
         android:textSize="21sp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_login_screen" />

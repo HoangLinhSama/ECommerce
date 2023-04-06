@@ -1,5 +1,6 @@
 package com.hoanglinhsama.ecommerce.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -36,9 +37,19 @@ public class CartActivity extends AppCompatActivity {
         setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
             this.getCart();
+            this.getEventOrder();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * Bat su kien day hang
+     */
+    private void getEventOrder() {
+        activityCartBinding.buttonOrder.setOnClickListener(v -> {
+            startActivity(new Intent(CartActivity.this, OrderActivity.class));
+        });
     }
 
     private void totalMoney() {
@@ -58,7 +69,7 @@ public class CartActivity extends AppCompatActivity {
             activityCartBinding.textViewCartEmpty.setVisibility(View.VISIBLE);
         } else {
             activityCartBinding.linearLayoutCartScreen.setVisibility(View.VISIBLE); // khi co du lieu thi moi hien thi no thi se truc quan hon
-            activityCartBinding.buttonBuy.setVisibility(View.VISIBLE);
+            activityCartBinding.buttonOrder.setVisibility(View.VISIBLE);
             cartAdapter = new CartAdapter(getApplicationContext(), R.layout.item_cart);
             activityCartBinding.recyclerViewCartScreen.setAdapter(cartAdapter);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
@@ -111,7 +122,7 @@ public class CartActivity extends AppCompatActivity {
         if (event != null) {
             activityCartBinding.textViewCartEmpty.setVisibility(View.VISIBLE);
             activityCartBinding.linearLayoutCartScreen.setVisibility(View.INVISIBLE); // khi co du lieu thi moi hien thi no thi se truc quan hon
-            activityCartBinding.buttonBuy.setVisibility(View.INVISIBLE);
+            activityCartBinding.buttonOrder.setVisibility(View.INVISIBLE);
         }
     }
 }

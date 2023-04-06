@@ -32,17 +32,10 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (MainActivity.isConnected(getApplicationContext())) {
             this.getEventSignUp();
-            this.getEventCancel();
             this.getEventShowPassword();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void getEventCancel() {
-        activitySignUpBinding.buttonCancelScreen.setOnClickListener(v -> {
-            finish();
-        });
     }
 
     private void getEventShowPassword() {

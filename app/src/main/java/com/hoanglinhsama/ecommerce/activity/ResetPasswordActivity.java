@@ -50,7 +50,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                                 Toast.makeText(ResetPasswordActivity.this, "Hãy kiểm tra email và nhấp vào đường dẫn được gửi đến email !", Toast.LENGTH_LONG).show();
                                 startActivity(new Intent(ResetPasswordActivity.this, LogInActivity.class));
                             } else {
-                                Toast.makeText(ResetPasswordActivity.this, "Gửi mail không thành công !", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ResetPasswordActivity.this, "Email không đúng !", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
