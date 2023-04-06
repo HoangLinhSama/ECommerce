@@ -40,9 +40,14 @@ public class LogInActivity extends AppCompatActivity {
             this.getEventSignUp();
             this.getEventLogin();
             this.getEventShowPassword();
+            this.getEventForgetPassword();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getEventForgetPassword() {
+        activityLogInBinding.textViewForgetPasswordLoginScreen.setOnClickListener(v -> startActivity(new Intent(LogInActivity.this, ResetPasswordActivity.class)));
     }
 
     private void getEventShowPassword() {

@@ -26,4 +26,6 @@
     <string name="edit_text_name_hint_login_screen">Họ và tên</string>
     <string name="menu_item_history_order">Đã mua</string>
     <string name="button_cancel_signup_screen_title">Hủy</string>
+    <string name="tool_bar_reset_password_screen_title">Đặt lại mật khẩu</string>
+    <string name="text_view_reset_password">Đặt lại mật khẩu</string>
 </resources>
