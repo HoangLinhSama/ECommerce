@@ -19,11 +19,11 @@
 
     <ImageView
         android:id="@+id/image_view_login_screen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginTop="30dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_application"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_app"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar_login_screen" />
@@ -53,7 +53,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:drawableLeft="@drawable/ic_password"
-        android:drawableRight="@drawable/ic_watch"
+        android:drawableRight="@drawable/ic_show"
         android:hint="@string/edit_text_password_hint_login_screen"
         android:inputType="textPassword"
         android:textColor="#000000"

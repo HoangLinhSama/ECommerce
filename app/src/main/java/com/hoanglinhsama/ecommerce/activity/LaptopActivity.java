@@ -1,5 +1,7 @@
 package com.hoanglinhsama.ecommerce.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hoanglinhsama.ecommerce.ItemDecoration;
+import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.ProductDetailAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityLaptopBinding;
 import com.hoanglinhsama.ecommerce.model.Product;
@@ -42,12 +45,30 @@ public class LaptopActivity extends AppCompatActivity {
 
         setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
-
             this.getLaptop(page);
             this.addEventLoadMore();
+            this.getEventClickBottomNavigationMenu();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getEventClickBottomNavigationMenu() {
+        activityLaptopBinding.bottomNavigationLaptopScreen.setSelectedItemId(R.id.menu_item_laptop);
+        activityLaptopBinding.bottomNavigationLaptopScreen.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_item_home_page:
+                    startActivity(new Intent(LaptopActivity.this, MainActivity.class));
+                    return true;
+                case R.id.menu_item_phone:
+                    startActivity(new Intent(LaptopActivity.this, PhoneActivity.class));
+                    return true;
+                case R.id.menu_item_laptop:
+                    startActivity(new Intent(LaptopActivity.this, LaptopActivity.class));
+                    return true;
+            }
+            return false;
+        });
     }
 
     private void addEventLoadMore() {

@@ -2,6 +2,7 @@ package com.hoanglinhsama.ecommerce.retrofit2;
 
 import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.Product;
+import com.hoanglinhsama.ecommerce.model.User;
 
 import java.util.List;
 
@@ -70,4 +71,9 @@ public interface DataClient {
             , @Field("name") String name
             , @Field("phoneNumber") String phoneNumber
             , @Field("type") int type);
+
+    @FormUrlEncoded
+    @POST("login.php")
+    Call<List<User>> logIn(@Field("email") String email
+            , @Field("password") String password);
 }

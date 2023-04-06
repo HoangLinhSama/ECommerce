@@ -24,4 +24,6 @@
     <string name="text_view_type_user">Người bán</string>
     <string name="edit_text_phone_number_hint_login_screen">Số điện thoại</string>
     <string name="edit_text_name_hint_login_screen">Họ và tên</string>
+    <string name="menu_item_history_order">Đã mua</string>
+    <string name="button_cancel_signup_screen_title">Hủy</string>
 </resources>

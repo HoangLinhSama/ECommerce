@@ -23,12 +23,16 @@ import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.NewProductAdapter;
 import com.hoanglinhsama.ecommerce.adapter.TypeProductAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityMainBinding;
+import com.hoanglinhsama.ecommerce.databinding.ActivityProductDetailBinding;
+import com.hoanglinhsama.ecommerce.eventbus.NtfCountEvent;
 import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.hoanglinhsama.ecommerce.model.TypeProduct;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     private List<TypeProduct> listTypeProduct;
     private List<Product> listNewProduct;
     private NewProductAdapter newProductAdapter;
-    //    public static List<Cart> listCart; // list gio hang toan cuc chua thong tin cac san pham da them vao gio hang
     public static int userId = 1; // du lieu gia su, sau nay se lay du lieu dua vao bo username, password
 
     @Override
@@ -74,12 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void getEventClickImageViewCart() {
-        activityMainBinding.imageViewCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CartActivity.class);
-                startActivity(intent);
-            }
+        activityMainBinding.imageViewCart.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, CartActivity.class));
         });
     }
 
@@ -87,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
      * Bat su kien khi click vao menu cua bottom navigation bar
      */
     private void getEventClickBottomNavigationMenu() {
+        activityMainBinding.bottomNavigationMainScreen.setSelectedItemId(R.id.menu_item_home_page);
         activityMainBinding.bottomNavigationMainScreen.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_item_home_page:
@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     ApiUtils.listCart = response.body();
                     activityMainBinding.ntfCount.setText(String.valueOf(ApiUtils.listCart.size()));
+                    EventBus.getDefault().post(new NtfCountEvent());
                 }
             }
 
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 /* hien thi so san pham trong gio hang khi xoa het tat ca san pham khoi gio hang, sau do bam quay lai Main Activity, khi do onResume() cua MainActivity se chay */
                 if (t.getMessage().equals("Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $") || t.getMessage().equals("End of input at line 1 column 1 path $")) { // loi xay ra khi khong get duoc data tu table cart_detail (khi xoa tat ca san pham ra khoi gio hang)
                     activityMainBinding.ntfCount.clear();
+                    EventBus.getDefault().post(new NtfCountEvent());
                 }
             }
         });
@@ -216,11 +218,12 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setUpActionBar() {
         setSupportActionBar(activityMainBinding.toolBarMainScreen);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // setDisplayHomeAsUpEnabled() de cho phep kich hoat se quay lai activity truoc khi chon Up
-
         // 2 dong duoi nay co the lam duoc viec nhu sau : neu tai khoan la loai cua nguoi ban thi chay 2 dong o duoi, con neu la tai khaon khach hang thi khong co 2 dong o duoi (vi du dinh dat chuc nang cua nguoi ban trong navigation drawer)
-        activityMainBinding.toolBarMainScreen.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
-        activityMainBinding.toolBarMainScreen.setNavigationOnClickListener(v -> activityMainBinding.drawerLayoutMainScreen.openDrawer(GravityCompat.START));
+        if (ApiUtils.currentUser.getType().equals("1")) ;
+        {
+            activityMainBinding.toolBarMainScreen.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
+            activityMainBinding.toolBarMainScreen.setNavigationOnClickListener(v -> activityMainBinding.drawerLayoutMainScreen.openDrawer(GravityCompat.START));
+        }
     }
 
     /**

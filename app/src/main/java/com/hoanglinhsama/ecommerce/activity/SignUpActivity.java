@@ -1,12 +1,18 @@
 package com.hoanglinhsama.ecommerce.activity;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.databinding.ActivitySignUpBinding;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
@@ -26,9 +32,64 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (MainActivity.isConnected(getApplicationContext())) {
             this.getEventSignUp();
+            this.getEventCancel();
+            this.getEventShowPassword();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getEventCancel() {
+        activitySignUpBinding.buttonCancelScreen.setOnClickListener(v -> {
+            finish();
+        });
+    }
+
+    private void getEventShowPassword() {
+        activitySignUpBinding.editTextPasswordSignupScreen.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Drawable drawableLeft = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_password);
+                final int DRAWABLE_RIGHT = 2;
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (activitySignUpBinding.editTextPasswordSignupScreen.getRight() - activitySignUpBinding.editTextPasswordSignupScreen.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        if (activitySignUpBinding.editTextPasswordSignupScreen.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                            activitySignUpBinding.editTextPasswordSignupScreen.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                            Drawable drawableRight = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_hide);
+                            activitySignUpBinding.editTextPasswordSignupScreen.setCompoundDrawablesWithIntrinsicBounds(drawableLeft, null, drawableRight, null);
+                        } else {
+                            activitySignUpBinding.editTextPasswordSignupScreen.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            Drawable drawableRight = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_show);
+                            activitySignUpBinding.editTextPasswordSignupScreen.setCompoundDrawablesWithIntrinsicBounds(drawableLeft, null, drawableRight, null);
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+        activitySignUpBinding.editTextRepasswordSignupScreen.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Drawable drawableLeft = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_password);
+                final int DRAWABLE_RIGHT = 2;
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (activitySignUpBinding.editTextRepasswordSignupScreen.getRight() - activitySignUpBinding.editTextRepasswordSignupScreen.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        if (activitySignUpBinding.editTextRepasswordSignupScreen.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                            activitySignUpBinding.editTextRepasswordSignupScreen.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                            Drawable drawableRight = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_hide);
+                            activitySignUpBinding.editTextRepasswordSignupScreen.setCompoundDrawablesWithIntrinsicBounds(drawableLeft, null, drawableRight, null);
+                        } else {
+                            activitySignUpBinding.editTextRepasswordSignupScreen.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            Drawable drawableRight = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_show);
+                            activitySignUpBinding.editTextRepasswordSignupScreen.setCompoundDrawablesWithIntrinsicBounds(drawableLeft, null, drawableRight, null);
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     private void getEventSignUp() {
@@ -68,6 +129,10 @@ public class SignUpActivity extends AppCompatActivity {
                                     Toast.makeText(SignUpActivity.this, "Email đã tồn tại !", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(SignUpActivity.this, "Đăng ký thành công !", Toast.LENGTH_SHORT).show();
+
+                                    /* Sau khi dang ky thanh cong thi tu dong quay ve trang dang nhap va dien san email va password o muc dang nhap */
+                                    ApiUtils.currentUser.setEmail(email);
+                                    ApiUtils.currentUser.setPassword(password);
                                     finish();
                                 }
                             }

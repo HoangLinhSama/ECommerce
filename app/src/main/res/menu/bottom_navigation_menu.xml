@@ -12,5 +12,9 @@
         android:id="@+id/menu_item_laptop"
         android:icon="@drawable/ic_laptop"
         android:title="@string/tool_bar_laptop_screen_title" />
+    <item
+        android:id="@+id/menu_item_history_order"
+        android:icon="@drawable/ic_history_order"
+        android:title="@string/menu_item_history_order" />
 
 </menu>

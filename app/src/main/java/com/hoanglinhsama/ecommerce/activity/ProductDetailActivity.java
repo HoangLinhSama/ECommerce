@@ -1,5 +1,6 @@
 package com.hoanglinhsama.ecommerce.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -8,10 +9,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hoanglinhsama.ecommerce.databinding.ActivityProductDetailBinding;
+import com.hoanglinhsama.ecommerce.eventbus.NtfCountEvent;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -22,7 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProductDetailActivity extends AppCompatActivity {
-    private ActivityProductDetailBinding activityProductDetailBinding;
+    public static ActivityProductDetailBinding activityProductDetailBinding;
     public static Product product;
 
     @Override
@@ -35,9 +41,21 @@ public class ProductDetailActivity extends AppCompatActivity {
         if (MainActivity.isConnected(getApplicationContext())) {
             this.initData();
             this.addToCart();
+            this.getEventClickImageViewCart();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -120,6 +138,18 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void getEventClickImageViewCart() {
+        activityProductDetailBinding.imageViewCart.setOnClickListener(v -> {
+            startActivity(new Intent(ProductDetailActivity.this, CartActivity.class));
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MainActivity.getCartDetail();
+    }
+
     /**
      * Nhan du lieu tu intent de hien thi len activity ProductDetail
      */
@@ -137,14 +167,26 @@ public class ProductDetailActivity extends AppCompatActivity {
         activityProductDetailBinding.spinnerProductDetailScreen.setAdapter(adapterSpinner);
 
         /* Cap nhat so luong loai san pham trong gio hang moi khi hien thi ProductDetailActivity */
-        if (ApiUtils.listCart != null) {
-            MainActivity.getCartDetail();
-        }
+        MainActivity.getCartDetail();
     }
 
     public void setUpActionBar() {
         setSupportActionBar(activityProductDetailBinding.toolBarProductDetailScreen);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activityProductDetailBinding.toolBarProductDetailScreen.setNavigationOnClickListener(v -> finish());
+    }
+
+    /**
+     * Xu ly su kien cap nhat lai so luong san pham trong gio hang
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNtfCountEvent(NtfCountEvent event) {
+        if (event != null) {
+            if (ApiUtils.listCart.size() != 0) {
+                activityProductDetailBinding.ntfCount.setText(String.valueOf(ApiUtils.listCart.size()));
+            } else {
+                activityProductDetailBinding.ntfCount.clear();
+            }
+        }
     }
 }

@@ -49,20 +49,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#304FFE"
-                android:orientation="vertical"
-                android:weightSum="25">
+                android:background="#304FFE">
 
                 <TextView
+                    android:id="@+id/text_view_new_product_main_screen"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="2"
+                    android:layout_marginEnd="10dp"
                     android:text="@string/text_view_title"
                     android:textColor="#FFFFFF"
                     android:textSize="21sp"
@@ -71,27 +69,24 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_main_screen"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/bottom_navigation_main_screen"
+                    android:layout_below="@+id/text_view_new_product_main_screen"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="20" />
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp" />
 
                 <com.google.android.material.bottomnavigation.BottomNavigationView
                     android:id="@+id/bottom_navigation_main_screen"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="3"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:background="#FFFFFF"
                     app:itemIconTint="@drawable/bottom_navigation_item_selected"
                     app:itemTextColor="@drawable/bottom_navigation_text_color"
                     app:menu="@menu/bottom_navigation_menu" />
-
-            </LinearLayout>
-
+            </RelativeLayout>
         </LinearLayout>
 
         <com.google.android.material.navigation.NavigationView

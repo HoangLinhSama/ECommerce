@@ -19,7 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hoanglinhsama.ecommerce.Interface.OnImageViewClickListener;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.activity.MainActivity;
-import com.hoanglinhsama.ecommerce.eventbus.NotifyDataEvent;
+import com.hoanglinhsama.ecommerce.eventbus.TotalMoneyEvent;
+import com.hoanglinhsama.ecommerce.eventbus.DisplayCartEvent;
 import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
@@ -93,6 +94,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         alertDialog.setMessage("Xóa sản phẩm khỏi giỏ hàng ?");
         alertDialog.setPositiveButton("Đồng ý", (dialog, which) -> deleteProductToCart(MainActivity.userId, ApiUtils.listCart.get(position).getIdProduct()));
         alertDialog.setNegativeButton("Huỷ", (dialog, which) -> dialog.cancel());
+        alertDialog.setCancelable(false);
         alertDialog.show();
     }
 
@@ -156,7 +158,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 if (response.isSuccessful()) {
                     ApiUtils.listCart = response.body();
                     notifyDataSetChanged();
-                    EventBus.getDefault().post(new NotifyDataEvent()); // post event den eventbus de tinh toan lai tong tien,...
+                    EventBus.getDefault().post(new TotalMoneyEvent()); // post event den eventbus de tinh toan lai tong tien,...
                 }
             }
 
@@ -166,7 +168,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 if (t.getMessage().equals("Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $") || t.getMessage().equals("End of input at line 1 column 1 path $")) { // loi xay ra khi khong get duoc data tu table cart_detail (khi xoa tat ca san pham ra khoi gio hang), cach xu ly nay khong tot
                     ApiUtils.listCart.clear();
                     notifyDataSetChanged();
-                    EventBus.getDefault().post(new NotifyDataEvent());
+                    EventBus.getDefault().post(new DisplayCartEvent());
                 }
             }
         });

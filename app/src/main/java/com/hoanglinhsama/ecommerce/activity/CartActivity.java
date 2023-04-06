@@ -11,7 +11,8 @@ import com.hoanglinhsama.ecommerce.ItemDecoration;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.CartAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityCartBinding;
-import com.hoanglinhsama.ecommerce.eventbus.NotifyDataEvent;
+import com.hoanglinhsama.ecommerce.eventbus.TotalMoneyEvent;
+import com.hoanglinhsama.ecommerce.eventbus.DisplayCartEvent;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -92,19 +93,25 @@ public class CartActivity extends AppCompatActivity {
     }
 
     /**
-     * Xu ly su kien
+     * Xu ly su kien tinh lai tong tien cho gio hang
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     // dinh nghia luong ma method nay se duoc goi boi EventBus
-    public void onNotifyDataEvent(NotifyDataEvent event) {
+    public void onTotalMoneyEvent(TotalMoneyEvent event) {
         if (event != null) {
-            if (ApiUtils.listCart.size() == 0) { // truong hop nhan duoc event : chi khi xoa het tat ca san pham khoi gio hang
-                activityCartBinding.textViewCartEmpty.setVisibility(View.VISIBLE);
-                activityCartBinding.linearLayoutCartScreen.setVisibility(View.INVISIBLE); // khi co du lieu thi moi hien thi no thi se truc quan hon
-                activityCartBinding.buttonBuy.setVisibility(View.INVISIBLE);
-            } else {
-                totalMoney();
-            }
+            totalMoney();
+        }
+    }
+
+    /**
+     * Xu ly su kien cap nhat lai giao dien gio hang khi da xoa het tat ca san pham ra khoi gio hang
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdateDisplayCartEvent(DisplayCartEvent event) {
+        if (event != null) {
+            activityCartBinding.textViewCartEmpty.setVisibility(View.VISIBLE);
+            activityCartBinding.linearLayoutCartScreen.setVisibility(View.INVISIBLE); // khi co du lieu thi moi hien thi no thi se truc quan hon
+            activityCartBinding.buttonBuy.setVisibility(View.INVISIBLE);
         }
     }
 }
