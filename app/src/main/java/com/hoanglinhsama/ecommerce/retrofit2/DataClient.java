@@ -72,8 +72,18 @@ public interface DataClient {
             , @Field("phoneNumber") String phoneNumber
             , @Field("type") int type);
 
+    /**
+     * Dang nhap
+     */
     @FormUrlEncoded
     @POST("login.php")
     Call<List<User>> logIn(@Field("email") String email
             , @Field("password") String password);
+
+    /**
+     * Reset lai password khi quen
+     */
+    @FormUrlEncoded
+    @POST("sendlinkresetpassword.php")
+    Call<String> resetPassword(@Field("email") String email);
 }

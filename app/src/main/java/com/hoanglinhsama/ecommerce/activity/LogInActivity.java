@@ -35,6 +35,7 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         activityLogInBinding = ActivityLogInBinding.inflate(getLayoutInflater());
         setContentView(activityLogInBinding.getRoot());
+
         if (MainActivity.isConnected(getApplicationContext())) {
             this.initData();
             this.getEventSignUp();
@@ -93,9 +94,9 @@ public class LogInActivity extends AppCompatActivity {
     private void getEventLogin() {
         activityLogInBinding.buttonLoginScreen.setOnClickListener(v -> {
             if (TextUtils.isEmpty(activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim())) {
-                Toast.makeText(this, "Bạn chưa nhập email !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Chưa nhập email !", Toast.LENGTH_SHORT).show();
             } else if (TextUtils.isEmpty(activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim())) {
-                Toast.makeText(this, "Bạn chưa nhập mật khẩu !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Chưa nhập mật khẩu !", Toast.LENGTH_SHORT).show();
             } else {
                 DataClient dataClien = ApiUtils.getData();
                 Call<List<User>> call = dataClien.logIn(activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim(), activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim());
