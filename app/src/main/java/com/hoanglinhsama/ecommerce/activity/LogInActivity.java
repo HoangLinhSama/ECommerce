@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,6 +30,7 @@ import retrofit2.Response;
 public class LogInActivity extends AppCompatActivity {
     private ActivityLogInBinding activityLogInBinding;
     private SharedPreferences sharedPreferences;
+    private boolean autoLogin = false; // kiem tra trang thai co cho phep tu dong dang nhap khong (neu lan dau dang nhap thanh cong, thi cac lan sau se duoc tu dong dang nhap)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +39,11 @@ public class LogInActivity extends AppCompatActivity {
         setContentView(activityLogInBinding.getRoot());
 
         if (MainActivity.isConnected(getApplicationContext())) {
-            this.initData();
-            this.getEventSignUp();
-            this.getEventLogin();
-            this.getEventShowPassword();
-            this.getEventForgetPassword();
+            initData();
+            getEventSignUp();
+            getEventLogin();
+            getEventShowPassword();
+            getEventForgetPassword();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
@@ -80,6 +82,43 @@ public class LogInActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("dataLogin", MODE_PRIVATE);
         activityLogInBinding.editTextEmailLoginScreen.setText(sharedPreferences.getString("email", ""));
         activityLogInBinding.editTextPasswordLoginScreen.setText(sharedPreferences.getString("password", ""));
+        boolean flag = sharedPreferences.getBoolean("isLogin", false);
+
+        /* Auto login sau 0.5s*/
+        if (flag) {
+            new Handler().postDelayed(() -> {
+                logIn();
+            }, 500);
+        }
+    }
+
+    private void logIn() {
+        DataClient dataClient = ApiUtils.getData();
+        Call<List<User>> call = dataClient.logIn(activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim(), activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim());
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.isSuccessful()) {
+                    autoLogin = true;
+                    ApiUtils.currentUser = response.body().get(0);
+
+                    /* Luu thong tin dang nhap */
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim());
+                    editor.putString("password", activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim());
+                    editor.putBoolean("isLogin", autoLogin);
+                    editor.apply();
+
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Toast.makeText(LogInActivity.this, "Email hoặc mật khẩu không đúng, đăng nhập không thành công !", Toast.LENGTH_SHORT).show();
+                Log.d("getEventLogin", t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -98,30 +137,7 @@ public class LogInActivity extends AppCompatActivity {
             } else if (TextUtils.isEmpty(activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim())) {
                 Toast.makeText(this, "Chưa nhập mật khẩu !", Toast.LENGTH_SHORT).show();
             } else {
-                DataClient dataClien = ApiUtils.getData();
-                Call<List<User>> call = dataClien.logIn(activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim(), activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim());
-                call.enqueue(new Callback<List<User>>() {
-                    @Override
-                    public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                        if (response.isSuccessful()) {
-                            ApiUtils.currentUser = response.body().get(0);
-
-                            /* Luu thong tin dang nhap */
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("email", activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim());
-                            editor.putString("password", activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim());
-                            editor.apply();
-
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<User>> call, Throwable t) {
-                        Toast.makeText(LogInActivity.this, "Email hoặc mật khẩu không đúng, đăng nhập không thành công !", Toast.LENGTH_SHORT).show();
-                        Log.d("getEventLogin", t.getMessage());
-                    }
-                });
+                logIn();
             }
         });
     }

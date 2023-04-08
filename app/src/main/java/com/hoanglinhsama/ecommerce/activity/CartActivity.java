@@ -25,8 +25,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class CartActivity extends AppCompatActivity {
     private CartAdapter cartAdapter;
-
     private ActivityCartBinding activityCartBinding;
+    private long price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,19 +36,21 @@ public class CartActivity extends AppCompatActivity {
 
         setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
-            this.getCart();
-            this.getEventOrder();
+            getCart();
+            getEventOrder();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
     }
 
     /**
-     * Bat su kien day hang
+     * Bat su kien dat hang
      */
     private void getEventOrder() {
-        activityCartBinding.buttonOrder.setOnClickListener(v -> {
-            startActivity(new Intent(CartActivity.this, OrderActivity.class));
+        activityCartBinding.buttonBuy.setOnClickListener(v -> {
+            Intent intent = new Intent(CartActivity.this, OrderActivity.class);
+            intent.putExtra("totalMoney", price);
+            startActivity(intent);
         });
     }
 
@@ -57,6 +59,7 @@ public class CartActivity extends AppCompatActivity {
         ApiUtils.listCart.forEach(cart -> {
             totalMoney.set(totalMoney.get() + cart.getTotalPrice());
         });
+        price = totalMoney.get();
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         activityCartBinding.textViewTotalPrice.setText(decimalFormat.format((totalMoney.get())) + "₫");
     }
@@ -69,7 +72,7 @@ public class CartActivity extends AppCompatActivity {
             activityCartBinding.textViewCartEmpty.setVisibility(View.VISIBLE);
         } else {
             activityCartBinding.linearLayoutCartScreen.setVisibility(View.VISIBLE); // khi co du lieu thi moi hien thi no thi se truc quan hon
-            activityCartBinding.buttonOrder.setVisibility(View.VISIBLE);
+            activityCartBinding.buttonBuy.setVisibility(View.VISIBLE);
             cartAdapter = new CartAdapter(getApplicationContext(), R.layout.item_cart);
             activityCartBinding.recyclerViewCartScreen.setAdapter(cartAdapter);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
@@ -122,7 +125,7 @@ public class CartActivity extends AppCompatActivity {
         if (event != null) {
             activityCartBinding.textViewCartEmpty.setVisibility(View.VISIBLE);
             activityCartBinding.linearLayoutCartScreen.setVisibility(View.INVISIBLE); // khi co du lieu thi moi hien thi no thi se truc quan hon
-            activityCartBinding.buttonOrder.setVisibility(View.INVISIBLE);
+            activityCartBinding.buttonBuy.setVisibility(View.INVISIBLE);
         }
     }
 }

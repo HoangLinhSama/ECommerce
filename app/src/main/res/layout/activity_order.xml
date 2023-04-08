@@ -50,6 +50,7 @@
                     android:id="@+id/text_view_total_price_order_screen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/red_700"
                     android:textSize="21sp"
@@ -77,10 +78,10 @@
                     android:id="@+id/text_view_phone_order_screen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/black"
-                    android:textSize="21sp"
-                    android:textStyle="bold" />
+                    android:textSize="21sp" />
             </LinearLayout>
 
             <View
@@ -104,10 +105,10 @@
                     android:id="@+id/text_view_email_order_screen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/black"
-                    android:textSize="21sp"
-                    android:textStyle="bold" />
+                    android:textSize="21sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -143,7 +144,8 @@
         android:text="@string/tool_bar_order_screen_title"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_address_order_screen"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

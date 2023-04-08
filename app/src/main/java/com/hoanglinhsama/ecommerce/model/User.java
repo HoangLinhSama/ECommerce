@@ -7,7 +7,7 @@ public class User {
 
     @SerializedName("id")
     @Expose
-    private String id;
+    private int id;
     @SerializedName("email")
     @Expose
     private String email;
@@ -22,13 +22,13 @@ public class User {
     private String phoneNumber;
     @SerializedName("type")
     @Expose
-    private String type;
+    private int type;
 
-    public String getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -64,11 +64,11 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getType() {
+    public int getType() {
         return this.type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 

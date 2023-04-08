@@ -37,11 +37,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         activityProductDetailBinding = ActivityProductDetailBinding.inflate(getLayoutInflater());
         setContentView(activityProductDetailBinding.getRoot());
 
-        setUpActionBar();
+        this.setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
-            this.initData();
-            this.addToCart();
-            this.getEventClickImageViewCart();
+            initData();
+            addToCart();
+            getEventClickImageViewCart();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
@@ -97,7 +97,7 @@ public class ProductDetailActivity extends AppCompatActivity {
      */
     private void updateProductToCart(int quantity) {
         DataClient dataClient = ApiUtils.getData();
-        Call<String> call = dataClient.updateCartDetail(MainActivity.userId, product.getId(), quantity);
+        Call<String> call = dataClient.updateCartDetail(ApiUtils.currentUser.getId(), product.getId(), quantity);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -120,7 +120,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void addNewProductToCart(int quantity) {
         /* Them du lieu vao bang cart_detail */
         DataClient dataClient = ApiUtils.getData();
-        Call<String> call = dataClient.insertCartDetail(MainActivity.userId, product.getId(), quantity);
+        Call<String> call = dataClient.insertCartDetail(ApiUtils.currentUser.getId(), product.getId(), quantity);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {

@@ -6,7 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -23,7 +22,6 @@ import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.NewProductAdapter;
 import com.hoanglinhsama.ecommerce.adapter.TypeProductAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityMainBinding;
-import com.hoanglinhsama.ecommerce.databinding.ActivityProductDetailBinding;
 import com.hoanglinhsama.ecommerce.eventbus.NtfCountEvent;
 import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.Product;
@@ -47,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private List<TypeProduct> listTypeProduct;
     private List<Product> listNewProduct;
     private NewProductAdapter newProductAdapter;
-    public static int userId = 1; // du lieu gia su, sau nay se lay du lieu dua vao bo username, password
+    //public static int userId = ApiUtils.currentUser.getId();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +53,15 @@ public class MainActivity extends AppCompatActivity {
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(activityMainBinding.getRoot());
 
-        setUpActionBar();
-        getTypeMenu();
+        this.setUpActionBar();
+        this.getTypeMenu();
         if (isConnected(this)) {
-            this.setUpViewFlipper();
-            this.getNewProduct();
-            this.getEventClickNavigationDrawerMenu();
-            this.getEventClickBottomNavigationMenu();
+            setUpViewFlipper();
+            getNewProduct();
+            getEventClickNavigationDrawerMenu();
+            getEventClickBottomNavigationMenu();
             getCartDetail();
-            this.getEventClickImageViewCart();
+            getEventClickImageViewCart();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
@@ -111,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             ApiUtils.listCart = new ArrayList<>();
         }
         DataClient dataClient = ApiUtils.getData();
-        Call<List<Cart>> call = dataClient.getCartDetail(userId);
+        Call<List<Cart>> call = dataClient.getCartDetail(ApiUtils.currentUser.getId());
         call.enqueue(new Callback<List<Cart>>() {
             @Override
             public void onResponse(Call<List<Cart>> call, Response<List<Cart>> response) {
@@ -219,11 +217,8 @@ public class MainActivity extends AppCompatActivity {
     private void setUpActionBar() {
         setSupportActionBar(activityMainBinding.toolBarMainScreen);
         // 2 dong duoi nay co the lam duoc viec nhu sau : neu tai khoan la loai cua nguoi ban thi chay 2 dong o duoi, con neu la tai khaon khach hang thi khong co 2 dong o duoi (vi du dinh dat chuc nang cua nguoi ban trong navigation drawer)
-        if (ApiUtils.currentUser.getType().equals("1")) ;
-        {
-            activityMainBinding.toolBarMainScreen.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
-            activityMainBinding.toolBarMainScreen.setNavigationOnClickListener(v -> activityMainBinding.drawerLayoutMainScreen.openDrawer(GravityCompat.START));
-        }
+        activityMainBinding.toolBarMainScreen.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
+        activityMainBinding.toolBarMainScreen.setNavigationOnClickListener(v -> activityMainBinding.drawerLayoutMainScreen.openDrawer(GravityCompat.START));
     }
 
     /**

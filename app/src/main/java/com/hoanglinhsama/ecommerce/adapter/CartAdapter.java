@@ -18,9 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hoanglinhsama.ecommerce.Interface.OnImageViewClickListener;
 import com.hoanglinhsama.ecommerce.R;
-import com.hoanglinhsama.ecommerce.activity.MainActivity;
-import com.hoanglinhsama.ecommerce.eventbus.TotalMoneyEvent;
 import com.hoanglinhsama.ecommerce.eventbus.DisplayCartEvent;
+import com.hoanglinhsama.ecommerce.eventbus.TotalMoneyEvent;
 import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
@@ -92,7 +91,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getRootView().getContext());
         alertDialog.setTitle("Thông báo xóa sản phẩm");
         alertDialog.setMessage("Xóa sản phẩm khỏi giỏ hàng ?");
-        alertDialog.setPositiveButton("Đồng ý", (dialog, which) -> deleteProductToCart(MainActivity.userId, ApiUtils.listCart.get(position).getIdProduct()));
+        alertDialog.setPositiveButton("Đồng ý", (dialog, which) -> deleteProductToCart(ApiUtils.currentUser.getId(), ApiUtils.listCart.get(position).getIdProduct()));
         alertDialog.setNegativeButton("Huỷ", (dialog, which) -> dialog.cancel());
         alertDialog.setCancelable(false);
         alertDialog.show();
@@ -130,7 +129,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
      */
     private void updateProductToCart(int quantity, int id) {
         DataClient dataClient = ApiUtils.getData();
-        Call<String> call = dataClient.updateCartDetail(MainActivity.userId, id, quantity);
+        Call<String> call = dataClient.updateCartDetail(ApiUtils.currentUser.getId(), id, quantity);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -151,7 +150,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
      */
     private void getCartDetail() {
         DataClient dataClient = ApiUtils.getData();
-        Call<List<Cart>> call = dataClient.getCartDetail(MainActivity.userId);
+        Call<List<Cart>> call = dataClient.getCartDetail(ApiUtils.currentUser.getId());
         call.enqueue(new Callback<List<Cart>>() {
             @Override
             public void onResponse(Call<List<Cart>> call, Response<List<Cart>> response) {

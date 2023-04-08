@@ -12,7 +12,7 @@
     <string name="text_view_cart_empty">Giỏ hàng trống</string>
     <string name="tool_bar_cart_screen_title">Giỏ hàng</string>
     <string name="text_view_total_price">Tổng tiền</string>
-    <string name="button_buy">Đặt hàng</string>
+    <string name="button_buy">Mua hàng</string>
     <string name="button_delete">Xóa</string>
     <string name="tool_bar_login_screen_title">Đăng Nhập</string>
     <string name="edit_text_email_hint_login_screen">Email</string>

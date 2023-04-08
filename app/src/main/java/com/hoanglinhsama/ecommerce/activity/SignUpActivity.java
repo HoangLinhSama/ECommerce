@@ -31,8 +31,8 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(activitySignUpBinding.getRoot());
 
         if (MainActivity.isConnected(getApplicationContext())) {
-            this.getEventSignUp();
-            this.getEventShowPassword();
+            getEventSignUp();
+            getEventShowPassword();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }

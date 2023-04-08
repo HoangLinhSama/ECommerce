@@ -27,7 +27,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         setContentView(activityResetPasswordBinding.getRoot());
 
         if (MainActivity.isConnected(getApplicationContext())) {
-            this.getEventForgetPassword();
+            getEventForgetPassword();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }

@@ -42,11 +42,11 @@ public class PhoneActivity extends AppCompatActivity {
         activityPhoneBinding = ActivityPhoneBinding.inflate(getLayoutInflater());
         setContentView(activityPhoneBinding.getRoot());
 
-        setUpActionBar();
+        //this.setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
-            this.getPhone(page);
-            this.addEventLoadMore();
-            this.getEventClickBottomNavigationMenu();
+            getPhone(page);
+            addEventLoadMore();
+            getEventClickBottomNavigationMenu();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
