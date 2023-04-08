@@ -157,7 +157,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 if (response.isSuccessful()) {
                     ApiUtils.listCart = response.body();
                     notifyDataSetChanged();
-                    EventBus.getDefault().post(new TotalMoneyEvent()); // post event den eventbus de tinh toan lai tong tien,...
+                    EventBus.getDefault().post(new TotalMoneyEvent()); // Post event den eventbus de tinh toan lai tong tien,...
                 }
             }
 
@@ -167,7 +167,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 if (t.getMessage().equals("Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $") || t.getMessage().equals("End of input at line 1 column 1 path $")) { // loi xay ra khi khong get duoc data tu table cart_detail (khi xoa tat ca san pham ra khoi gio hang), cach xu ly nay khong tot
                     ApiUtils.listCart.clear();
                     notifyDataSetChanged();
-                    EventBus.getDefault().post(new DisplayCartEvent());
+                    EventBus.getDefault().post(new DisplayCartEvent());// Post event den eventbus de hien thi recyclerview cart khi gio hnag trong
                 }
             }
         });

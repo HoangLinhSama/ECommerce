@@ -49,6 +49,15 @@ public class LogInActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() { // Sau khi dang ky thanh cong thi se quay ve trang dang nhap
+        super.onResume();
+        if (ApiUtils.currentUser.getEmail() != null && ApiUtils.currentUser.getPassword() != null) {
+            activityLogInBinding.editTextEmailLoginScreen.setText(ApiUtils.currentUser.getEmail());
+            activityLogInBinding.editTextPasswordLoginScreen.setText(ApiUtils.currentUser.getPassword());
+        }
+    }
+
     private void getEventForgetPassword() {
         activityLogInBinding.textViewForgetPasswordLoginScreen.setOnClickListener(v -> startActivity(new Intent(LogInActivity.this, ResetPasswordActivity.class)));
     }
@@ -119,15 +128,6 @@ public class LogInActivity extends AppCompatActivity {
                 Log.d("getEventLogin", t.getMessage());
             }
         });
-    }
-
-    @Override
-    protected void onResume() { // Sau khi dang ky thanh cong thi se quay ve trang dang nhap
-        super.onResume();
-        if (ApiUtils.currentUser.getEmail() != null && ApiUtils.currentUser.getPassword() != null) {
-            activityLogInBinding.editTextEmailLoginScreen.setText(ApiUtils.currentUser.getEmail());
-            activityLogInBinding.editTextPasswordLoginScreen.setText(ApiUtils.currentUser.getPassword());
-        }
     }
 
     private void getEventLogin() {

@@ -53,6 +53,12 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        MainActivity.getCartDetail();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
@@ -142,12 +148,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         activityProductDetailBinding.imageViewCart.setOnClickListener(v -> {
             startActivity(new Intent(ProductDetailActivity.this, CartActivity.class));
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MainActivity.getCartDetail();
     }
 
     /**

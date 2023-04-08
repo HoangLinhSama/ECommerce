@@ -2,6 +2,7 @@ package com.hoanglinhsama.ecommerce.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import com.hoanglinhsama.ecommerce.ItemDecoration;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.CartAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityCartBinding;
+import com.hoanglinhsama.ecommerce.eventbus.NotifyChangeOrder;
 import com.hoanglinhsama.ecommerce.eventbus.TotalMoneyEvent;
 import com.hoanglinhsama.ecommerce.eventbus.DisplayCartEvent;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
@@ -41,6 +43,30 @@ public class CartActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    /*
+     * Dang ky nhan event do event bus lam trung gian
+     */
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MainActivity.getCartDetail();
+    }
+
+    /**
+     * Huy dang ky nhan event
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -88,24 +114,6 @@ public class CartActivity extends AppCompatActivity {
         activityCartBinding.toolBarCartScreen.setNavigationOnClickListener(v -> finish());
     }
 
-    @Override
-    /*
-     * Dang ky nhan event do event bus lam trung gian
-     */
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    /**
-     * Huy dang ky nhan event
-     */
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
     /**
      * Xu ly su kien tinh lai tong tien cho gio hang
      */
@@ -126,6 +134,19 @@ public class CartActivity extends AppCompatActivity {
             activityCartBinding.textViewCartEmpty.setVisibility(View.VISIBLE);
             activityCartBinding.linearLayoutCartScreen.setVisibility(View.INVISIBLE); // khi co du lieu thi moi hien thi no thi se truc quan hon
             activityCartBinding.buttonBuy.setVisibility(View.INVISIBLE);
+
+            /* Gio hang trong thi quay lai man hinh chinh sau 1s */
+            new Handler().postDelayed(() -> {
+                startActivity(new Intent(CartActivity.this, MainActivity.class));
+            }, 1000);
+
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNotifyChangeOrder(NotifyChangeOrder event) {
+        if (event != null) {
+            cartAdapter.notifyDataSetChanged();
         }
     }
 }
