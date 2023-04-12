@@ -108,4 +108,8 @@ public interface DataClient {
     @FormUrlEncoded
     @POST("getorderhistory.php")
     Call<List<Order>> getOrderHistory(@Field("userId") int userId);
+
+    @FormUrlEncoded
+    @POST("searchproduct.php")
+    Call<List<Product>> searchProduct(@Field("nameProduct") String nameProduct);
 }

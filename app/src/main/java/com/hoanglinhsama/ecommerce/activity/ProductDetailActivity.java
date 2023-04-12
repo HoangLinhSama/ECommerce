@@ -37,7 +37,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         activityProductDetailBinding = ActivityProductDetailBinding.inflate(getLayoutInflater());
         setContentView(activityProductDetailBinding.getRoot());
 
-        this.setUpActionBar();
+        setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
             initData();
             addToCart();

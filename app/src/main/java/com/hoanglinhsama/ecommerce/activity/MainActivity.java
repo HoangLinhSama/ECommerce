@@ -65,9 +65,16 @@ public class MainActivity extends AppCompatActivity {
             getCartDetail();
             getEventClickImageViewCart();
             getEventLogout();
+            getEventSearch();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getEventSearch() {
+        activityMainBinding.imageViewSearch.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
+        });
     }
 
     private void getEventLogout() {
@@ -174,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
                     activityMainBinding.recyclerViewMainScreen.setAdapter(newProductAdapter);
                     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
                     activityMainBinding.recyclerViewMainScreen.setLayoutManager(layoutManager);
-                    activityMainBinding.recyclerViewMainScreen.setHasFixedSize(true);
                     activityMainBinding.recyclerViewMainScreen.addItemDecoration(new ItemDecoration(10));
                 }
             }

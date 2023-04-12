@@ -33,4 +33,6 @@
     <string name="edit_text_address_order_screen">Nhập địa chỉ giao hàng</string>
     <string name="tool_bar_order_history_screen_title">Đơn hàng</string>
     <string name="text_view_title_date_order_history_screen">Ngày đặt</string>
+    <string name="tool_bar_search_screen_title">Tìm kiếm</string>
+    <string name="edit_text_search_screen">Nhập sản phẩm cần tìm</string>
 </resources>
