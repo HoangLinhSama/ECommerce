@@ -42,7 +42,6 @@ public class PhoneActivity extends AppCompatActivity {
         activityPhoneBinding = ActivityPhoneBinding.inflate(getLayoutInflater());
         setContentView(activityPhoneBinding.getRoot());
 
-        //this.setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
             getPhone(page);
             addEventLoadMore();
@@ -64,6 +63,9 @@ public class PhoneActivity extends AppCompatActivity {
                     return true;
                 case R.id.menu_item_laptop:
                     startActivity(new Intent(PhoneActivity.this, LaptopActivity.class));
+                    return true;
+                case R.id.menu_item_history_order:
+                    startActivity(new Intent(PhoneActivity.this, OrderHistoryActivity.class));
                     return true;
             }
             return false;
@@ -107,12 +109,6 @@ public class PhoneActivity extends AppCompatActivity {
             getPhone(page);
             isLoading = true; // da co them du lieu moi de load tu adapter len recyclerview
         }, 3000);
-    }
-
-    public void setUpActionBar() {
-        setSupportActionBar(activityPhoneBinding.toolBarPhoneScreen);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // setDisplayHomeAsUpEnabled() de cho phep kich hoat se quay lai activity truoc khi chon Up
-        activityPhoneBinding.toolBarPhoneScreen.setNavigationOnClickListener(v -> finish());
     }
 
     /**

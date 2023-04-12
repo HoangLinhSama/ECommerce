@@ -24,11 +24,13 @@
     <string name="text_view_type_user">Người bán</string>
     <string name="edit_text_phone_number_hint_login_screen">Số điện thoại</string>
     <string name="edit_text_name_hint_login_screen">Họ và tên</string>
-    <string name="menu_item_history_order">Đã mua</string>
+    <string name="menu_item_history_order">Đơn hàng</string>
     <string name="button_cancel_signup_screen_title">Hủy</string>
     <string name="tool_bar_reset_password_screen_title">Đặt lại mật khẩu</string>
     <string name="text_view_reset_password">Đặt lại mật khẩu</string>
     <string name="tool_bar_order_screen_title">Đặt hàng</string>
     <string name="text_view_phone_order_screen">Số điện thoại</string>
     <string name="edit_text_address_order_screen">Nhập địa chỉ giao hàng</string>
+    <string name="tool_bar_order_history_screen_title">Đơn hàng</string>
+    <string name="text_view_title_date_order_history_screen">Ngày đặt</string>
 </resources>

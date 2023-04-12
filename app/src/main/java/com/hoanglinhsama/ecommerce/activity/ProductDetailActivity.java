@@ -172,7 +172,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     public void setUpActionBar() {
         setSupportActionBar(activityProductDetailBinding.toolBarProductDetailScreen);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // setDisplayHomeAsUpEnabled() de cho phep kich hoat se quay lai activity truoc khi chon Up
         activityProductDetailBinding.toolBarProductDetailScreen.setNavigationOnClickListener(v -> finish());
     }
 

@@ -17,9 +17,14 @@ import androidx.core.content.ContextCompat;
 
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.databinding.ActivityLogInBinding;
+import com.hoanglinhsama.ecommerce.eventbus.LogOutEvent;
 import com.hoanglinhsama.ecommerce.model.User;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -30,7 +35,7 @@ import retrofit2.Response;
 public class LogInActivity extends AppCompatActivity {
     private ActivityLogInBinding activityLogInBinding;
     private SharedPreferences sharedPreferences;
-    private boolean autoLogin = false; // kiem tra trang thai co cho phep tu dong dang nhap khong (neu lan dau dang nhap thanh cong, thi cac lan sau se duoc tu dong dang nhap)
+    public static boolean autoLogin = false; // kiem tra trang thai co cho phep tu dong dang nhap khong (neu lan dau dang nhap thanh cong, thi cac lan sau se duoc tu dong dang nhap)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +55,25 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+
+
+    @Override
     protected void onResume() { // Sau khi dang ky thanh cong thi se quay ve trang dang nhap
         super.onResume();
         if (ApiUtils.currentUser.getEmail() != null && ApiUtils.currentUser.getPassword() != null) {
             activityLogInBinding.editTextEmailLoginScreen.setText(ApiUtils.currentUser.getEmail());
             activityLogInBinding.editTextPasswordLoginScreen.setText(ApiUtils.currentUser.getPassword());
         }
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     private void getEventForgetPassword() {
@@ -146,5 +164,15 @@ public class LogInActivity extends AppCompatActivity {
         activityLogInBinding.textViewSignupLoginScreen.setOnClickListener(v -> {
             startActivity(new Intent(LogInActivity.this, SignUpActivity.class));
         });
+    }
+
+    /**
+     * Xy ly su kien khi log out, se thay doi gia tri cua autoLogin
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLogOutEvent(LogOutEvent event) {
+        if (event != null) {
+            autoLogin = false;
+        }
     }
 }

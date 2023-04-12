@@ -143,6 +143,9 @@ public class CartActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Xu ly su kien cap nhat RecyclerView khi dat hang thanh cong
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNotifyChangeOrder(NotifyChangeOrder event) {
         if (event != null) {

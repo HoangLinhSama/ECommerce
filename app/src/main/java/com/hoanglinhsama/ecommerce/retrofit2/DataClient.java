@@ -1,6 +1,7 @@
 package com.hoanglinhsama.ecommerce.retrofit2;
 
 import com.hoanglinhsama.ecommerce.model.Cart;
+import com.hoanglinhsama.ecommerce.model.Order;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.hoanglinhsama.ecommerce.model.User;
 
@@ -103,4 +104,8 @@ public interface DataClient {
     @POST("updateproduct.php")
     Call<String> updateProduct(@Field("productId") int productId
             , @Field("quantity") int quantity);
+
+    @FormUrlEncoded
+    @POST("getorderhistory.php")
+    Call<List<Order>> getOrderHistory(@Field("userId") int userId);
 }

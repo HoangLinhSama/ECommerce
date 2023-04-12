@@ -40,7 +40,7 @@
         android:inputType="textEmailAddress"
         android:textColor="@color/black"
         android:textColorHint="@color/unselected_color"
-        android:textSize="21sp"
+        android:textSize="17sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_view_login_screen" />
@@ -58,7 +58,7 @@
         android:inputType="textPassword"
         android:textColor="@color/black"
         android:textColorHint="@color/unselected_color"
-        android:textSize="21sp"
+        android:textSize="17sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_email_login_screen" />
@@ -87,7 +87,7 @@
         android:gravity="center"
         android:text="@string/text_view_sign_up"
         android:textColor="@color/indigo_700"
-        android:textSize="21sp"
+        android:textSize="17sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_login_screen" />
 
@@ -100,7 +100,7 @@
         android:gravity="center"
         android:text="@string/text_view_forget_password_login_screen"
         android:textColor="@color/indigo_700"
-        android:textSize="21sp"
+        android:textSize="17sp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_login_screen" />
 </androidx.constraintlayout.widget.ConstraintLayout>

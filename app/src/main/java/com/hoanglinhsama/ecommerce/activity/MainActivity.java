@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -22,7 +23,9 @@ import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.NewProductAdapter;
 import com.hoanglinhsama.ecommerce.adapter.TypeProductAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityMainBinding;
+import com.hoanglinhsama.ecommerce.eventbus.LogOutEvent;
 import com.hoanglinhsama.ecommerce.eventbus.NtfCountEvent;
+import com.hoanglinhsama.ecommerce.eventbus.TotalMoneyEvent;
 import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.hoanglinhsama.ecommerce.model.TypeProduct;
@@ -45,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private List<TypeProduct> listTypeProduct;
     private List<Product> listNewProduct;
     private NewProductAdapter newProductAdapter;
-    //public static int userId = ApiUtils.currentUser.getId();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(activityMainBinding.getRoot());
 
-        this.setUpActionBar();
-        this.getTypeMenu();
+        setUpActionBar();
+        getTypeMenu();
         if (isConnected(this)) {
             setUpViewFlipper();
             getNewProduct();
@@ -62,9 +64,17 @@ public class MainActivity extends AppCompatActivity {
             getEventClickBottomNavigationMenu();
             getCartDetail();
             getEventClickImageViewCart();
+            getEventLogout();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getEventLogout() {
+        activityMainBinding.imageViewLogOut.setOnClickListener(v -> {
+            EventBus.getDefault().post(new LogOutEvent());
+            startActivity(new Intent(MainActivity.this, LogInActivity.class));
+        });
     }
 
     @Override
@@ -95,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.menu_item_laptop:
                     startActivity(new Intent(MainActivity.this, LaptopActivity.class));
+                    return true;
+                case R.id.menu_item_history_order:
+                    startActivity(new Intent(MainActivity.this, OrderHistoryActivity.class));
                     return true;
             }
             return false;

@@ -42,11 +42,10 @@ public class LaptopActivity extends AppCompatActivity {
         activityLaptopBinding = ActivityLaptopBinding.inflate(getLayoutInflater());
         setContentView(activityLaptopBinding.getRoot());
 
-        //this.setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
-            this.getLaptop(page);
-            this.addEventLoadMore();
-            this.getEventClickBottomNavigationMenu();
+            getLaptop(page);
+            addEventLoadMore();
+            getEventClickBottomNavigationMenu();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
@@ -64,6 +63,9 @@ public class LaptopActivity extends AppCompatActivity {
                     return true;
                 case R.id.menu_item_laptop:
                     startActivity(new Intent(LaptopActivity.this, LaptopActivity.class));
+                    return true;
+                case R.id.menu_item_history_order:
+                    startActivity(new Intent(LaptopActivity.this, OrderHistoryActivity.class));
                     return true;
             }
             return false;
@@ -102,12 +104,6 @@ public class LaptopActivity extends AppCompatActivity {
             getLaptop(page);
             isLoading = true;
         }, 3000);
-    }
-
-    private void setUpActionBar() {
-        setSupportActionBar(activityLaptopBinding.toolBarLaptopScreen);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        activityLaptopBinding.toolBarLaptopScreen.setNavigationOnClickListener(v -> finish());
     }
 
     private void getLaptop(int page) {

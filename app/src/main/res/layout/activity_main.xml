@@ -24,9 +24,50 @@
                 app:title="@string/tool_bar_main_screen_title"
                 app:titleTextColor="@color/white">
 
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/image_view_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_search" />
+
+
+                <ImageView
+                    android:id="@+id/image_view_log_out"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_log_out" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="10dp">
+
+                    <ImageView
+                        android:id="@+id/image_view_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_chat" />
+
+                    <com.nex3z.notificationbadge.NotificationBadge
+                        android:id="@+id/ntf_count_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|right"
+                        android:layout_marginLeft="20dp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="right"
                     android:layout_marginRight="10dp">
 
@@ -34,14 +75,19 @@
                         android:id="@+id/image_view_cart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
                         android:src="@drawable/ic_cart" />
 
                     <com.nex3z.notificationbadge.NotificationBadge
                         android:id="@+id/ntf_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="top|right" />
+                        android:layout_gravity="top|right"
+                        android:layout_marginLeft="20dp" />
                 </FrameLayout>
+
+
             </androidx.appcompat.widget.Toolbar>
 
             <ViewFlipper
@@ -63,7 +109,7 @@
                     android:layout_marginEnd="10dp"
                     android:text="@string/text_view_title"
                     android:textColor="@color/white"
-                    android:textSize="21sp"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
