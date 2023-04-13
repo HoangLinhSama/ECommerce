@@ -11,4 +11,9 @@
     <color name="unselected_color">#9E9E9E</color>
     <color name="indigo_700">#304FFE</color>
     <color name="red_700">#D50000</color>
+
+    <color name="text_color">#304FFE</color>
+    <color name="background_color">#ecf0f3</color>
+    <color name="highlight">#ffffff</color>
+    <color name="shadow_color">#d9dbde</color>
 </resources>

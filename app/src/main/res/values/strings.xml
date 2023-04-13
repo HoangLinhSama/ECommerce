@@ -35,4 +35,8 @@
     <string name="text_view_title_date_order_history_screen">Ngày đặt</string>
     <string name="tool_bar_search_screen_title">Tìm kiếm</string>
     <string name="edit_text_search_screen">Nhập sản phẩm cần tìm</string>
+    <string name="tool_bar_product_manage_screen_title">Quản lý sản phẩm</string>
+    <string name="text_view_add_activity_product_manage">Thêm</string>
+    <string name="text_view_delete_activity_product_manage">Xóa</string>
+    <string name="text_view_modify_activity_product_manage">Sửa</string>
 </resources>

@@ -9,24 +9,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hoanglinhsama.ecommerce.R;
-import com.hoanglinhsama.ecommerce.model.TypeProduct;
+import com.hoanglinhsama.ecommerce.model.AdminFeature;
 
 import java.util.List;
 
-public class TypeProductAdapter extends BaseAdapter {
+public class AdminFeatureAdapter extends BaseAdapter {
     private Context context;
     private int layout;
-    private List<TypeProduct> listTypeProduct;
+    private List<AdminFeature> listAdminFeature;
 
-    public TypeProductAdapter(Context context, int layout, List<TypeProduct> listTypeProduct) {
+    public AdminFeatureAdapter(Context context, int layout, List<AdminFeature> listAdminFeature) {
         this.context = context;
         this.layout = layout;
-        this.listTypeProduct = listTypeProduct;
+        this.listAdminFeature = listAdminFeature;
     }
 
     @Override
     public int getCount() {
-        return listTypeProduct.size();
+        return listAdminFeature.size();
     }
 
     @Override
@@ -57,9 +57,9 @@ public class TypeProductAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        TypeProduct typeProduct = listTypeProduct.get(position);
-        viewHolder.tvNameTypeProduct.setText(typeProduct.getNameTypeProduct());
-        viewHolder.ivPictureTypeProduct.setImageResource(typeProduct.getPictureTypeProduct());
+        AdminFeature adminFeature = listAdminFeature.get(position);
+        viewHolder.tvNameTypeProduct.setText(adminFeature.getName());
+        viewHolder.ivPictureTypeProduct.setImageResource(adminFeature.getPicture());
         return convertView;
     }
 }

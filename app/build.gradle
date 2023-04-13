@@ -58,4 +58,6 @@ dependencies {
     // Event Bus
     implementation 'org.greenrobot:eventbus:3.2.0'
 
+    // Neu-morphism
+    implementation 'com.github.fornewid:neumorphism:0.3.2'
 }

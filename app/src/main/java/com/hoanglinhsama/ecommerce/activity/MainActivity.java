@@ -21,12 +21,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hoanglinhsama.ecommerce.ItemDecoration;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.NewProductAdapter;
-import com.hoanglinhsama.ecommerce.adapter.TypeProductAdapter;
+import com.hoanglinhsama.ecommerce.adapter.AdminFeatureAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityMainBinding;
 import com.hoanglinhsama.ecommerce.eventbus.NtfCountEvent;
 import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.Product;
-import com.hoanglinhsama.ecommerce.model.TypeProduct;
+import com.hoanglinhsama.ecommerce.model.AdminFeature;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
 import com.squareup.picasso.Picasso;
@@ -42,8 +42,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     public static ActivityMainBinding activityMainBinding;
-    private TypeProductAdapter typeProductAdapter;
-    private List<TypeProduct> listTypeProduct;
+    private AdminFeatureAdapter adminFeatureAdapter;
+    private List<AdminFeature> listAdminFeature;
     private List<Product> listNewProduct;
     private NewProductAdapter newProductAdapter;
 
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(activityMainBinding.getRoot());
 
         setUpActionBar();
-        getTypeMenu();
+        getAdminFeature();
         if (isConnected(this)) {
             setUpViewFlipper();
             getNewProduct();
@@ -169,6 +169,10 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, MainActivity.class));
                     finish();
                     break;
+                case 1:
+                    startActivity(new Intent(MainActivity.this, ProductManageActivity.class));
+                    finish();
+                    break;
             }
         });
     }
@@ -203,13 +207,12 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Tao menu cho Navigation Drawer
      */
-    private void getTypeMenu() {
-        this.listTypeProduct = new ArrayList<TypeProduct>();
-        this.listTypeProduct.add(new TypeProduct("Trang Chủ", R.drawable.ic_home_page));
-        this.listTypeProduct.add(new TypeProduct("Liên hệ", R.drawable.ic_contact));
-        this.listTypeProduct.add(new TypeProduct("Thông Tin", R.drawable.ic_information));
-        typeProductAdapter = new TypeProductAdapter(getApplicationContext(), R.layout.item_type_product, listTypeProduct);
-        activityMainBinding.listViewMainScreen.setAdapter(typeProductAdapter);
+    private void getAdminFeature() {
+        listAdminFeature = new ArrayList<>();
+        listAdminFeature.add(new AdminFeature("Trang Chủ", R.drawable.ic_home_page));
+        listAdminFeature.add(new AdminFeature("Quản lý sản phẩm", R.drawable.ic_product_manage));
+        adminFeatureAdapter = new AdminFeatureAdapter(getApplicationContext(), R.layout.item_admin_feature, listAdminFeature);
+        activityMainBinding.listViewMainScreen.setAdapter(adminFeatureAdapter);
     }
 
     /**
