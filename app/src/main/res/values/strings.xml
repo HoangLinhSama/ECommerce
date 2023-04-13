@@ -39,4 +39,11 @@
     <string name="text_view_add_activity_product_manage">Thêm</string>
     <string name="text_view_delete_activity_product_manage">Xóa</string>
     <string name="text_view_modify_activity_product_manage">Sửa</string>
+    <string name="tool_bar_add_product_screen_title">Thêm sản phẩm</string>
+    <string name="edit_text_name_add_product_screen">Nhập tên sản phẩm</string>
+    <string name="edit_text_price_add_product_screen">Nhập gía sản phẩm</string>
+    <string name="edit_text_description_add_product_screen">Nhập mô tả sản phẩm</string>
+    <string name="edit_text_quantity_add_product_screen">Nhập số lượng sản phẩm</string>
+    <string name="text_view_type_add_product_screen">Chọn loại sản phẩm</string>
+    <string name="text_view_picture_add_product_screen">Chọn hình ảnh sản phẩm</string>
 </resources>

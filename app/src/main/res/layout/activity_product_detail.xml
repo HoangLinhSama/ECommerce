@@ -21,10 +21,10 @@
             android:layout_marginRight="10dp">
 
             <ImageView
-                android:layout_gravity="center"
                 android:id="@+id/image_view_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:src="@drawable/ic_cart" />
 
             <com.nex3z.notificationbadge.NotificationBadge
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|right"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="20dp" />
         </FrameLayout>
 
     </androidx.appcompat.widget.Toolbar>
@@ -65,21 +65,21 @@
             android:orientation="vertical">
 
             <TextView
-                android:textSize="17sp"
                 android:id="@+id/text_view_name_product"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="17sp" />
 
             <TextView
-                android:textSize="17sp"
                 android:id="@+id/text_view_price_product"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:textColor="@color/red_700"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <Spinner
@@ -117,11 +117,11 @@
         app:layout_constraintTop_toBottomOf="@+id/linear_layout_product_detail_1">
 
         <TextView
-            android:textSize="17sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/text_view_description_product"
             android:textColor="@color/indigo_700"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <ScrollView
@@ -135,10 +135,11 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:textSize="17sp"
                     android:id="@+id/text_view_detail_product"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/unselected_color"
+                    android:textSize="17sp" />
 
             </LinearLayout>
 
