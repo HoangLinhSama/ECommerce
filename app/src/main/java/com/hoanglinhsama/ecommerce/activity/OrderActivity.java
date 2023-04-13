@@ -35,7 +35,7 @@ public class OrderActivity extends AppCompatActivity {
         activityOrderBinding = ActivityOrderBinding.inflate(getLayoutInflater());
         setContentView(activityOrderBinding.getRoot());
 
-        this.setUpActionBar();
+        setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
             initData();
             getEventOrder();
@@ -65,13 +65,13 @@ public class OrderActivity extends AppCompatActivity {
                 Toast.makeText(this, "Chưa nhập địa chỉ !", Toast.LENGTH_SHORT).show();
             } else {
                 DataClient dataClient = ApiUtils.getData();
-                Call<String> call = dataClient.insertOrderDetail(ApiUtils.currentUser.getId(), activityOrderBinding.editTextAddressOrderScreen.getText().toString().trim(), new Gson().toJson(ApiUtils.listCart)); // nho gson chuyen tu object java ve lai json de truyen qua php
+                Call<String> call = dataClient.insertOrderDetail(ApiUtils.currentUser.getId(), activityOrderBinding.editTextAddressOrderScreen.getText().toString().trim(), new Gson().toJson(ApiUtils.listCartChecked)); // nho gson chuyen tu object java ve lai json de truyen qua php, ( truyen vao list cac san pham duoc checked )
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if (response.isSuccessful()) {
                             Toast.makeText(OrderActivity.this, "Đặt hàng thành công !", Toast.LENGTH_SHORT).show();
-                            updateQuantityProduct(ApiUtils.listCart); // Cap nhat lai so luong con lai cua san pham
+                            updateQuantityProduct(ApiUtils.listCartChecked); // Cap nhat lai so luong con lai cua cac san pham duoc mua
                         }
                     }
 
@@ -117,7 +117,7 @@ public class OrderActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     ApiUtils.listCart = response.body();
                     EventBus.getDefault().post(new NotifyChangeOrder()); // Post event den eventbus de goi Adapter.notifydatasetchange()
-                    EventBus.getDefault().post(new TotalMoneyEvent()); // Post event den eventbus de tinh toan lai tong tien,...
+                    //EventBus.getDefault().post(new TotalMoneyEvent()); // Post event den eventbus de tinh toan lai tong tien,...
                 }
             }
 
@@ -127,7 +127,7 @@ public class OrderActivity extends AppCompatActivity {
                 if (t.getMessage().equals("Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $") || t.getMessage().equals("End of input at line 1 column 1 path $")) { // loi xay ra khi khong get duoc data tu table cart_detail (khi xoa tat ca san pham ra khoi gio hang), cach xu ly nay khong tot
                     ApiUtils.listCart.clear();
                     EventBus.getDefault().post(new NotifyChangeOrder());
-                    EventBus.getDefault().post(new DisplayCartEvent()); // Post event den eventbus de hien thi recyclerview cart khi gio hnag trong
+                    EventBus.getDefault().post(new DisplayCartEvent()); // Post event den eventbus de hien thi recyclerview cart khi gio hang trong
                 }
             }
         });
@@ -146,7 +146,7 @@ public class OrderActivity extends AppCompatActivity {
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (response.isSuccessful()) {
                         if (product.getIdProduct() == listCart.get(listCart.size() - 1).getIdProduct()) { // phan tu cuoi cung cua list
-                            deleteProductToCart(ApiUtils.currentUser.getId(), ApiUtils.listCart); // Xoa san pham da dat ra khoi gio hang
+                            deleteProductToCart(ApiUtils.currentUser.getId(), ApiUtils.listCartChecked); // Xoa san pham da dat ra khoi gio hang
                         }
                     }
                 }

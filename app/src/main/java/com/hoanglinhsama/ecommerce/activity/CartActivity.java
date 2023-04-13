@@ -36,6 +36,7 @@ public class CartActivity extends AppCompatActivity {
         activityCartBinding = ActivityCartBinding.inflate(getLayoutInflater());
         setContentView(activityCartBinding.getRoot());
 
+        initData();
         setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
             getCart();
@@ -43,6 +44,10 @@ public class CartActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void initData() {
+        ApiUtils.listCartChecked.clear(); // moi lan mo lai ung dung phai clear listCartChecked de no tinh tong tien bat dau lai tu 0
     }
 
     @Override
@@ -74,15 +79,22 @@ public class CartActivity extends AppCompatActivity {
      */
     private void getEventOrder() {
         activityCartBinding.buttonBuy.setOnClickListener(v -> {
-            Intent intent = new Intent(CartActivity.this, OrderActivity.class);
-            intent.putExtra("totalMoney", price);
-            startActivity(intent);
+            if (price != 0) { // neu da checked it nhat mot san pham thi moi cho phep mua hang
+                Intent intent = new Intent(CartActivity.this, OrderActivity.class);
+                intent.putExtra("totalMoney", price);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Chưa chọn sản phẩm để mua !", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
+    /**
+     * Tinh tong tien cac san pham duoc chon trong gio hang de tien hanh mua hang
+     */
     private void totalMoney() {
-        AtomicLong totalMoney = new AtomicLong();
-        ApiUtils.listCart.forEach(cart -> {
+        AtomicLong totalMoney = new AtomicLong(0);
+        ApiUtils.listCartChecked.forEach(cart -> {
             totalMoney.set(totalMoney.get() + cart.getTotalPrice());
         });
         price = totalMoney.get();
@@ -104,7 +116,7 @@ public class CartActivity extends AppCompatActivity {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
             activityCartBinding.recyclerViewCartScreen.setLayoutManager(layoutManager);
             activityCartBinding.recyclerViewCartScreen.addItemDecoration(new ItemDecoration(15));
-            this.totalMoney();
+            totalMoney(); // ban dau moi vao gio hang thi so tien = 0
         }
     }
 

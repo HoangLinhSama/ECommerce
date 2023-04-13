@@ -64,7 +64,22 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         } else {
             holder.imageViewIncreaseCart.setVisibility(View.INVISIBLE);
         }
-        holder.setOnImageViewClickListener(new OnImageViewClickListener() { // bat su kien thi click vao image button tang hoac giam so luong
+        holder.checkBoxChoose.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                ApiUtils.listCartChecked.add(cart);
+                EventBus.getDefault().post(new TotalMoneyEvent()); // tinh lai tong tien khi them san pham duoc check
+            } else { // bo check thi xoa ra khoi list
+                for (int i = 0; i < ApiUtils.listCartChecked.size(); i++) {
+                    if (cart.getIdProduct() == ApiUtils.listCartChecked.get(i).getIdProduct()) {
+                        ApiUtils.listCartChecked.remove(i);
+                        EventBus.getDefault().post(new TotalMoneyEvent());
+                    }
+                }
+            }
+        });
+
+        /* Bat su kien thi click vao image button tang hoac giam so luong hoac button xoa */
+        holder.setOnImageViewClickListener(new OnImageViewClickListener() {
             @Override
             public void onClick(View view, int position, int value) { // view o day la imageViewButton tang hoac giam
                 if (value == 1) // giam
@@ -113,6 +128,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(context, "Xóa sản phẩm thành công ! ", Toast.LENGTH_SHORT).show();
+
+                    /* Dong thoi xoa cung san pham bi xoa ra khoi listCartChecked */
+                    for (int i = 0; i < ApiUtils.listCartChecked.size(); i++) {
+                        if (ApiUtils.listCartChecked.get(i).getIdProduct() == productId) {
+                            ApiUtils.listCartChecked.remove(i);
+                        }
+                    }
                     getCartDetail();
                 }
             }
@@ -134,7 +156,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    getCartDetail();
+                    /* Cap nhat du lieu so luong va tong tien cua loai san pham cho listCartChecked */
+                    for (int i = 0; i < ApiUtils.listCartChecked.size(); i++) {
+                        if (id == ApiUtils.listCartChecked.get(i).getIdProduct()) {
+                            ApiUtils.listCartChecked.get(i).setTotalPrice(quantity * (ApiUtils.listCartChecked.get(i).getTotalPrice() / ApiUtils.listCartChecked.get(i).getQuantity())); // cap nhat lai totalPrice cho loai san pham trong listCartChecked
+                            ApiUtils.listCartChecked.get(i).setQuantity(quantity); // dong thoi cap nhat lai so luong cho loai san pham trong listCartChecked
+                        }
+                    }
+
+                    getCartDetail(); // cap nhat du lieu tu server ve cho listCart
                 }
             }
 
@@ -156,8 +186,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             public void onResponse(Call<List<Cart>> call, Response<List<Cart>> response) {
                 if (response.isSuccessful()) {
                     ApiUtils.listCart = response.body();
+                    EventBus.getDefault().post(new TotalMoneyEvent());
                     notifyDataSetChanged();
-                    EventBus.getDefault().post(new TotalMoneyEvent()); // Post event den eventbus de tinh toan lai tong tien,...
                 }
             }
 
