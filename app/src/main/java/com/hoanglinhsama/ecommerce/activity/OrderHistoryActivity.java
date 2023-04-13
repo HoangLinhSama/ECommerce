@@ -47,15 +47,19 @@ public class OrderHistoryActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.menu_item_home_page:
                     startActivity(new Intent(OrderHistoryActivity.this, MainActivity.class));
+                    finish();
                     return true;
                 case R.id.menu_item_phone:
                     startActivity(new Intent(OrderHistoryActivity.this, PhoneActivity.class));
+                    finish();
                     return true;
                 case R.id.menu_item_laptop:
                     startActivity(new Intent(OrderHistoryActivity.this, LaptopActivity.class));
+                    finish();
                     return true;
                 case R.id.menu_item_history_order:
                     startActivity(new Intent(OrderHistoryActivity.this, OrderHistoryActivity.class));
+                    finish();
                     return true;
             }
             return false;

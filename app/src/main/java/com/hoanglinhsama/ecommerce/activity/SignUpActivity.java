@@ -30,12 +30,19 @@ public class SignUpActivity extends AppCompatActivity {
         activitySignUpBinding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(activitySignUpBinding.getRoot());
 
+        setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
             getEventSignUp();
             getEventShowPassword();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void setUpActionBar() {
+        setSupportActionBar(activitySignUpBinding.toolBarSignupScreen);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activitySignUpBinding.toolBarSignupScreen.setNavigationOnClickListener(v -> finish());
     }
 
     private void getEventShowPassword() {

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,16 +14,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.gson.Gson;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.databinding.ActivityLogInBinding;
-import com.hoanglinhsama.ecommerce.eventbus.LogOutEvent;
 import com.hoanglinhsama.ecommerce.model.User;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -35,7 +30,6 @@ import retrofit2.Response;
 public class LogInActivity extends AppCompatActivity {
     private ActivityLogInBinding activityLogInBinding;
     private SharedPreferences sharedPreferences;
-    public static boolean autoLogin = false; // kiem tra trang thai co cho phep tu dong dang nhap khong (neu lan dau dang nhap thanh cong, thi cac lan sau se duoc tu dong dang nhap)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,25 +49,12 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-
-
-    @Override
     protected void onResume() { // Sau khi dang ky thanh cong thi se quay ve trang dang nhap
         super.onResume();
         if (ApiUtils.currentUser.getEmail() != null && ApiUtils.currentUser.getPassword() != null) {
             activityLogInBinding.editTextEmailLoginScreen.setText(ApiUtils.currentUser.getEmail());
             activityLogInBinding.editTextPasswordLoginScreen.setText(ApiUtils.currentUser.getPassword());
         }
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
     private void getEventForgetPassword() {
@@ -109,14 +90,6 @@ public class LogInActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("dataLogin", MODE_PRIVATE);
         activityLogInBinding.editTextEmailLoginScreen.setText(sharedPreferences.getString("email", ""));
         activityLogInBinding.editTextPasswordLoginScreen.setText(sharedPreferences.getString("password", ""));
-        boolean flag = sharedPreferences.getBoolean("isLogin", false);
-
-        /* Auto login sau 0.5s*/
-        if (flag) {
-            new Handler().postDelayed(() -> {
-                logIn();
-            }, 500);
-        }
     }
 
     private void logIn() {
@@ -126,17 +99,18 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.isSuccessful()) {
-                    autoLogin = true;
                     ApiUtils.currentUser = response.body().get(0);
 
-                    /* Luu thong tin dang nhap */
+                    /* Luu thong tin dang nhap sau khi dang nhap thanh cong */
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("email", activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim());
                     editor.putString("password", activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim());
-                    editor.putBoolean("isLogin", autoLogin);
+
+                    editor.putString("user", new Gson().toJson(ApiUtils.currentUser)); // luu thong tin user tra ve khi dang nhap thanh cong, de tu lan dang nhap tiep theo se tu man hinh welcome vao thang man hinh main
                     editor.apply();
 
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish(); // finish de khi vao man hinh khac ma dieu huong bang back tren he thong android thi se khong tro lai man hinh nay nua
                 }
             }
 
@@ -164,15 +138,5 @@ public class LogInActivity extends AppCompatActivity {
         activityLogInBinding.textViewSignupLoginScreen.setOnClickListener(v -> {
             startActivity(new Intent(LogInActivity.this, SignUpActivity.class));
         });
-    }
-
-    /**
-     * Xy ly su kien khi log out, se thay doi gia tri cua autoLogin
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onLogOutEvent(LogOutEvent event) {
-        if (event != null) {
-            autoLogin = false;
-        }
     }
 }

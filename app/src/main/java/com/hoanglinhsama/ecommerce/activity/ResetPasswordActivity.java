@@ -26,11 +26,18 @@ public class ResetPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(activityResetPasswordBinding.getRoot());
 
+        setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
             getEventForgetPassword();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void setUpActionBar() {
+        setSupportActionBar(activityResetPasswordBinding.toolBarResetPasswordScreen);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activityResetPasswordBinding.toolBarResetPasswordScreen.setNavigationOnClickListener(v -> finish());
     }
 
     private void getEventForgetPassword() {

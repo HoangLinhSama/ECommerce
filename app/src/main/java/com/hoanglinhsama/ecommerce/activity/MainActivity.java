@@ -2,11 +2,11 @@ package com.hoanglinhsama.ecommerce.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -23,9 +23,7 @@ import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.NewProductAdapter;
 import com.hoanglinhsama.ecommerce.adapter.TypeProductAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityMainBinding;
-import com.hoanglinhsama.ecommerce.eventbus.LogOutEvent;
 import com.hoanglinhsama.ecommerce.eventbus.NtfCountEvent;
-import com.hoanglinhsama.ecommerce.eventbus.TotalMoneyEvent;
 import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.hoanglinhsama.ecommerce.model.TypeProduct;
@@ -79,8 +77,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void getEventLogout() {
         activityMainBinding.imageViewLogOut.setOnClickListener(v -> {
-            EventBus.getDefault().post(new LogOutEvent());
+            SharedPreferences sharedPreferences = getSharedPreferences("dataLogin", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove("user"); // xoa du lieu cua key user trong SharedPreferences de khi mo lai ung dung no se vao man hinh dang nhap
+            editor.apply();
             startActivity(new Intent(MainActivity.this, LogInActivity.class));
+            finish();
         });
     }
 
@@ -106,15 +108,19 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.menu_item_home_page:
                     startActivity(new Intent(MainActivity.this, MainActivity.class));
+                    finish();
                     return true;
                 case R.id.menu_item_phone:
                     startActivity(new Intent(MainActivity.this, PhoneActivity.class));
+                    finish();
                     return true;
                 case R.id.menu_item_laptop:
                     startActivity(new Intent(MainActivity.this, LaptopActivity.class));
+                    finish();
                     return true;
                 case R.id.menu_item_history_order:
                     startActivity(new Intent(MainActivity.this, OrderHistoryActivity.class));
+                    finish();
                     return true;
             }
             return false;
@@ -161,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
             switch (position) {
                 case 0:
                     startActivity(new Intent(MainActivity.this, MainActivity.class));
+                    finish();
                     break;
             }
         });
