@@ -47,4 +47,5 @@
     <string name="text_view_type_add_product_screen">Chọn loại sản phẩm</string>
     <string name="text_view_picture_add_product_screen">Chọn hình ảnh sản phẩm</string>
     <string name="text_view_all_product_manage">Tất cả sản phẩm</string>
+    <string name="text_view_title_notification">Thông báo</string>
 </resources>

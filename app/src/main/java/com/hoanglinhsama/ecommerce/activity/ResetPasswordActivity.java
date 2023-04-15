@@ -1,5 +1,6 @@
 package com.hoanglinhsama.ecommerce.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -54,7 +55,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                             if (response.body().equals("Check your email and click on the link sent to your email !")) {
                                 activityResetPasswordBinding.progressBarResetPasswordScreen.setVisibility(View.INVISIBLE);
                                 Toast.makeText(ResetPasswordActivity.this, "Hãy kiểm tra email và nhấp vào đường dẫn được gửi đến email !", Toast.LENGTH_LONG).show();
-
+                                startActivity(new Intent(ResetPasswordActivity.this, LogInActivity.class));
 //                                /* Cap nhat lai mat khau cho account firebase Authentication */
 //                                DataClient dataClientNewPassword = ApiUtils.getData();
 //                                Call<List<User>> callNewPassword = dataClientNewPassword.getNewPassword(ApiUtils.currentUser.getEmail());

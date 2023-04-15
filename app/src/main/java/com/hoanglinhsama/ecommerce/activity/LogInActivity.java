@@ -40,7 +40,6 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         activityLogInBinding = ActivityLogInBinding.inflate(getLayoutInflater());
         setContentView(activityLogInBinding.getRoot());
-
         if (MainActivity.isConnected(getApplicationContext())) {
             initData();
             getEventSignUp();
