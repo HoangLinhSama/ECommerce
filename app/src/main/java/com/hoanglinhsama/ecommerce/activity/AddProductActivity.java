@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.hoanglinhsama.ecommerce.databinding.ActivityAddProductBinding;
+import com.hoanglinhsama.ecommerce.model.Product;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
 
@@ -44,6 +45,8 @@ public class AddProductActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 7;
     private Intent intentGallery;
     private MultipartBody.Part body;
+    private Product productModify;
+    private boolean isModify = false; // flag kiem tra sua hay them moi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,39 +124,77 @@ public class AddProductActivity extends AppCompatActivity {
 
     private void getEventAddProduct() {
         activityAddProductBinding.buttonAddProductScreen.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(activityAddProductBinding.editTextNameAddProductScreen.getText().toString().trim())) {
-                Toast.makeText(this, "Chưa nhập tên sản phẩm !", Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(activityAddProductBinding.editTextPriceAddProductScreen.getText().toString().trim())) {
-                Toast.makeText(this, "Chưa nhập giá sản phẩm !", Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(activityAddProductBinding.editTextQuantityAddProductScreen.getText().toString().trim())) {
-                Toast.makeText(this, "Chưa nhập số lượng sản phẩm !", Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(activityAddProductBinding.editTextDescriptionAddProductScreen.getText().toString().trim())) {
-                Toast.makeText(this, "Chưa nhập mô tả sản phẩm !", Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(activityAddProductBinding.textViewPictureAddProductScreen.getText().toString().trim())) {
-                Toast.makeText(this, "Chưa nhập hình ảnh sản phẩm !", Toast.LENGTH_SHORT).show();
-            } else {
-                DataClient dataClient = ApiUtils.getData();
-                Call<String> call = dataClient.addProduct(activityAddProductBinding.editTextNameAddProductScreen.getText().toString().trim()
-                        , Long.parseLong(activityAddProductBinding.editTextPriceAddProductScreen.getText().toString().trim())
-                        , activityAddProductBinding.textViewPictureAddProductScreen.getText().toString().trim()
-                        , activityAddProductBinding.editTextDescriptionAddProductScreen.getText().toString().trim()
-                        , typeProduct
-                        , Integer.parseInt(activityAddProductBinding.editTextQuantityAddProductScreen.getText().toString().trim()));
-                call.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.isSuccessful()) {
-                            Toast.makeText(AddProductActivity.this, "Thêm sản phẩm thành công !", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(AddProductActivity.this, MainActivity.class));
-                            finish();
+            if (isModify == false) { // them moi
+                if (TextUtils.isEmpty(activityAddProductBinding.editTextNameAddProductScreen.getText().toString().trim())) {
+                    Toast.makeText(this, "Chưa nhập tên sản phẩm !", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(activityAddProductBinding.editTextPriceAddProductScreen.getText().toString().trim())) {
+                    Toast.makeText(this, "Chưa nhập giá sản phẩm !", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(activityAddProductBinding.editTextQuantityAddProductScreen.getText().toString().trim())) {
+                    Toast.makeText(this, "Chưa nhập số lượng sản phẩm !", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(activityAddProductBinding.editTextDescriptionAddProductScreen.getText().toString().trim())) {
+                    Toast.makeText(this, "Chưa nhập mô tả sản phẩm !", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(activityAddProductBinding.textViewPictureAddProductScreen.getText().toString().trim())) {
+                    Toast.makeText(this, "Chưa chọn hình ảnh sản phẩm !", Toast.LENGTH_SHORT).show();
+                } else {
+                    DataClient dataClient = ApiUtils.getData();
+                    Call<String> call = dataClient.addProduct(activityAddProductBinding.editTextNameAddProductScreen.getText().toString().trim()
+                            , Long.parseLong(activityAddProductBinding.editTextPriceAddProductScreen.getText().toString().trim())
+                            , activityAddProductBinding.textViewPictureAddProductScreen.getText().toString().trim()
+                            , activityAddProductBinding.editTextDescriptionAddProductScreen.getText().toString().trim()
+                            , typeProduct
+                            , Integer.parseInt(activityAddProductBinding.editTextQuantityAddProductScreen.getText().toString().trim()));
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(AddProductActivity.this, "Thêm sản phẩm thành công !", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(AddProductActivity.this, ProductManageActivity.class));
+                                finish();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Log.d("getEventAddProduct", t.getMessage());
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Log.d("getEventAddProduct", t.getMessage());
+                        }
+                    });
+                }
+            } else { // sua
+                if (TextUtils.isEmpty(activityAddProductBinding.editTextNameAddProductScreen.getText().toString().trim())) {
+                    Toast.makeText(this, "Chưa nhập tên sản phẩm !", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(activityAddProductBinding.editTextPriceAddProductScreen.getText().toString().trim())) {
+                    Toast.makeText(this, "Chưa nhập giá sản phẩm !", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(activityAddProductBinding.editTextQuantityAddProductScreen.getText().toString().trim())) {
+                    Toast.makeText(this, "Chưa nhập số lượng sản phẩm !", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(activityAddProductBinding.editTextDescriptionAddProductScreen.getText().toString().trim())) {
+                    Toast.makeText(this, "Chưa nhập mô tả sản phẩm !", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(activityAddProductBinding.textViewPictureAddProductScreen.getText().toString().trim())) {
+                    Toast.makeText(this, "Chưa chọn hình ảnh sản phẩm !", Toast.LENGTH_SHORT).show();
+                } else {
+                    DataClient dataClient = ApiUtils.getData();
+                    Call<String> call = dataClient.updateProduct(productModify.getId()
+                            , activityAddProductBinding.editTextNameAddProductScreen.getText().toString().trim()
+                            , Long.parseLong(activityAddProductBinding.editTextPriceAddProductScreen.getText().toString().trim())
+                            , Integer.parseInt(activityAddProductBinding.editTextQuantityAddProductScreen.getText().toString().trim())
+                            , activityAddProductBinding.editTextDescriptionAddProductScreen.getText().toString().trim()
+                            , typeProduct
+                            , activityAddProductBinding.textViewPictureAddProductScreen.getText().toString().trim());
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(AddProductActivity.this, "Sửa sản phẩm thành công !", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(AddProductActivity.this, ProductManageActivity.class));
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Log.d("getEventAddProduct", t.getMessage());
+                        }
+                    });
+                }
             }
         });
     }
@@ -163,7 +204,7 @@ public class AddProductActivity extends AppCompatActivity {
         intentGallery = new Intent(Intent.ACTION_PICK);
         intentGallery.setType("image/*");
 
-        /* Khoi tao Spinner*/
+        /* Khoi tao Spinner */
         List<String> listTypeProduct = new ArrayList<>();
         listTypeProduct.add("Điện Thoại");
         listTypeProduct.add("Lap Top");
@@ -180,6 +221,25 @@ public class AddProductActivity extends AppCompatActivity {
 
             }
         });
+
+        /* Nhan Intent tu ProductManageActivity */
+        productModify = (Product) getIntent().getSerializableExtra("Product Modify");
+
+        /* Kiem tra la sua hay them moi */
+        if (productModify == null) { // them moi
+            isModify = false; // khong phai sua, thi la them moi
+        } else {
+            activityAddProductBinding.toolBarAddProductScreen.setTitle("Sửa sản phẩm");
+            activityAddProductBinding.buttonAddProductScreen.setText("Sửa sản phẩm");
+            isModify = true; // sua
+
+            /* Khoi tao gia tri cua san pham can sua */
+            activityAddProductBinding.editTextNameAddProductScreen.setText(productModify.getName());
+            activityAddProductBinding.editTextPriceAddProductScreen.setText(String.valueOf(productModify.getPrice()));
+            activityAddProductBinding.editTextQuantityAddProductScreen.setText(String.valueOf(productModify.getQuantity()));
+            activityAddProductBinding.editTextDescriptionAddProductScreen.setText(productModify.getDescription());
+            activityAddProductBinding.textViewPictureAddProductScreen.setText(productModify.getPicture());
+        }
     }
 
     private void setUpActionBar() {

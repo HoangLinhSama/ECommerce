@@ -2,6 +2,7 @@ package com.hoanglinhsama.ecommerce.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,34 +15,37 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hoanglinhsama.ecommerce.Interface.OnItemClickListener;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.activity.ProductDetailActivity;
+import com.hoanglinhsama.ecommerce.eventbus.DeleteModifyProductEvent;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.MyViewHolder> {
-    private List<Product> listNewProduct;
+public class ManageProductAdapter extends RecyclerView.Adapter<ManageProductAdapter.MyViewHolder> {
+    private List<Product> listProduct;
     private int layout;
     private Context context;
 
-    public NewProductAdapter(List<Product> listNewProduct, int layout, Context context) {
-        this.listNewProduct = listNewProduct;
+    public ManageProductAdapter(List<Product> listProduct, int layout, Context context) {
+        this.listProduct = listProduct;
         this.layout = layout;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public NewProductAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ManageProductAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(layout, null);
-        return new MyViewHolder(view);
+        return new ManageProductAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NewProductAdapter.MyViewHolder holder, int position) {
-        Product product = listNewProduct.get(position);
+    public void onBindViewHolder(@NonNull ManageProductAdapter.MyViewHolder holder, int position) {
+        Product product = listProduct.get(position);
         Picasso.get().load(product.getPicture()).into(holder.imageViewPictureProduct);
         holder.textViewNameProduct.setText(product.getName());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###"); // tao mau dinh dang nnn.nnn.nnn
@@ -55,6 +59,8 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.My
                     intent.putExtra("data", product);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
+                } else { // longClick
+                    EventBus.getDefault().post(new DeleteModifyProductEvent(product));
                 }
             }
         });
@@ -62,10 +68,10 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.My
 
     @Override
     public int getItemCount() {
-        return listNewProduct.size();
+        return listProduct.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener, View.OnLongClickListener {
         private ImageView imageViewPictureProduct;
         private TextView textViewNameProduct;
         private TextView textViewPriceProduct;
@@ -82,11 +88,25 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.My
             this.textViewPriceProduct = itemView.findViewById(R.id.text_view_price_new_product);
 
             itemView.setOnClickListener(this);
+            itemView.setOnCreateContextMenuListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             onItemClickListener.onClick(v, getAdapterPosition(), false);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.add(0, 0, getAdapterPosition(), "Sửa");
+            menu.add(0, 1, getAdapterPosition(), "Xóa");
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            onItemClickListener.onClick(v, getAdapterPosition(), true);
+            return false;
         }
     }
 }

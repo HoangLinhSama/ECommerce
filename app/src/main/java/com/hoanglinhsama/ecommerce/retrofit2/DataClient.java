@@ -104,8 +104,8 @@ public interface DataClient {
      * Cap nhat so luong san pham con lai khi dat hang, neu huy don hang thi hoan lai so luong da dat
      */
     @FormUrlEncoded
-    @POST("updateproduct.php")
-    Call<String> updateProduct(@Field("productId") int productId
+    @POST("updatequantityproduct.php")
+    Call<String> updateQuantityProduct(@Field("productId") int productId
             , @Field("quantity") int quantity);
 
     @FormUrlEncoded
@@ -131,4 +131,14 @@ public interface DataClient {
     @Multipart
     @POST("uploadpictureproduct.php")
     Call<String> upLoadPictureProduct(@Part MultipartBody.Part pictureProduct);
+
+    @FormUrlEncoded
+    @POST("updateproduct.php")
+    Call<String> updateProduct(@Field("productId") int productId
+            , @Field("nameProduct") String nameProduct
+            , @Field("price") long price
+            , @Field("quantity") int quantity
+            , @Field("description") String description
+            , @Field("type") int type
+            , @Field("picture") String picture);
 }

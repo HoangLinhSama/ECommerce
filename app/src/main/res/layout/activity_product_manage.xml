@@ -26,124 +26,162 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/indigo_700"
                 app:title="@string/tool_bar_product_manage_screen_title"
-                app:titleTextColor="@color/white" />
+                app:titleTextColor="@color/white">
 
-            <RelativeLayout
+                <ImageView
+                    android:id="@+id/image_view_add_product"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_add" />
+            </androidx.appcompat.widget.Toolbar>
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp">
+                android:text="@string/text_view_all_product_manage"
+                android:textColor="@color/indigo_700"
+                android:textSize="17sp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/indigo_700">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_product_manage_screen"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp" />
+
+            </LinearLayout>
 
 
-                <soup.neumorphism.NeumorphCardView
-                    android:id="@+id/neumorph_card_view_add"
-                    style="@style/NeumorphCard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true">
+            <!--            <RelativeLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="10dp"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:layout_marginEnd="10dp"-->
+            <!--                android:layout_marginBottom="10dp">-->
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginRight="20dp"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_add" />
+            <!--                <soup.neumorphism.NeumorphCardView-->
+            <!--                    android:id="@+id/neumorph_card_view_add"-->
+            <!--                    style="@style/NeumorphCard"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_alignParentLeft="true">-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="5dp"
-                            android:text="@string/text_view_add_activity_product_manage"
-                            android:textColor="@color/indigo_700"
-                            android:textSize="17sp"
-                            android:textStyle="bold" />
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:orientation="vertical">-->
 
-                    </LinearLayout>
+            <!--                        <ImageView-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_marginLeft="20dp"-->
+            <!--                            android:layout_marginTop="10dp"-->
+            <!--                            android:layout_marginRight="20dp"-->
+            <!--                            android:scaleType="centerInside"-->
+            <!--                            android:src="@drawable/ic_add" />-->
 
-                </soup.neumorphism.NeumorphCardView>
+            <!--                        <TextView-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_gravity="center"-->
+            <!--                            android:layout_marginBottom="5dp"-->
+            <!--                            android:text="@string/text_view_add_activity_product_manage"-->
+            <!--                            android:textColor="@color/indigo_700"-->
+            <!--                            android:textSize="17sp"-->
+            <!--                            android:textStyle="bold" />-->
 
-                <soup.neumorphism.NeumorphCardView
-                    android:id="@+id/neumorph_card_view_delete"
-                    style="@style/NeumorphCard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
+            <!--                    </LinearLayout>-->
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+            <!--                </soup.neumorphism.NeumorphCardView>-->
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginRight="20dp"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_delete" />
+            <!--                <soup.neumorphism.NeumorphCardView-->
+            <!--                    android:id="@+id/neumorph_card_view_delete"-->
+            <!--                    style="@style/NeumorphCard"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_centerInParent="true">-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="5dp"
-                            android:text="@string/text_view_delete_activity_product_manage"
-                            android:textColor="@color/indigo_700"
-                            android:textSize="17sp"
-                            android:textStyle="bold" />
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:orientation="vertical">-->
 
-                    </LinearLayout>
+            <!--                        <ImageView-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_gravity="center"-->
+            <!--                            android:layout_marginLeft="20dp"-->
+            <!--                            android:layout_marginTop="10dp"-->
+            <!--                            android:layout_marginRight="20dp"-->
+            <!--                            android:scaleType="centerInside"-->
+            <!--                            android:src="@drawable/ic_delete" />-->
 
-                </soup.neumorphism.NeumorphCardView>
+            <!--                        <TextView-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_gravity="center"-->
+            <!--                            android:layout_marginBottom="5dp"-->
+            <!--                            android:text="@string/text_view_delete_activity_product_manage"-->
+            <!--                            android:textColor="@color/indigo_700"-->
+            <!--                            android:textSize="17sp"-->
+            <!--                            android:textStyle="bold" />-->
 
-                <soup.neumorphism.NeumorphCardView
-                    android:id="@+id/neumorph_card_view_modify"
-                    style="@style/NeumorphCard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true">
+            <!--                    </LinearLayout>-->
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+            <!--                </soup.neumorphism.NeumorphCardView>-->
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginRight="20dp"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_modify" />
+            <!--                <soup.neumorphism.NeumorphCardView-->
+            <!--                    android:id="@+id/neumorph_card_view_modify"-->
+            <!--                    style="@style/NeumorphCard"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_alignParentRight="true">-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="5dp"
-                            android:text="@string/text_view_modify_activity_product_manage"
-                            android:textColor="@color/indigo_700"
-                            android:textSize="17sp"
-                            android:textStyle="bold" />
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:orientation="vertical">-->
 
-                    </LinearLayout>
+            <!--                        <ImageView-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_gravity="center"-->
+            <!--                            android:layout_marginLeft="20dp"-->
+            <!--                            android:layout_marginTop="10dp"-->
+            <!--                            android:layout_marginRight="20dp"-->
+            <!--                            android:scaleType="centerInside"-->
+            <!--                            android:src="@drawable/ic_modify" />-->
 
-                </soup.neumorphism.NeumorphCardView>
-            </RelativeLayout>
+            <!--                        <TextView-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_gravity="center"-->
+            <!--                            android:layout_marginBottom="5dp"-->
+            <!--                            android:text="@string/text_view_modify_activity_product_manage"-->
+            <!--                            android:textColor="@color/indigo_700"-->
+            <!--                            android:textSize="17sp"-->
+            <!--                            android:textStyle="bold" />-->
+
+            <!--                    </LinearLayout>-->
+
+            <!--                </soup.neumorphism.NeumorphCardView>-->
+            <!--            </RelativeLayout>-->
         </LinearLayout>
 
         <com.google.android.material.navigation.NavigationView

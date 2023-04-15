@@ -157,9 +157,10 @@
             <ImageButton
                 android:id="@+id/image_button_gallery_add_product_screen"
                 android:layout_width="wrap_content"
-                android:scaleType="centerInside"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
+                android:scaleType="centerInside"
                 android:src="@drawable/ic_gallery"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 

@@ -117,7 +117,6 @@ public class OrderActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     ApiUtils.listCart = response.body();
                     EventBus.getDefault().post(new NotifyChangeOrder()); // Post event den eventbus de goi Adapter.notifydatasetchange()
-                    //EventBus.getDefault().post(new TotalMoneyEvent()); // Post event den eventbus de tinh toan lai tong tien,...
                 }
             }
 
@@ -140,7 +139,7 @@ public class OrderActivity extends AppCompatActivity {
     private void updateQuantityProduct(List<Cart> listCart) {
         DataClient dataClient = ApiUtils.getData();
         listCart.forEach(product -> {
-            Call<String> call = dataClient.updateProduct(product.getIdProduct(), product.getQuantityRemain() - product.getQuantity());
+            Call<String> call = dataClient.updateQuantityProduct(product.getIdProduct(), product.getQuantityRemain() - product.getQuantity());
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
