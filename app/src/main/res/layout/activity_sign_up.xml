@@ -18,6 +18,7 @@
         app:titleTextColor="@color/white" />
 
     <EditText
+        android:backgroundTint="@color/indigo_700"
         android:textSize="17sp"
         android:id="@+id/edit_text_email_signup_screen"
         android:layout_width="match_parent"
@@ -35,6 +36,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tool_bar_signup_screen" />
 
     <EditText
+        android:backgroundTint="@color/indigo_700"
         android:textSize="17sp"
         android:id="@+id/edit_text_password_signup_screen"
         android:layout_width="match_parent"
@@ -53,6 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_text_email_signup_screen" />
 
     <EditText
+        android:backgroundTint="@color/indigo_700"
         android:textSize="17sp"
         android:id="@+id/edit_text_repassword_signup_screen"
         android:layout_width="match_parent"
@@ -71,6 +74,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_text_password_signup_screen" />
 
     <EditText
+        android:backgroundTint="@color/indigo_700"
         android:textSize="17sp"
         android:id="@+id/edit_text_name_signup_screen"
         android:layout_width="match_parent"
@@ -89,6 +93,7 @@
 
     <EditText
         android:textSize="17sp"
+        android:backgroundTint="@color/indigo_700"
         android:id="@+id/edit_text_phone_number_signup_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -106,6 +111,7 @@
 
     <CheckBox
         android:id="@+id/checkbox_signup_screen"
+        android:buttonTint="@color/indigo_700"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

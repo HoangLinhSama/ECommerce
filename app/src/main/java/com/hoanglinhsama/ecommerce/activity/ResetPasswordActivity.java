@@ -1,8 +1,6 @@
 package com.hoanglinhsama.ecommerce.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -10,14 +8,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.hoanglinhsama.ecommerce.databinding.ActivityResetPasswordBinding;
-import com.hoanglinhsama.ecommerce.model.User;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;

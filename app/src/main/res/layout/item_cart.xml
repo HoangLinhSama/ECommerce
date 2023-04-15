@@ -23,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="TouchTargetSizeCheck"
+            android:buttonTint="@color/indigo_700"/>
 
         <ImageView
             android:id="@+id/image_view_picture_cart"

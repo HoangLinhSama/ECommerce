@@ -116,6 +116,7 @@
     </androidx.cardview.widget.CardView>
 
     <EditText
+        android:backgroundTint="@color/indigo_700"
         android:textSize="17sp"
         android:id="@+id/edit_text_address_order_screen"
         android:layout_width="match_parent"

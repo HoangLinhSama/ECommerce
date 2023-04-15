@@ -18,6 +18,7 @@
         app:titleTextColor="@color/white" />
 
     <EditText
+        android:backgroundTint="@color/indigo_700"
         android:id="@+id/edit_text_name_add_product_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,6 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tool_bar_add_product_screen" />
 
     <EditText
+        android:backgroundTint="@color/indigo_700"
         android:id="@+id/edit_text_price_add_product_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,6 +53,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_text_name_add_product_screen" />
 
     <EditText
+        android:backgroundTint="@color/indigo_700"
         android:id="@+id/edit_text_quantity_add_product_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -84,6 +87,7 @@
             android:orientation="vertical">
 
             <EditText
+                android:backgroundTint="@color/indigo_700"
                 android:id="@+id/edit_text_description_add_product_screen"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

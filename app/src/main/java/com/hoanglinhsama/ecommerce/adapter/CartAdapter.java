@@ -3,6 +3,7 @@ package com.hoanglinhsama.ecommerce.adapter;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,25 +89,28 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                         int quantity = ApiUtils.listCart.get(position).getQuantity() - 1;
                         updateProductToCart(quantity, ApiUtils.listCart.get(position).getIdProduct()); // cap nhat lai len server
                     } else { // neu so luong con 1 ma giam nua thi se xoa san pham ra khoi gio hang
-                        delete(view, position);
+                        delete(view, position, holder);
                     }
                 } else {
                     if (value == 2) { // tang
                         int quantity = ApiUtils.listCart.get(position).getQuantity() + 1;
                         updateProductToCart(quantity, ApiUtils.listCart.get(position).getIdProduct()); // cap nhat lai len server
                     } else { // button xoa
-                        delete(view, position);
+                        delete(view, position, holder);
                     }
                 }
             }
         });
     }
 
-    private void delete(View view, int position) {
+    private void delete(View view, int position, MyViewHolder holder) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getRootView().getContext());
         alertDialog.setTitle("Thông báo xóa sản phẩm");
         alertDialog.setMessage("Xóa sản phẩm khỏi giỏ hàng ?");
-        alertDialog.setPositiveButton("Đồng ý", (dialog, which) -> deleteProductToCart(ApiUtils.currentUser.getId(), ApiUtils.listCart.get(position).getIdProduct()));
+        alertDialog.setPositiveButton("Đồng ý", (dialog, which) -> {
+            deleteProductToCart(ApiUtils.currentUser.getId(), ApiUtils.listCart.get(position).getIdProduct());
+            holder.checkBoxChoose.setChecked(false);
+        });
         alertDialog.setNegativeButton("Huỷ", (dialog, which) -> dialog.cancel());
         alertDialog.setCancelable(false);
         alertDialog.show();
