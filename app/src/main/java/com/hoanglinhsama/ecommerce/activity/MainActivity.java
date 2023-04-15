@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setUpActionBar() {
         setSupportActionBar(activityMainBinding.toolBarMainScreen);
-        // 2 dong duoi nay co the lam duoc viec nhu sau : neu tai khoan la loai cua nguoi ban thi chay 2 dong o duoi, con neu la tai khaon khach hang thi khong co 2 dong o duoi (vi du dinh dat chuc nang cua nguoi ban trong navigation drawer)
+        // 2 dong duoi nay co the lam duoc viec nhu sau : neu tai khoan la loai cua nguoi ban thi chay 2 dong o duoi, con neu la tai khoan khach hang thi khong co 2 dong o duoi
         activityMainBinding.toolBarMainScreen.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
         activityMainBinding.toolBarMainScreen.setNavigationOnClickListener(v -> activityMainBinding.drawerLayoutMainScreen.openDrawer(GravityCompat.START));
     }

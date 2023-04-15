@@ -7,11 +7,14 @@ import com.hoanglinhsama.ecommerce.model.User;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface DataClient {
     /**
@@ -112,4 +115,20 @@ public interface DataClient {
     @FormUrlEncoded
     @POST("searchproduct.php")
     Call<List<Product>> searchProduct(@Field("nameProduct") String nameProduct);
+
+    /**
+     * Them san pham moi vao table product
+     */
+    @FormUrlEncoded
+    @POST("addproduct.php")
+    Call<String> addProduct(@Field("name") String name
+            , @Field("price") long price
+            , @Field("picture") String picture
+            , @Field("description") String description
+            , @Field("type") int type
+            , @Field("quantity") int quantity);
+
+    @Multipart
+    @POST("uploadpictureproduct.php")
+    Call<String> upLoadPictureProduct(@Part MultipartBody.Part pictureProduct);
 }
