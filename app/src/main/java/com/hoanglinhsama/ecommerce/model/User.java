@@ -23,6 +23,17 @@ public class User {
     @SerializedName("type")
     @Expose
     private int type;
+    @SerializedName("firebaseUId")
+    @Expose
+    private String firebaseUid;
+
+    public String getFirebaseUid() {
+        return this.firebaseUid;
+    }
+
+    public void setFirebaseUid(String firebaseUid) {
+        this.firebaseUid = firebaseUid;
+    }
 
     public int getId() {
         return this.id;

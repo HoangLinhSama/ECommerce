@@ -124,7 +124,7 @@ public class AddProductActivity extends AppCompatActivity {
 
     private void getEventAddProduct() {
         activityAddProductBinding.buttonAddProductScreen.setOnClickListener(v -> {
-            if (isModify == false) { // them moi
+            if (!isModify) { // them moi
                 if (TextUtils.isEmpty(activityAddProductBinding.editTextNameAddProductScreen.getText().toString().trim())) {
                     Toast.makeText(this, "Chưa nhập tên sản phẩm !", Toast.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(activityAddProductBinding.editTextPriceAddProductScreen.getText().toString().trim())) {

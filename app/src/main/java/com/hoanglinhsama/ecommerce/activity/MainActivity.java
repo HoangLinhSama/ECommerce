@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -18,15 +19,17 @@ import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.hoanglinhsama.ecommerce.ItemDecoration;
 import com.hoanglinhsama.ecommerce.R;
-import com.hoanglinhsama.ecommerce.adapter.NewProductAdapter;
 import com.hoanglinhsama.ecommerce.adapter.AdminFeatureAdapter;
+import com.hoanglinhsama.ecommerce.adapter.NewProductAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityMainBinding;
 import com.hoanglinhsama.ecommerce.eventbus.NtfCountEvent;
+import com.hoanglinhsama.ecommerce.model.AdminFeature;
 import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.Product;
-import com.hoanglinhsama.ecommerce.model.AdminFeature;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
 import com.squareup.picasso.Picasso;
@@ -64,9 +67,33 @@ public class MainActivity extends AppCompatActivity {
             getEventClickImageViewCart();
             getEventLogout();
             getEventSearch();
+            getToken();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * Lay ra token duoc FCM cap cho
+     */
+    private void getToken() {
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(s -> {
+            if (!TextUtils.isEmpty(s)) {
+                DataClient dataClient = ApiUtils.getData();
+                Call<String> call = dataClient.updateToken(ApiUtils.currentUser.getId(), s);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.d("getToken", t.getMessage());
+                    }
+                });
+            }
+        });
     }
 
     private void getEventSearch() {
@@ -77,12 +104,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void getEventLogout() {
         activityMainBinding.imageViewLogOut.setOnClickListener(v -> {
+            /* Log out doi voi account tren MySQL (Server) */
             SharedPreferences sharedPreferences = getSharedPreferences("dataLogin", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.remove("user"); // xoa du lieu cua key user trong SharedPreferences de khi mo lai ung dung no se vao man hinh dang nhap
             editor.apply();
             startActivity(new Intent(MainActivity.this, LogInActivity.class));
             finish();
+
+            /* Dong thoi cung phai Log out doi voi account Firebase Authentication */
+            FirebaseAuth.getInstance().signOut();
         });
     }
 

@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.databinding.ActivityLogInBinding;
@@ -30,6 +32,8 @@ import retrofit2.Response;
 public class LogInActivity extends AppCompatActivity {
     private ActivityLogInBinding activityLogInBinding;
     private SharedPreferences sharedPreferences;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +91,14 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void initData() {
+        /* Lay thong tin trong SharePreferences de phuc vu viec dang nhap */
         sharedPreferences = getSharedPreferences("dataLogin", MODE_PRIVATE);
         activityLogInBinding.editTextEmailLoginScreen.setText(sharedPreferences.getString("email", ""));
         activityLogInBinding.editTextPasswordLoginScreen.setText(sharedPreferences.getString("password", ""));
+
+        /* Khoi tao firebaseAuthentication va firebaseUsser */
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
     }
 
     private void logIn() {
@@ -129,7 +138,17 @@ public class LogInActivity extends AppCompatActivity {
             } else if (TextUtils.isEmpty(activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim())) {
                 Toast.makeText(this, "Chưa nhập mật khẩu !", Toast.LENGTH_SHORT).show();
             } else {
-                logIn();
+                if (firebaseUser != null) { // user (dang ky dich vu firebase thanh cong) da dang nhap tren ung dung nay
+                    logIn(); // xu ly dang nhap dua tren database MySQL
+                } else { // user (dang ky dich vu firebase thanh cong) da logout ra khoi ung dung nay thi phai dang nhap lai de co the su dung chuc nang token cua firebase
+                    firebaseAuth.signInWithEmailAndPassword(activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim(), activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim())
+                            .addOnCompleteListener(this, task -> {
+                                if (task.isSuccessful()) {
+                                    logIn(); // Neu dang nhap thanh cong user firebase Authentication thi tiep tuc thuc hien xu ly dang nhap dua tren database MySQL
+                                }
+                            });
+                }
+
             }
         });
     }

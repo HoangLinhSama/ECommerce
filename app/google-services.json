@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1036062875863",
+    "project_id": "e-commerce-628fa",
+    "storage_bucket": "e-commerce-628fa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036062875863:android:838098cdb50dd255e35092",
+        "android_client_info": {
+          "package_name": "com.hoanglinhsama.ecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036062875863-lgetl1bs20eub90prm42jvq1pcuq16bj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hoanglinhsama.ecommerce",
+            "certificate_hash": "dea186eeb743a9e8670e9b7a9b2099a3df34769c"
+          }
+        },
+        {
+          "client_id": "1036062875863-g77qmrdaupckjgotu049aldkr5tudb27.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbi16ISPBcqUWW37KLOjhmYbiP9q1MkzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036062875863-g77qmrdaupckjgotu049aldkr5tudb27.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

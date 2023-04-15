@@ -74,7 +74,8 @@ public interface DataClient {
             , @Field("password") String password
             , @Field("name") String name
             , @Field("phoneNumber") String phoneNumber
-            , @Field("type") int type);
+            , @Field("type") int type
+            , @Field("firebaseUId") String firebaseUId);
 
     /**
      * Dang nhap
@@ -83,6 +84,13 @@ public interface DataClient {
     @POST("login.php")
     Call<List<User>> logIn(@Field("email") String email
             , @Field("password") String password);
+
+    /**
+     * Lay mat khau sau khi resetpassword de cap nhat mat khau cho account firebase authentication
+     */
+    @FormUrlEncoded
+    @POST("getnewpassword.php")
+    Call<List<User>> getNewPassword(@Field("email") String email);
 
     /**
      * Reset lai password khi quen
@@ -108,6 +116,9 @@ public interface DataClient {
     Call<String> updateQuantityProduct(@Field("productId") int productId
             , @Field("quantity") int quantity);
 
+    /**
+     * Lay lich su don hang
+     */
     @FormUrlEncoded
     @POST("getorderhistory.php")
     Call<List<Order>> getOrderHistory(@Field("userId") int userId);
@@ -128,10 +139,16 @@ public interface DataClient {
             , @Field("type") int type
             , @Field("quantity") int quantity);
 
+    /**
+     * Upload hinh anh san pham len server khi them moi san pham
+     */
     @Multipart
     @POST("uploadpictureproduct.php")
     Call<String> upLoadPictureProduct(@Part MultipartBody.Part pictureProduct);
 
+    /**
+     * Cap nhat thong tin san pham khi tien hanh sua thong tin
+     */
     @FormUrlEncoded
     @POST("updateproduct.php")
     Call<String> updateProduct(@Field("productId") int productId
@@ -141,4 +158,12 @@ public interface DataClient {
             , @Field("description") String description
             , @Field("type") int type
             , @Field("picture") String picture);
+
+    /**
+     * Cap nhat token cua user len database moi khi chay ung dung
+     */
+    @FormUrlEncoded
+    @POST("updatetoken.php")
+    Call<String> updateToken(@Field("userId") int userId
+            , @Field("token") String token);
 }

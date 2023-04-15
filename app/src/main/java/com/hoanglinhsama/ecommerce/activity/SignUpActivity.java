@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.databinding.ActivitySignUpBinding;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
@@ -23,6 +25,7 @@ import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
     private ActivitySignUpBinding activitySignUpBinding;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,31 +122,45 @@ public class SignUpActivity extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(phoneNumber)) {
                     Toast.makeText(this, "Chưa nhập số điện thoại !", Toast.LENGTH_SHORT).show();
                 } else {
-                    DataClient dataClient = ApiUtils.getData();
-                    Call<String> call = dataClient.signUp(email, password, name, phoneNumber, type);
-                    call.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            if (response.isSuccessful()) {
-                                if (response.body().equals("Email already exists !")) {
-                                    Toast.makeText(SignUpActivity.this, "Email đã tồn tại !", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(SignUpActivity.this, "Đăng ký thành công !", Toast.LENGTH_SHORT).show();
-
-                                    /* Sau khi dang ky thanh cong thi tu dong quay ve trang dang nhap va dien san email va password o muc dang nhap */
-                                    ApiUtils.currentUser.setEmail(email);
-                                    ApiUtils.currentUser.setPassword(password);
-                                    finish();
-                                }
+                    /* Dang ky tai khoan tren firebase Authentication de su dung duoc chuc nang token */
+                    firebaseAuth = FirebaseAuth.getInstance();
+                    firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                            if (firebaseUser != null) { // sau khi dang ky tai khoan tren firebase Authentication thanh cong
+                                signUp(email, password, name, phoneNumber, type, firebaseUser.getUid()); // dang ky tai khoan tren MySQL (Server)
+                            } else {
+                                Toast.makeText(this, "Email đã tồn tại !", Toast.LENGTH_SHORT).show();
                             }
-                        }
-
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-                            Log.d("getEventSignUp", t.getMessage());
                         }
                     });
                 }
+            }
+        });
+    }
+
+    /**
+     * Dang ky user tren MySQL (Server) sau khi dang ky thanh cong tren Firebase Authentication
+     */
+    private void signUp(String email, String password, String name, String phoneNumber, int type, String firebaseUId) {
+        DataClient dataClient = ApiUtils.getData();
+        Call<String> call = dataClient.signUp(email, password, name, phoneNumber, type, firebaseUId);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(SignUpActivity.this, "Đăng ký thành công !", Toast.LENGTH_SHORT).show();
+
+                    /* Sau khi dang ky thanh cong thi tu dong quay ve trang dang nhap va dien san email va password o muc dang nhap */
+                    ApiUtils.currentUser.setEmail(email);
+                    ApiUtils.currentUser.setPassword(password);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("getEventSignUp", t.getMessage());
             }
         });
     }
