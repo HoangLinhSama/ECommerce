@@ -13,10 +13,4 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-
-<!--    <style name="NeumorphCard">-->
-<!--        <item name="neumorph_cornerFamily">rounded</item>-->
-<!--        <item name="neumorph_cornerSize">10dp</item>-->
-
-<!--    </style>-->
 </resources><!--    chuyen thanh NoActionBar de cho dep hon-->
