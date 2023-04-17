@@ -69,9 +69,16 @@ public class MainActivity extends AppCompatActivity {
             getEventLogout();
             getEventSearch();
             getToken();
+            getEventChat();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getEventChat() {
+        activityMainBinding.imageViewMessage.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, ChatActivity.class));
+        });
     }
 
     /**

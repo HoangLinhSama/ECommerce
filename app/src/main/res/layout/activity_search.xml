@@ -14,7 +14,9 @@
         app:titleTextColor="@color/white" />
 
     <EditText
-        android:backgroundTint="@color/indigo_700"
+        android:background="@drawable/spnr_number_product"
+        android:paddingStart="10dp"
+        android:textCursorDrawable="@drawable/color_cursor"
         android:id="@+id/edit_text_search_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

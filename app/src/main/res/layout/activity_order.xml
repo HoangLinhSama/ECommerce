@@ -47,13 +47,13 @@
                     android:src="@drawable/ic_money" />
 
                 <TextView
-                    android:textSize="17sp"
                     android:id="@+id/text_view_total_price_order_screen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/red_700"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/unselected_color" />
+                android:background="@color/indigo_700" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,20 +75,20 @@
                     android:src="@drawable/ic_call" />
 
                 <TextView
-                    android:textSize="17sp"
                     android:id="@+id/text_view_phone_order_screen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/unselected_color" />
+                android:background="@color/indigo_700" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -102,13 +102,13 @@
                     android:src="@drawable/ic_email" />
 
                 <TextView
-                    android:textSize="17sp"
                     android:id="@+id/text_view_email_order_screen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -116,18 +116,20 @@
     </androidx.cardview.widget.CardView>
 
     <EditText
-        android:backgroundTint="@color/indigo_700"
-        android:textSize="17sp"
         android:id="@+id/edit_text_address_order_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
+        android:background="@drawable/spnr_number_product"
         android:drawableLeft="@drawable/ic_location"
         android:hint="@string/edit_text_address_order_screen"
+        android:minHeight="48dp"
         android:textColor="@color/black"
         android:textColorHint="@color/unselected_color"
+        android:textCursorDrawable="@drawable/color_cursor"
+        android:textSize="17sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_view_order_screen"
@@ -138,6 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:backgroundTint="@color/indigo_700"
@@ -145,8 +148,7 @@
         android:text="@string/tool_bar_order_screen_title"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:layout_marginTop="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_address_order_screen"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_address_order_screen" />
 </androidx.constraintlayout.widget.ConstraintLayout>

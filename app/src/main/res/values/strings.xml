@@ -56,4 +56,6 @@
     <string name="text_view_title_update_status_order">Tình trạng đơn hàng</string>
     <string name="button_update_status_order">Cập nhật</string>
     <string name="button_cancel_update_status_order">Hủy</string>
+    <string name="edit_text_content_chat">Nội dung chat</string>
+    <string name="tool_bar_chat_screen_title">Tin nhắn</string>
 </resources>
