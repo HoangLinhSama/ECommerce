@@ -14,13 +14,19 @@ import com.hoanglinhsama.ecommerce.eventbus.DisplayCartEvent;
 import com.hoanglinhsama.ecommerce.eventbus.NotifyChangeOrder;
 import com.hoanglinhsama.ecommerce.eventbus.TotalMoneyEvent;
 import com.hoanglinhsama.ecommerce.model.Cart;
+import com.hoanglinhsama.ecommerce.model.NotificationReceiveData;
+import com.hoanglinhsama.ecommerce.model.NotificationSendData;
+import com.hoanglinhsama.ecommerce.model.User;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
+import com.hoanglinhsama.ecommerce.retrofit2.DataPushNotification;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,8 +76,9 @@ public class OrderActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if (response.isSuccessful()) {
+                            pushNotificationToAdmin();
                             Toast.makeText(OrderActivity.this, "Đặt hàng thành công !", Toast.LENGTH_SHORT).show();
-                            updateQuantityProduct(ApiUtils.listCartChecked); // Cap nhat lai so luong con lai cua cac san pham duoc mua
+//                            updateQuantityProduct(ApiUtils.listCartChecked); // Cap nhat lai so luong con lai cua cac san pham duoc mua
                         }
                     }
 
@@ -80,6 +87,46 @@ public class OrderActivity extends AppCompatActivity {
                         Log.d("getEventOrder", t.getMessage());
                     }
                 });
+            }
+        });
+    }
+
+    /**
+     * Gui mot thong bao den nguoi ban (admin)
+     */
+    private void pushNotificationToAdmin() {
+        DataClient dataClient = ApiUtils.getData();
+        Call<List<User>> call = dataClient.getTokenAdmin();
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.isSuccessful()) {
+                    String tokenAdmin = response.body().get(0).getToken();
+                    Map<String, String> notification = new HashMap<>();
+                    notification.put("tile", "Thông báo đơn hàng");
+                    notification.put("body", "Có đơn hàng mới !");
+                    NotificationSendData notificationSendData = new NotificationSendData(tokenAdmin, notification);
+                    DataPushNotification dataPushNotification = ApiUtils.getDataNotification();
+                    Call<NotificationReceiveData> call1 = dataPushNotification.sendNotification(notificationSendData);
+                    call1.enqueue(new Callback<NotificationReceiveData>() {
+                        @Override
+                        public void onResponse(Call<NotificationReceiveData> call, Response<NotificationReceiveData> response) {
+                            if (response.isSuccessful()) {
+                                updateQuantityProduct(ApiUtils.listCartChecked);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<NotificationReceiveData> call, Throwable t) {
+                            Log.d("sendNotification", t.getMessage());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.d("pushNotificationToAdmin", t.getMessage());
             }
         });
     }

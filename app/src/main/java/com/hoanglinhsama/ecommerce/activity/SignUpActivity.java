@@ -49,49 +49,43 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void getEventShowPassword() {
-        activitySignUpBinding.editTextPasswordSignupScreen.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Drawable drawableLeft = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_password);
-                final int DRAWABLE_RIGHT = 2;
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (activitySignUpBinding.editTextPasswordSignupScreen.getRight() - activitySignUpBinding.editTextPasswordSignupScreen.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        if (activitySignUpBinding.editTextPasswordSignupScreen.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-                            activitySignUpBinding.editTextPasswordSignupScreen.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                            Drawable drawableRight = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_hide);
-                            activitySignUpBinding.editTextPasswordSignupScreen.setCompoundDrawablesWithIntrinsicBounds(drawableLeft, null, drawableRight, null);
-                        } else {
-                            activitySignUpBinding.editTextPasswordSignupScreen.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                            Drawable drawableRight = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_show);
-                            activitySignUpBinding.editTextPasswordSignupScreen.setCompoundDrawablesWithIntrinsicBounds(drawableLeft, null, drawableRight, null);
-                        }
-                        return true;
+        activitySignUpBinding.editTextPasswordSignupScreen.setOnTouchListener((v, event) -> {
+            Drawable drawableLeft = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_password);
+            final int DRAWABLE_RIGHT = 2;
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (activitySignUpBinding.editTextPasswordSignupScreen.getRight() - activitySignUpBinding.editTextPasswordSignupScreen.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    if (activitySignUpBinding.editTextPasswordSignupScreen.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                        activitySignUpBinding.editTextPasswordSignupScreen.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                        Drawable drawableRight = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_hide);
+                        activitySignUpBinding.editTextPasswordSignupScreen.setCompoundDrawablesWithIntrinsicBounds(drawableLeft, null, drawableRight, null);
+                    } else {
+                        activitySignUpBinding.editTextPasswordSignupScreen.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        Drawable drawableRight = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_show);
+                        activitySignUpBinding.editTextPasswordSignupScreen.setCompoundDrawablesWithIntrinsicBounds(drawableLeft, null, drawableRight, null);
                     }
+                    return true;
                 }
-                return false;
             }
+            return false;
         });
-        activitySignUpBinding.editTextRepasswordSignupScreen.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Drawable drawableLeft = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_password);
-                final int DRAWABLE_RIGHT = 2;
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (activitySignUpBinding.editTextRepasswordSignupScreen.getRight() - activitySignUpBinding.editTextRepasswordSignupScreen.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        if (activitySignUpBinding.editTextRepasswordSignupScreen.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-                            activitySignUpBinding.editTextRepasswordSignupScreen.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                            Drawable drawableRight = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_hide);
-                            activitySignUpBinding.editTextRepasswordSignupScreen.setCompoundDrawablesWithIntrinsicBounds(drawableLeft, null, drawableRight, null);
-                        } else {
-                            activitySignUpBinding.editTextRepasswordSignupScreen.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                            Drawable drawableRight = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_show);
-                            activitySignUpBinding.editTextRepasswordSignupScreen.setCompoundDrawablesWithIntrinsicBounds(drawableLeft, null, drawableRight, null);
-                        }
-                        return true;
+        activitySignUpBinding.editTextRepasswordSignupScreen.setOnTouchListener((v, event) -> {
+            Drawable drawableLeft = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_password);
+            final int DRAWABLE_RIGHT = 2;
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (activitySignUpBinding.editTextRepasswordSignupScreen.getRight() - activitySignUpBinding.editTextRepasswordSignupScreen.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    if (activitySignUpBinding.editTextRepasswordSignupScreen.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                        activitySignUpBinding.editTextRepasswordSignupScreen.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                        Drawable drawableRight = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_hide);
+                        activitySignUpBinding.editTextRepasswordSignupScreen.setCompoundDrawablesWithIntrinsicBounds(drawableLeft, null, drawableRight, null);
+                    } else {
+                        activitySignUpBinding.editTextRepasswordSignupScreen.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        Drawable drawableRight = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_show);
+                        activitySignUpBinding.editTextRepasswordSignupScreen.setCompoundDrawablesWithIntrinsicBounds(drawableLeft, null, drawableRight, null);
                     }
+                    return true;
                 }
-                return false;
             }
+            return false;
         });
     }
 

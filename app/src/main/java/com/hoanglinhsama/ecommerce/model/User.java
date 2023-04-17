@@ -26,6 +26,17 @@ public class User {
     @SerializedName("firebaseUId")
     @Expose
     private String firebaseUid;
+    @SerializedName("token")
+    @Expose
+    private String token;
+
+    public String getToken() {
+        return this.token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getFirebaseUid() {
         return this.firebaseUid;

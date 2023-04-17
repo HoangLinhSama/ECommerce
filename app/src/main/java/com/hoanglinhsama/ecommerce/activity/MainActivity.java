@@ -8,6 +8,7 @@ import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(activityMainBinding.getRoot());
 
-        setUpActionBar();
+        featureUserAdmin();
         getAdminFeature();
         if (isConnected(this)) {
             setUpViewFlipper();
@@ -70,6 +71,19 @@ public class MainActivity extends AppCompatActivity {
             getToken();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Xac dinh chuc nang nao la cua admin (nguoi ban), cua user (nguoi mua)
+     */
+    private void featureUserAdmin() {
+        if (ApiUtils.currentUser.getType() == 1) // admin
+        {
+            activityMainBinding.imageViewSearch.setVisibility(View.INVISIBLE); // an chuc nang tim kiem san pham
+            activityMainBinding.frameLayoutMainScreen.setVisibility(View.INVISIBLE);
+            activityMainBinding.bottomNavigationMainScreen.setVisibility(View.INVISIBLE);
+            setUpActionBar();
         }
     }
 
@@ -276,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setUpActionBar() {
         setSupportActionBar(activityMainBinding.toolBarMainScreen);
-        // 2 dong duoi nay co the lam duoc viec nhu sau : neu tai khoan la loai cua nguoi ban thi chay 2 dong o duoi, con neu la tai khoan khach hang thi khong co 2 dong o duoi
         activityMainBinding.toolBarMainScreen.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
         activityMainBinding.toolBarMainScreen.setNavigationOnClickListener(v -> activityMainBinding.drawerLayoutMainScreen.openDrawer(GravityCompat.START));
     }

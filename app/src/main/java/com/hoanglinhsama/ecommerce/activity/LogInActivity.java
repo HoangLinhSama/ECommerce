@@ -32,6 +32,8 @@ import retrofit2.Response;
 public class LogInActivity extends AppCompatActivity {
     private ActivityLogInBinding activityLogInBinding;
     private SharedPreferences sharedPreferences;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,10 @@ public class LogInActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("dataLogin", MODE_PRIVATE);
         activityLogInBinding.editTextEmailLoginScreen.setText(sharedPreferences.getString("email", ""));
         activityLogInBinding.editTextPasswordLoginScreen.setText(sharedPreferences.getString("password", ""));
+
+        /* Khoi tao firebaseAuthentication va firebaseUsser */
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
     }
 
     private void logIn() {
@@ -101,34 +107,18 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.isSuccessful()) {
-                    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                    firebaseAuth.signInWithEmailAndPassword(sharedPreferences.getString("email", ""), sharedPreferences.getString("password", ""))
-                            .addOnCompleteListener(LogInActivity.this, task -> {
-                                if (task.isSuccessful()) {
-                                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                                    if (firebaseUser != null) {
-                                        firebaseUser.updatePassword(response.body().get(0).getPassword())
-                                                .addOnCompleteListener(LogInActivity.this, task1 -> {
-                                                    if (task1.isSuccessful()) {
-                                                        firebaseAuth.signInWithEmailAndPassword(activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim(), activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim())
-                                                                .addOnCompleteListener(LogInActivity.this, task11 -> {
-                                                                    if (task11.isSuccessful()) {
-                                                                        ApiUtils.currentUser = response.body().get(0);
-                                                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                                                        editor.putString("email", activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim());
-                                                                        editor.putString("password", activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim());
-                                                                        editor.putString("user", new Gson().toJson(ApiUtils.currentUser)); // luu thong tin user tra ve khi dang nhap thanh cong, de tu lan dang nhap tiep theo se tu man hinh welcome vao thang man hinh main
-                                                                        editor.apply();
-                                                                        activityLogInBinding.progressBarLoginScreen.setVisibility(View.INVISIBLE);
-                                                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                                                        finish();
-                                                                    }
-                                                                });
-                                                    }
-                                                });
-                                    }
-                                }
-                            });
+                    ApiUtils.currentUser = response.body().get(0);
+
+                    /* Luu thong tin dang nhap sau khi dang nhap thanh cong */
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim());
+                    editor.putString("password", activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim());
+
+                    editor.putString("user", new Gson().toJson(ApiUtils.currentUser)); // luu thong tin user tra ve khi dang nhap thanh cong, de tu lan dang nhap tiep theo se tu man hinh welcome vao thang man hinh main
+                    editor.apply();
+
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish(); // finish de khi vao man hinh khac ma dieu huong bang back tren he thong android thi se khong tro lai man hinh nay nua
                 }
             }
 
@@ -147,8 +137,17 @@ public class LogInActivity extends AppCompatActivity {
             } else if (TextUtils.isEmpty(activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim())) {
                 Toast.makeText(this, "Chưa nhập mật khẩu !", Toast.LENGTH_SHORT).show();
             } else {
-                activityLogInBinding.progressBarLoginScreen.setVisibility(View.VISIBLE);
-                logIn();
+                if (firebaseUser != null) { // user (dang ky dich vu firebase thanh cong) da dang nhap tren ung dung nay
+                    logIn(); // xu ly dang nhap dua tren database MySQL
+                } else { // user (dang ky dich vu firebase thanh cong) da logout ra khoi ung dung nay thi phai dang nhap lai de co the su dung chuc nang token cua firebase
+                    firebaseAuth.signInWithEmailAndPassword(activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim(), activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim())
+                            .addOnCompleteListener(this, task -> {
+                                if (task.isSuccessful()) {
+                                    logIn(); // Neu dang nhap thanh cong user firebase Authentication thi tiep tuc thuc hien xu ly dang nhap dua tren database MySQL
+                                }
+                            });
+                }
+
             }
         });
     }

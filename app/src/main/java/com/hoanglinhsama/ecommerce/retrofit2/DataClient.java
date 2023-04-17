@@ -1,6 +1,8 @@
 package com.hoanglinhsama.ecommerce.retrofit2;
 
 import com.hoanglinhsama.ecommerce.model.Cart;
+import com.hoanglinhsama.ecommerce.model.NotificationReceiveData;
+import com.hoanglinhsama.ecommerce.model.NotificationSendData;
 import com.hoanglinhsama.ecommerce.model.Order;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.hoanglinhsama.ecommerce.model.User;
@@ -9,14 +11,20 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 
+/**
+ * Gui request den Server PHPMyAdmin, va nhan lai response tra ve
+ */
 public interface DataClient {
+
     /**
      * Lay du lieu san pham moi tu server
      */
@@ -84,13 +92,6 @@ public interface DataClient {
     @POST("login.php")
     Call<List<User>> logIn(@Field("email") String email
             , @Field("password") String password);
-
-    /**
-     * Lay mat khau sau khi resetpassword de cap nhat mat khau cho account firebase authentication
-     */
-    @FormUrlEncoded
-    @POST("getnewpassword.php")
-    Call<List<User>> getNewPassword(@Field("email") String email);
 
     /**
      * Reset lai password khi quen
@@ -162,8 +163,14 @@ public interface DataClient {
     /**
      * Cap nhat token cua user len database moi khi chay ung dung
      */
-    @FormUrlEncoded
+    @FormUrlEncoded // @FormUrlEncoded la Header cua request HTTP nay
     @POST("updatetoken.php")
     Call<String> updateToken(@Field("userId") int userId
             , @Field("token") String token);
+
+    /**
+     * Lay ra token cua admin
+     */
+    @GET("gettokenadmin.php")
+    Call<List<User>> getTokenAdmin();
 }

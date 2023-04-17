@@ -15,6 +15,7 @@
         app:titleTextColor="@color/white">
 
         <FrameLayout
+            android:id="@+id/frame_layout_product_detail_screen"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right"
@@ -115,6 +116,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linear_layout_product_detail_1">
+
+        <LinearLayout
+            android:id="@+id/linear_layout_quantity_product_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="@string/text_view_quantity_product_detail"
+                android:textColor="@color/indigo_700"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_view_quantity_product_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"

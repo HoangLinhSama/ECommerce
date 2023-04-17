@@ -48,4 +48,5 @@
     <string name="text_view_picture_add_product_screen">Chọn hình ảnh sản phẩm</string>
     <string name="text_view_all_product_manage">Tất cả sản phẩm</string>
     <string name="text_view_title_notification">Thông báo</string>
+    <string name="text_view_quantity_product_detail">Số lượng còn lại</string>
 </resources>

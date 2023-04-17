@@ -3,6 +3,7 @@ package com.hoanglinhsama.ecommerce.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         activityProductDetailBinding = ActivityProductDetailBinding.inflate(getLayoutInflater());
         setContentView(activityProductDetailBinding.getRoot());
 
+        featureUserAdmin();
         setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
             initData();
@@ -44,6 +46,17 @@ public class ProductDetailActivity extends AppCompatActivity {
             getEventClickImageViewCart();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void featureUserAdmin() {
+        if (ApiUtils.currentUser.getType() == 1) { // admin
+            activityProductDetailBinding.buttonAddToCart.setVisibility(View.INVISIBLE);
+            activityProductDetailBinding.frameLayoutProductDetailScreen.setVisibility(View.INVISIBLE);
+            activityProductDetailBinding.spinnerProductDetailScreen.setVisibility(View.INVISIBLE);
+        } else // user
+        {
+            activityProductDetailBinding.linearLayoutQuantityProductDetail.setVisibility(View.INVISIBLE); // khong cho nguoi dung thay so luong san pham con lai
         }
     }
 
@@ -160,6 +173,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         activityProductDetailBinding.textViewPriceProduct.setText(decimalFormat.format(Double.parseDouble(String.valueOf(product.getPrice()))) + "₫");
         Picasso.get().load(product.getPicture()).into(activityProductDetailBinding.imageViewPictureProduct);
         activityProductDetailBinding.textViewDetailProduct.setText(product.getDescription());
+        activityProductDetailBinding.textViewQuantityProductDetail.setText(String.valueOf(product.getQuantity()));
 
         /* Khoi tao spinner */
         Integer[] numberProduct = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
