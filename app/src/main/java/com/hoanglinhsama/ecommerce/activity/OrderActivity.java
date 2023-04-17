@@ -76,9 +76,8 @@ public class OrderActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if (response.isSuccessful()) {
-                            pushNotificationToAdmin();
+                            pushNotificationToAdmin(); // gui thong bao don hang den admin
                             Toast.makeText(OrderActivity.this, "Đặt hàng thành công !", Toast.LENGTH_SHORT).show();
-//                            updateQuantityProduct(ApiUtils.listCartChecked); // Cap nhat lai so luong con lai cua cac san pham duoc mua
                         }
                     }
 
@@ -95,13 +94,14 @@ public class OrderActivity extends AppCompatActivity {
      * Gui mot thong bao den nguoi ban (admin)
      */
     private void pushNotificationToAdmin() {
+        int type = 1; // gui notification cho admin nen type =1
         DataClient dataClient = ApiUtils.getData();
-        Call<List<User>> call = dataClient.getTokenAdmin();
+        Call<List<User>> call = dataClient.getToken(type);
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.isSuccessful()) {
-                    String tokenAdmin = response.body().get(0).getToken();
+                    String tokenAdmin = response.body().get(0).getToken(); // do logic la : 1 admin, nhieu user nen chi can get(0)
                     Map<String, String> notification = new HashMap<>();
                     notification.put("tile", "Thông báo đơn hàng");
                     notification.put("body", "Có đơn hàng mới !");
@@ -112,7 +112,7 @@ public class OrderActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<NotificationReceiveData> call, Response<NotificationReceiveData> response) {
                             if (response.isSuccessful()) {
-                                updateQuantityProduct(ApiUtils.listCartChecked);
+                                updateQuantityProduct(ApiUtils.listCartChecked); // cap nhat lai so luong san pham con lai tren server PHPMyAdmin
                             }
                         }
 
@@ -140,7 +140,7 @@ public class OrderActivity extends AppCompatActivity {
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (response.isSuccessful()) {
                         if (product.getIdProduct() == listCart.get(listCart.size() - 1).getIdProduct()) { // phan tu cuoi cung cua list
-                            getCartDetail();
+                            getCartDetail(); // cap nhat lai cac san pham trong gio hang
                         }
                     }
                 }

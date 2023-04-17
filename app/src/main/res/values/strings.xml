@@ -49,4 +49,8 @@
     <string name="text_view_all_product_manage">Tất cả sản phẩm</string>
     <string name="text_view_title_notification">Thông báo</string>
     <string name="text_view_quantity_product_detail">Số lượng còn lại</string>
+    <string name="tool_bar_order_manage_screen_title">Quản lý đơn hàng</string>
+    <string name="text_view_all_order_manage">Tất cả đơn hàng</string>
+    <string name="text_view_title_status_order_history_screen">Trạng thái</string>
+    <string name="text_view_title_address_order_history_screen">Địa chỉ</string>
 </resources>

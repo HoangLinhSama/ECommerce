@@ -218,6 +218,10 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, ProductManageActivity.class));
                     finish();
                     break;
+                case 2:
+                    startActivity(new Intent(MainActivity.this, OrderManageActivity.class));
+                    finish();
+                    break;
             }
         });
     }
@@ -256,6 +260,7 @@ public class MainActivity extends AppCompatActivity {
         listAdminFeature = new ArrayList<>();
         listAdminFeature.add(new AdminFeature("Trang Chủ", R.drawable.ic_home_page));
         listAdminFeature.add(new AdminFeature("Quản lý sản phẩm", R.drawable.ic_product_manage));
+        listAdminFeature.add(new AdminFeature("Quản lý đơn hàng", R.drawable.ic_order_manage));
         adminFeatureAdapter = new AdminFeatureAdapter(getApplicationContext(), R.layout.item_admin_feature, listAdminFeature);
         activityMainBinding.listViewMainScreen.setAdapter(adminFeatureAdapter);
     }

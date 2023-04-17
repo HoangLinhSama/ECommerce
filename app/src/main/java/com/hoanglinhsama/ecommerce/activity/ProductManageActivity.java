@@ -2,10 +2,8 @@ package com.hoanglinhsama.ecommerce.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,10 +16,8 @@ import com.hoanglinhsama.ecommerce.ItemDecoration;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.AdminFeatureAdapter;
 import com.hoanglinhsama.ecommerce.adapter.ManageProductAdapter;
-import com.hoanglinhsama.ecommerce.adapter.NewProductAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityProductManageBinding;
 import com.hoanglinhsama.ecommerce.eventbus.DeleteModifyProductEvent;
-import com.hoanglinhsama.ecommerce.eventbus.NotifyChangeOrder;
 import com.hoanglinhsama.ecommerce.model.AdminFeature;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
@@ -112,6 +108,7 @@ public class ProductManageActivity extends AppCompatActivity {
         listAdminFeature = new ArrayList<>();
         listAdminFeature.add(new AdminFeature("Trang Chủ", R.drawable.ic_home_page));
         listAdminFeature.add(new AdminFeature("Quản lý sản phẩm", R.drawable.ic_product_manage));
+        listAdminFeature.add(new AdminFeature("Quản lý đơn hàng", R.drawable.ic_order_manage));
         adminFeatureAdapter = new AdminFeatureAdapter(getApplicationContext(), R.layout.item_admin_feature, listAdminFeature);
         activityProductManageBinding.listViewProductManageScreen.setAdapter(adminFeatureAdapter);
     }
@@ -125,6 +122,10 @@ public class ProductManageActivity extends AppCompatActivity {
                     break;
                 case 1:
                     startActivity(new Intent(ProductManageActivity.this, ProductManageActivity.class));
+                    finish();
+                    break;
+                case 2:
+                    startActivity(new Intent(ProductManageActivity.this, OrderManageActivity.class));
                     finish();
                     break;
             }

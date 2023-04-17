@@ -171,6 +171,7 @@ public interface DataClient {
     /**
      * Lay ra token cua admin
      */
-    @GET("gettokenadmin.php")
-    Call<List<User>> getTokenAdmin();
+    @FormUrlEncoded
+    @POST("gettoken.php")
+    Call<List<User>> getToken(@Field("type") int type);
 }

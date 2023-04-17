@@ -19,6 +19,28 @@ public class Order {
     @SerializedName("arrayProduct")
     @Expose
     private List<ProductOrder> listProductOrder;
+    @SerializedName("status")
+    @Expose
+    private int status;
+    @SerializedName("address")
+    @Expose
+    private String address;
+
+    public String getAddress() {
+        return this.address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public int getId() {
         return this.id;
