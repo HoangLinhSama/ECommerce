@@ -11,8 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.hoanglinhsama.ecommerce.databinding.ActivityOrderBinding;
 import com.hoanglinhsama.ecommerce.eventbus.DisplayCartEvent;
-import com.hoanglinhsama.ecommerce.eventbus.NotifyChangeOrder;
-import com.hoanglinhsama.ecommerce.eventbus.TotalMoneyEvent;
+import com.hoanglinhsama.ecommerce.eventbus.NotifyChangeOrderEvent;
 import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.NotificationReceiveData;
 import com.hoanglinhsama.ecommerce.model.NotificationSendData;
@@ -163,7 +162,7 @@ public class OrderActivity extends AppCompatActivity {
             public void onResponse(Call<List<Cart>> call, Response<List<Cart>> response) {
                 if (response.isSuccessful()) {
                     ApiUtils.listCart = response.body();
-                    EventBus.getDefault().post(new NotifyChangeOrder()); // Post event den eventbus de goi Adapter.notifydatasetchange()
+                    EventBus.getDefault().post(new NotifyChangeOrderEvent()); // Post event den eventbus de goi Adapter.notifydatasetchange()
                 }
             }
 
@@ -172,7 +171,7 @@ public class OrderActivity extends AppCompatActivity {
                 Log.d("getCartDetail", t.getMessage());
                 if (t.getMessage().equals("Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $") || t.getMessage().equals("End of input at line 1 column 1 path $")) { // loi xay ra khi khong get duoc data tu table cart_detail (khi xoa tat ca san pham ra khoi gio hang), cach xu ly nay khong tot
                     ApiUtils.listCart.clear();
-                    EventBus.getDefault().post(new NotifyChangeOrder());
+                    EventBus.getDefault().post(new NotifyChangeOrderEvent());
                     EventBus.getDefault().post(new DisplayCartEvent()); // Post event den eventbus de hien thi recyclerview cart khi gio hang trong
                 }
             }

@@ -1,23 +1,34 @@
 package com.hoanglinhsama.ecommerce.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.hoanglinhsama.ecommerce.ItemDecoration;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.AdminFeatureAdapter;
 import com.hoanglinhsama.ecommerce.adapter.OrderHistoryAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityOrderManageBinding;
+import com.hoanglinhsama.ecommerce.eventbus.UpdateStatusOrderEvent;
 import com.hoanglinhsama.ecommerce.model.AdminFeature;
 import com.hoanglinhsama.ecommerce.model.Order;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +46,11 @@ public class OrderManageActivity extends AppCompatActivity {
     private AdminFeatureAdapter adminFeatureAdapter;
     private List<Order> listOrder;
     private OrderHistoryAdapter orderHistoryAdapter;
+    private Order order;
+    private Spinner spinnerUpdateStatusOrder;
+    private Button buttonUpdateStatusOrder;
+    private Button buttonCacelUpdateStatusOrder;
+    private int status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +66,18 @@ public class OrderManageActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -112,5 +140,65 @@ public class OrderManageActivity extends AppCompatActivity {
         setSupportActionBar(activityOrderManageBinding.toolBarOrderManageScreen);
         activityOrderManageBinding.toolBarOrderManageScreen.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
         activityOrderManageBinding.toolBarOrderManageScreen.setNavigationOnClickListener(v -> activityOrderManageBinding.drawerLayoutOrderManageScreen.openDrawer(GravityCompat.START));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdateStatusOrder(UpdateStatusOrderEvent event) {
+        if (event != null) {
+            order = event.getOrder();
+            /* Khoi tao dialog */
+            Dialog dialogUpdateStatusOrder = new Dialog(this);
+            dialogUpdateStatusOrder.setContentView(R.layout.dialog_update_status_order);
+            dialogUpdateStatusOrder.setCanceledOnTouchOutside(false);
+            spinnerUpdateStatusOrder = dialogUpdateStatusOrder.findViewById(R.id.spinner_update_status_order);
+            buttonUpdateStatusOrder = dialogUpdateStatusOrder.findViewById(R.id.button_update_status_order);
+            buttonCacelUpdateStatusOrder = dialogUpdateStatusOrder.findViewById(R.id.button_cancel_update_status_order);
+            dialogUpdateStatusOrder.show(); // dialog phai show thi no moi hien thi
+
+            /* Khoi tao Spinner */
+            List<String> listStatus = new ArrayList<>();
+            listStatus.add("Đang xử lý");
+            listStatus.add("Đã chấp nhận");
+            listStatus.add("Đã giao cho vận chuyển");
+            listStatus.add("Thành công");
+            listStatus.add("Đã hủy");
+            ArrayAdapter<String> arrayAdapterStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listStatus);
+            spinnerUpdateStatusOrder.setAdapter(arrayAdapterStatus);
+            spinnerUpdateStatusOrder.setSelection(order.getStatus());
+            spinnerUpdateStatusOrder.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    status = position;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            /* Cap nhat trang thai don hang len database */
+            buttonUpdateStatusOrder.setOnClickListener(v -> {
+                DataClient dataClient = ApiUtils.getData();
+                Call<String> call = dataClient.updateStatusOrder(order.getId(), status);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if (response.isSuccessful()) {
+                            dialogUpdateStatusOrder.cancel();
+                            getOrderHistory(); // cap nhat lai thong tin don hang
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.d("onUpdateStatusOrder", t.getMessage());
+                    }
+                });
+            });
+            buttonCacelUpdateStatusOrder.setOnClickListener(v -> {
+                dialogUpdateStatusOrder.cancel();
+            });
+        }
     }
 }

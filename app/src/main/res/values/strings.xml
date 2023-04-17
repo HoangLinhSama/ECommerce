@@ -53,4 +53,7 @@
     <string name="text_view_all_order_manage">Tất cả đơn hàng</string>
     <string name="text_view_title_status_order_history_screen">Trạng thái</string>
     <string name="text_view_title_address_order_history_screen">Địa chỉ</string>
+    <string name="text_view_title_update_status_order">Tình trạng đơn hàng</string>
+    <string name="button_update_status_order">Cập nhật</string>
+    <string name="button_cancel_update_status_order">Hủy</string>
 </resources>

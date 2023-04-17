@@ -1,8 +1,6 @@
 package com.hoanglinhsama.ecommerce.retrofit2;
 
 import com.hoanglinhsama.ecommerce.model.Cart;
-import com.hoanglinhsama.ecommerce.model.NotificationReceiveData;
-import com.hoanglinhsama.ecommerce.model.NotificationSendData;
 import com.hoanglinhsama.ecommerce.model.Order;
 import com.hoanglinhsama.ecommerce.model.Product;
 import com.hoanglinhsama.ecommerce.model.User;
@@ -11,11 +9,9 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -174,4 +170,12 @@ public interface DataClient {
     @FormUrlEncoded
     @POST("gettoken.php")
     Call<List<User>> getToken(@Field("type") int type);
+
+    /**
+     * Cap nhat lai trang thai cua don hang len database
+     */
+    @FormUrlEncoded
+    @POST("updatestatusorder.php")
+    Call<String> updateStatusOrder(@Field("orderId") int orderId
+            , @Field("status") int status);
 }

@@ -239,6 +239,7 @@ public class AddProductActivity extends AppCompatActivity {
             activityAddProductBinding.editTextQuantityAddProductScreen.setText(String.valueOf(productModify.getQuantity()));
             activityAddProductBinding.editTextDescriptionAddProductScreen.setText(productModify.getDescription());
             activityAddProductBinding.textViewPictureAddProductScreen.setText(productModify.getPicture());
+            activityAddProductBinding.spinnerAddProductScreen.setSelection(productModify.getType() - 1);
         }
     }
 

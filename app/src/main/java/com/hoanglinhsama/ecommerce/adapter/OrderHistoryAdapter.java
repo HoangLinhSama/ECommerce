@@ -11,12 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hoanglinhsama.ecommerce.Interface.OnItemClickListener;
 import com.hoanglinhsama.ecommerce.ItemDecoration;
 import com.hoanglinhsama.ecommerce.R;
+import com.hoanglinhsama.ecommerce.eventbus.UpdateStatusOrderEvent;
 import com.hoanglinhsama.ecommerce.model.Order;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 
-import org.w3c.dom.Text;
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -51,9 +53,17 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         {
             holder.linearLayoutAddress.setVisibility(View.INVISIBLE);
             holder.linearLayoutStatus.setVisibility(View.INVISIBLE);
-        } else {
+        } else { // admin
             holder.textViewAddressOrderHistory.setText(order.getAddress());
             holder.textViewStatusOrderHistory.setText(statusOrder(order.getStatus()));
+            holder.setOnItemClickListener(new OnItemClickListener() { // chi admin moi duoc bat su kien click doi voi moi item_order_history
+                @Override
+                public void onClick(View view, int position, boolean isLongClick) {
+                    if (!isLongClick) {
+                        EventBus.getDefault().post(new UpdateStatusOrderEvent(order));
+                    }
+                }
+            });
         }
         holder.textViewIdOrderHistory.setText(String.valueOf(order.getId()));
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -81,7 +91,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         return listOrderHistory.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView textViewIdOrderHistory;
         private TextView textViewDateOrderHistory;
         private TextView textViewTotalPriceOrderHistory;
@@ -90,6 +100,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         private RecyclerView recyclerViewDetailOrderHistory;
         private LinearLayout linearLayoutStatus;
         private LinearLayout linearLayoutAddress;
+        private OnItemClickListener onItemClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +112,16 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             this.textViewStatusOrderHistory = itemView.findViewById(R.id.text_view_status_order_history_screen);
             this.linearLayoutAddress = itemView.findViewById(R.id.linear_layout_address_order_history_screen);
             this.linearLayoutStatus = itemView.findViewById(R.id.linear_layout_status_order_history_screen);
+            itemView.setOnClickListener(this);
+        }
+
+        public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+            this.onItemClickListener = onItemClickListener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            onItemClickListener.onClick(v, getAdapterPosition(), false);
         }
     }
 

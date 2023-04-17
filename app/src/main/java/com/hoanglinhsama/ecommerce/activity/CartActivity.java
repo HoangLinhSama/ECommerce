@@ -13,7 +13,7 @@ import com.hoanglinhsama.ecommerce.ItemDecoration;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.CartAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityCartBinding;
-import com.hoanglinhsama.ecommerce.eventbus.NotifyChangeOrder;
+import com.hoanglinhsama.ecommerce.eventbus.NotifyChangeOrderEvent;
 import com.hoanglinhsama.ecommerce.eventbus.TotalMoneyEvent;
 import com.hoanglinhsama.ecommerce.eventbus.DisplayCartEvent;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
@@ -159,7 +159,7 @@ public class CartActivity extends AppCompatActivity {
      * Xu ly su kien cap nhat RecyclerView khi dat hang thanh cong
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onNotifyChangeOrder(NotifyChangeOrder event) {
+    public void onNotifyChangeOrder(NotifyChangeOrderEvent event) {
         if (event != null) {
             cartAdapter.notifyDataSetChanged();
         }
