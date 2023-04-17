@@ -22,16 +22,22 @@ import com.hoanglinhsama.ecommerce.adapter.OrderHistoryAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityOrderManageBinding;
 import com.hoanglinhsama.ecommerce.eventbus.UpdateStatusOrderEvent;
 import com.hoanglinhsama.ecommerce.model.AdminFeature;
+import com.hoanglinhsama.ecommerce.model.NotificationReceiveData;
+import com.hoanglinhsama.ecommerce.model.NotificationSendData;
 import com.hoanglinhsama.ecommerce.model.Order;
+import com.hoanglinhsama.ecommerce.model.User;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
+import com.hoanglinhsama.ecommerce.retrofit2.DataPushNotification;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -157,11 +163,11 @@ public class OrderManageActivity extends AppCompatActivity {
 
             /* Khoi tao Spinner */
             List<String> listStatus = new ArrayList<>();
-            listStatus.add("Đang xử lý");
-            listStatus.add("Đã chấp nhận");
-            listStatus.add("Đã giao cho vận chuyển");
-            listStatus.add("Thành công");
-            listStatus.add("Đã hủy");
+            listStatus.add("Đơn hàng đang được xử lý");
+            listStatus.add("Đơn hàng đã được chấp nhận");
+            listStatus.add("Đơn hàng đã được giao cho đơn vị vận chuyển");
+            listStatus.add("Đơn hàng đã giao thành công");
+            listStatus.add("Đơn hàng đã bị hủy");
             ArrayAdapter<String> arrayAdapterStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listStatus);
             spinnerUpdateStatusOrder.setAdapter(arrayAdapterStatus);
             spinnerUpdateStatusOrder.setSelection(order.getStatus());
@@ -186,7 +192,7 @@ public class OrderManageActivity extends AppCompatActivity {
                     public void onResponse(Call<String> call, Response<String> response) {
                         if (response.isSuccessful()) {
                             dialogUpdateStatusOrder.cancel();
-                            getOrderHistory(); // cap nhat lai thong tin don hang
+                            pushNotificationToUser();
                         }
                     }
 
@@ -200,5 +206,46 @@ public class OrderManageActivity extends AppCompatActivity {
                 dialogUpdateStatusOrder.cancel();
             });
         }
+    }
+
+    /**
+     * Gui thong bao den user ve trang thai don hang da cap nhat
+     */
+    private void pushNotificationToUser() {
+        DataClient dataClient = ApiUtils.getData();
+        Call<String> call = dataClient.getTokenUser(order.getId());
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    String tokenUser = response.body(); // moi don hang chi thuoc 1 user
+                    Map<String, String> notification = new HashMap<>();
+                    notification.put("tile", "Trạng thái đơn hàng");
+                    notification.put("body", OrderHistoryAdapter.statusOrder(status));
+                    NotificationSendData notificationSendData = new NotificationSendData(tokenUser, notification);
+                    DataPushNotification dataPushNotification = ApiUtils.getDataNotification();
+                    Call<NotificationReceiveData> call1 = dataPushNotification.sendNotification(notificationSendData);
+                    call1.enqueue(new Callback<NotificationReceiveData>() {
+                        @Override
+                        public void onResponse(Call<NotificationReceiveData> call, Response<NotificationReceiveData> response) {
+                            if (response.isSuccessful()) {
+                                getOrderHistory();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<NotificationReceiveData> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+
     }
 }

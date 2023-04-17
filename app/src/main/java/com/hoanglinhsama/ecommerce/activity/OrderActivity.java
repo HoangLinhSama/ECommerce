@@ -93,16 +93,15 @@ public class OrderActivity extends AppCompatActivity {
      * Gui mot thong bao den nguoi ban (admin)
      */
     private void pushNotificationToAdmin() {
-        int type = 1; // gui notification cho admin nen type =1
         DataClient dataClient = ApiUtils.getData();
-        Call<List<User>> call = dataClient.getToken(type);
-        call.enqueue(new Callback<List<User>>() {
+        Call<String> call = dataClient.getTokenAdmin();
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    String tokenAdmin = response.body().get(0).getToken(); // do logic la : 1 admin, nhieu user nen chi can get(0)
+                    String tokenAdmin = response.body(); // logic la : 1 admin, nhieu user, nen chi gui thong bao den 1 admin
                     Map<String, String> notification = new HashMap<>();
-                    notification.put("tile", "Thông báo đơn hàng");
+                    notification.put("tile", "Đơn hàng");
                     notification.put("body", "Có đơn hàng mới !");
                     NotificationSendData notificationSendData = new NotificationSendData(tokenAdmin, notification);
                     DataPushNotification dataPushNotification = ApiUtils.getDataNotification();
@@ -111,21 +110,21 @@ public class OrderActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<NotificationReceiveData> call, Response<NotificationReceiveData> response) {
                             if (response.isSuccessful()) {
-                                updateQuantityProduct(ApiUtils.listCartChecked); // cap nhat lai so luong san pham con lai tren server PHPMyAdmin
+                                updateQuantityProduct(ApiUtils.listCartChecked);
                             }
                         }
 
                         @Override
                         public void onFailure(Call<NotificationReceiveData> call, Throwable t) {
-                            Log.d("sendNotification", t.getMessage());
+
                         }
                     });
                 }
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                Log.d("pushNotificationToAdmin", t.getMessage());
+            public void onFailure(Call<String> call, Throwable t) {
+
             }
         });
     }
@@ -150,7 +149,6 @@ public class OrderActivity extends AppCompatActivity {
                 }
             });
         });
-
     }
 
     private void getCartDetail() {

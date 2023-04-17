@@ -165,17 +165,23 @@ public interface DataClient {
             , @Field("token") String token);
 
     /**
-     * Lay ra token cua admin
-     */
-    @FormUrlEncoded
-    @POST("gettoken.php")
-    Call<List<User>> getToken(@Field("type") int type);
-
-    /**
      * Cap nhat lai trang thai cua don hang len database
      */
     @FormUrlEncoded
     @POST("updatestatusorder.php")
     Call<String> updateStatusOrder(@Field("orderId") int orderId
             , @Field("status") int status);
+
+    /**
+     * Lay ra token cua admin
+     */
+    @GET("gettokenadmin.php")
+    Call<String> getTokenAdmin();
+
+    /**
+     * Lay ra token cua user
+     */
+    @FormUrlEncoded
+    @POST("gettokenuser.php")
+    Call<String> getTokenUser(@Field("orderId") int orderId);
 }

@@ -125,23 +125,23 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         }
     }
 
-    private String statusOrder(int status) {
+    public static String statusOrder(int status) {
         String resultStatus = "";
         switch (status) {
             case 0:
-                resultStatus = "Đang xử lý";
+                resultStatus = "Đơn hàng đang được xử lý";
                 break;
             case 1:
-                resultStatus = "Đã chấp nhận";
+                resultStatus = "Đơn hàng đã được chấp nhận";
                 break;
             case 2:
-                resultStatus = "Đã giao cho vận chuyển";
+                resultStatus = "Đơn hàng đã được giao cho đơn vị vận chuyển";
                 break;
             case 3:
-                resultStatus = "Thành công";
+                resultStatus = "Đơn hàng đã giao thành công";
                 break;
             case 4:
-                resultStatus = "Đã hủy";
+                resultStatus = "Đơn hàng đã bị hủy";
                 break;
         }
         return resultStatus;
