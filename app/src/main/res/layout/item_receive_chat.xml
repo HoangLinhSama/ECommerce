@@ -6,13 +6,13 @@
 
     <TextView
         android:id="@+id/text_view_content_message_receive"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/background_receive_message"
-        android:paddingStart="5dp"
-        android:paddingTop="5dp"
-        android:paddingEnd="5dp"
-        android:paddingBottom="5dp"
+        android:paddingStart="7dp"
+        android:paddingTop="7dp"
+        android:paddingEnd="7dp"
+        android:paddingBottom="7dp"
         android:textColor="@color/black"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"

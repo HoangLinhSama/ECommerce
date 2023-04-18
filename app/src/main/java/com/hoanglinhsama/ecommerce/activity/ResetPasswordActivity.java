@@ -53,6 +53,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     public void onResponse(Call<String> call, Response<String> response) {
                         if (response.isSuccessful()) {
                             if (response.body().equals("Check your email and click on the link sent to your email !")) {
+                                ApiUtils.isResetPassword = true; // cho biet lan dang nhap tiep theo la lan dang nhap sau khi reset password
                                 Toast.makeText(ResetPasswordActivity.this, "Hãy kiểm tra email và nhấp vào đường dẫn được gửi đến email !", Toast.LENGTH_LONG).show();
                                 activityResetPasswordBinding.progressBarResetPasswordScreen.setVisibility(View.INVISIBLE);
                                 startActivity(new Intent(ResetPasswordActivity.this, LogInActivity.class));

@@ -13,6 +13,7 @@ public class ApiUtils {
     public static User currentUser = new User();
     public static List<Cart> listCartChecked = new ArrayList<>(); // list chua thong tin cac san pham ma checkbox cua no checked
     public static String receiveId; // Id cua nguoi nhan tin nhan
+    public static boolean isResetPassword = false; // kiem tra xem khi dang nhap la truong hop nao : dang nhap sau khi reset password, hay dang nhap khi moi dang ky, hoac danng nhap lai sau khi dang xuat
 
     /**
      * Key de khoi tao data trong document trong collection cua firebase cloud firestore

@@ -89,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
         {
             int count = listMessage.size();
             for (DocumentChange documentChange : value.getDocumentChanges()) {
-                if (documentChange.getType() == DocumentChange.Type.ADDED) {
+                if (documentChange.getType() == DocumentChange.Type.ADDED) { // documentChange la do them moi vao
                     ChatMessage chatMessage = new ChatMessage();
                     chatMessage.setSendId(documentChange.getDocument().getString(ApiUtils.KEY_SEND));
                     chatMessage.setReceiveId(documentChange.getDocument().getString(ApiUtils.KEY_RECEIVE));
@@ -99,8 +99,8 @@ public class ChatActivity extends AppCompatActivity {
                     listMessage.add(chatMessage);
                 }
             }
-            Collections.sort(listMessage, Comparator.comparing(ChatMessage::getDateObject));
-            if (count == 0) {
+            Collections.sort(listMessage, Comparator.comparing(ChatMessage::getDateObject)); // sap xep theo field dateObject cua object ChatMessages
+            if (count == 0) { // lan dau va chua co tin nhan nao duoc luu tren firestore
                 chatAdapter.notifyDataSetChanged();
             } else {
                 chatAdapter.notifyDataSetChanged();
@@ -110,11 +110,13 @@ public class ChatActivity extends AppCompatActivity {
     };
 
     private void listenerMessage() {
+        /* Thuc hien query doi voi truong hop nguoi gui la user, nguoi nhan la admin */
         database.collection(ApiUtils.PATH_CHAT)
-                .whereEqualTo(ApiUtils.KEY_SEND, String.valueOf(ApiUtils.currentUser.getId()))
+                .whereEqualTo(ApiUtils.KEY_SEND, String.valueOf(ApiUtils.currentUser.getId()))// tao query de lay cai document ma value cua field = gia tri xac dinh
                 .whereEqualTo(ApiUtils.KEY_RECEIVE, ApiUtils.receiveId)
-                .addSnapshotListener(eventListener);
+                .addSnapshotListener(eventListener); // lang nghe cac event thay doi cua cac collection hoac document thoa dieu kien truy van tren, va tu dong duoc goi khi co thay doi tren cac document hoac collection do
 
+        /* Thuc hien query doi voi truong hop nguoi gui la admin, nguoi nhan la user */
         database.collection(ApiUtils.PATH_CHAT)
                 .whereEqualTo(ApiUtils.KEY_SEND, ApiUtils.receiveId)
                 .whereEqualTo(ApiUtils.KEY_RECEIVE, String.valueOf(ApiUtils.currentUser.getId()))
