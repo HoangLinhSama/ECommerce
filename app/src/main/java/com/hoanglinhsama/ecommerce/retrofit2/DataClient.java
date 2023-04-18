@@ -176,12 +176,12 @@ public interface DataClient {
      * Lay ra token cua admin
      */
     @GET("gettokenadmin.php")
-    Call<String> getTokenAdmin();
+    Call<List<User>> getTokenAdmin();
 
     /**
      * Lay ra token cua user
      */
     @FormUrlEncoded
     @POST("gettokenuser.php")
-    Call<String> getTokenUser(@Field("orderId") int orderId);
+    Call<List<User>> getTokenUser(@Field("orderId") int orderId);
 }

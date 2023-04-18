@@ -12,6 +12,16 @@ public class ApiUtils {
     public static List<Cart> listCart; // list gio hang toan cuc chua thong tin cac san pham da them vao gio hang
     public static User currentUser = new User();
     public static List<Cart> listCartChecked = new ArrayList<>(); // list chua thong tin cac san pham ma checkbox cua no checked
+    public static String receiveId; // Id cua nguoi nhan tin nhan
+
+    /**
+     * Key de khoi tao data trong document trong collection cua firebase cloud firestore
+     */
+    public static final String KEY_SEND = "sendId";
+    public static final String KEY_RECEIVE = "receiveId";
+    public static final String KEY_MESSAGE = "message";
+    public static final String KEY_DATE_TIME = "datetime";
+    public static final String PATH_CHAT = "chat";
 
     public static DataClient getData() {
         return RetrofitClient.getClient(baseUrl).create(DataClient.class);

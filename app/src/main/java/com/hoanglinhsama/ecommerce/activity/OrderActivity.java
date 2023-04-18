@@ -94,12 +94,12 @@ public class OrderActivity extends AppCompatActivity {
      */
     private void pushNotificationToAdmin() {
         DataClient dataClient = ApiUtils.getData();
-        Call<String> call = dataClient.getTokenAdmin();
-        call.enqueue(new Callback<String>() {
+        Call<List<User>> call = dataClient.getTokenAdmin();
+        call.enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.isSuccessful()) {
-                    String tokenAdmin = response.body(); // logic la : 1 admin, nhieu user, nen chi gui thong bao den 1 admin
+                    String tokenAdmin = response.body().get(0).getToken(); // logic la : 1 admin, nhieu user, nen chi gui thong bao den 1 admin
                     Map<String, String> notification = new HashMap<>();
                     notification.put("tile", "Đơn hàng");
                     notification.put("body", "Có đơn hàng mới !");
@@ -116,15 +116,15 @@ public class OrderActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<NotificationReceiveData> call, Throwable t) {
-
+                            Log.d("sendNotification", t.getMessage());
                         }
                     });
                 }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.d("getTokenAdmin", t.getMessage());
             }
         });
     }

@@ -213,12 +213,12 @@ public class OrderManageActivity extends AppCompatActivity {
      */
     private void pushNotificationToUser() {
         DataClient dataClient = ApiUtils.getData();
-        Call<String> call = dataClient.getTokenUser(order.getId());
-        call.enqueue(new Callback<String>() {
+        Call<List<User>> call = dataClient.getTokenUser(order.getId());
+        call.enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.isSuccessful()) {
-                    String tokenUser = response.body(); // moi don hang chi thuoc 1 user
+                    String tokenUser = response.body().get(0).getToken(); // moi don hang chi thuoc 1 user
                     Map<String, String> notification = new HashMap<>();
                     notification.put("tile", "Trạng thái đơn hàng");
                     notification.put("body", OrderHistoryAdapter.statusOrder(status));
@@ -235,17 +235,16 @@ public class OrderManageActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<NotificationReceiveData> call, Throwable t) {
-
+                            Log.d("sendNotification", t.getMessage());
                         }
                     });
                 }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.d("getTokenUser", t.getMessage());
             }
         });
-
     }
 }

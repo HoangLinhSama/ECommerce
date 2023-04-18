@@ -31,6 +31,7 @@ import com.hoanglinhsama.ecommerce.eventbus.NtfCountEvent;
 import com.hoanglinhsama.ecommerce.model.AdminFeature;
 import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.Product;
+import com.hoanglinhsama.ecommerce.model.User;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
 import com.squareup.picasso.Picasso;
@@ -115,6 +116,25 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+        if (ApiUtils.currentUser.getType() == 2) { // neu la user thi lay ra id cua admin, de gui tin nhan den admin
+            DataClient dataClient = ApiUtils.getData();
+            Call<List<User>> call = dataClient.getTokenAdmin();
+            call.enqueue(new Callback<List<User>>() {
+                @Override
+                public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                    if (response.isSuccessful()) {
+                        ApiUtils.receiveId = String.valueOf(response.body().get(0).getId());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<User>> call, Throwable t) {
+                    Log.d("getTokenAdmin", t.getMessage());
+                }
+            });
+        } else { // nguoc lai la admin, se lay ra id cua user ma admin muon gui
+
+        }
     }
 
     private void getEventSearch() {
