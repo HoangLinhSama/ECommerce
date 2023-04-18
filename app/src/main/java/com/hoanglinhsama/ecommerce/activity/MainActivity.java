@@ -116,7 +116,9 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-        if (ApiUtils.currentUser.getType() == 2) { // neu la user thi lay ra id cua admin, de gui tin nhan den admin
+
+        /* Lay ra id cua nguoi nhan (user hoac admin)*/
+        if (ApiUtils.currentUser.getType() == 2) { // neu user la nguoi gui thi lay ra id cua admin, de gui tin nhan den admin
             DataClient dataClient = ApiUtils.getData();
             Call<List<User>> call = dataClient.getTokenAdmin();
             call.enqueue(new Callback<List<User>>() {

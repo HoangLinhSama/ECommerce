@@ -5,24 +5,26 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/text_view_title_content_message"
-        android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.7"
+        android:id="@+id/text_view_content_message_receive"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_receive_message"
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp"
         android:textColor="@color/black"
         android:textSize="17sp"
-       app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_view_time_chat_screen"
+        android:id="@+id/text_view_date_time_receive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:textColor="@color/unselected_color"
-        android:textSize="17sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_title_content_message" />
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_content_message_receive" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,7 +35,7 @@ public class ProductDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View convertView = null;
+        View convertView;
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (viewType == VIEW_TYPE_DATA) {
             convertView = layoutInflater.inflate(R.layout.item_product_detail, null);

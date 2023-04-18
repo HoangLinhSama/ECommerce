@@ -21,7 +21,7 @@ public class ApiUtils {
     public static final String KEY_RECEIVE = "receiveId";
     public static final String KEY_MESSAGE = "message";
     public static final String KEY_DATE_TIME = "datetime";
-    public static final String PATH_CHAT = "chat";
+    public static final String PATH_CHAT = "chat"; // duong dan cua collection trong firebase cloud firestore
 
     public static DataClient getData() {
         return RetrofitClient.getClient(baseUrl).create(DataClient.class);
