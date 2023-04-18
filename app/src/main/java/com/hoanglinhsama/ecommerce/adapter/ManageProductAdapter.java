@@ -51,17 +51,14 @@ public class ManageProductAdapter extends RecyclerView.Adapter<ManageProductAdap
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###"); // tao mau dinh dang nnn.nnn.nnn
         holder.textViewPriceProduct.setText(decimalFormat.format(Double.parseDouble(String.valueOf(product.getPrice()))) + "₫");
 
-        holder.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onClick(View view, int position, boolean isLongClick) {
-                if (!isLongClick) {
-                    Intent intent = new Intent(context, ProductDetailActivity.class);
-                    intent.putExtra("data", product);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                } else { // longClick
-                    EventBus.getDefault().post(new DeleteModifyProductEvent(product));
-                }
+        holder.setOnItemClickListener((view, position1, isLongClick) -> {
+            if (!isLongClick) {
+                Intent intent = new Intent(context, ProductDetailActivity.class);
+                intent.putExtra("data", product);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            } else { // longClick
+                EventBus.getDefault().post(new DeleteModifyProductEvent(product));
             }
         });
     }

@@ -14,7 +14,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerInside"
-        android:src="@drawable/author" />
+        android:src="@drawable/ic_author" />
 
     <TextView
         android:id="@+id/text_view_nav_header_title"

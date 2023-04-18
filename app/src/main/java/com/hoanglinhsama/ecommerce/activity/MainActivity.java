@@ -78,7 +78,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void getEventChat() {
         activityMainBinding.imageViewMessage.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, ChatActivity.class));
+            if (ApiUtils.currentUser.getType() == 2) // user thi chuyen truc tiep qua ChatActivity
+            {
+                startActivity(new Intent(MainActivity.this, ChatActivity.class));
+            } else // admin thi phai chuyen qua ListChatActivity, roi sau do doi voi tung click item trong ListChatActivity thi se chuyen sang ChatActivity
+            {
+                startActivity(new Intent(MainActivity.this, ListChatActivity.class));
+            }
         });
     }
 
@@ -134,8 +140,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("getTokenAdmin", t.getMessage());
                 }
             });
-        } else { // nguoc lai la admin, se lay ra id cua user ma admin muon gui
-
         }
     }
 

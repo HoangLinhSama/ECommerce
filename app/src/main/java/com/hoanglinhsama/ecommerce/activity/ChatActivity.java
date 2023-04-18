@@ -42,10 +42,24 @@ public class ChatActivity extends AppCompatActivity {
         initData();
         if (MainActivity.isConnected(getApplicationContext())) {
             getEventSendMessage();
+            if (ApiUtils.currentUser.getType() == 2) { // neu la user thi tu dang ky minh vao danh sach nhung nguoi duoc phep chat voi admin, logic la 1 admin duoc quyen chat voi nhieu user, nhung 1 user chi duoc phpe chat voi 1 admin
+                registerUser();
+            }
             listenerMessage();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * Dang ky vao danh sach user duoc phep nhan tin voi admin
+     */
+    private void registerUser() {
+        HashMap<String, Object> user = new HashMap<>();
+        user.put("id", String.valueOf(ApiUtils.currentUser.getId()));
+        user.put("userName", ApiUtils.currentUser.getName());
+        database.collection(ApiUtils.PATH_USER).document(String.valueOf(ApiUtils.currentUser.getId())).set(user); // moi document trong collection user co key la id cua user va value la hashmap user chua cac thong tin tuong ung voi user do
+
     }
 
     private void initData() {
@@ -56,6 +70,10 @@ public class ChatActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         activityChatBinding.recyclerViewChatScreen.setLayoutManager(layoutManager);
         activityChatBinding.recyclerViewChatScreen.addItemDecoration(new ItemDecoration(10));
+        if (ApiUtils.currentUser.getType() == 1) // admin
+        {
+            ApiUtils.receiveId = getIntent().getStringExtra("idUser");
+        }
     }
 
     private void getEventSendMessage() {
