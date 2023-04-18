@@ -13,7 +13,7 @@ public class ChatMessage {
     private Date dateObject;
 
     public String getSendId() {
-        return sendId;
+        return this.sendId;
     }
 
     public void setSendId(String sendId) {
@@ -21,7 +21,7 @@ public class ChatMessage {
     }
 
     public String getReceiveId() {
-        return receiveId;
+        return this.receiveId;
     }
 
     public void setReceiveId(String receiveId) {
@@ -29,7 +29,7 @@ public class ChatMessage {
     }
 
     public String getContentMessage() {
-        return contentMessage;
+        return this.contentMessage;
     }
 
     public void setContentMessage(String contentMessage) {
@@ -37,7 +37,7 @@ public class ChatMessage {
     }
 
     public String getDateTime() {
-        return dateTime;
+        return this.dateTime;
     }
 
     public void setDateTime(String dateTime) {
@@ -45,7 +45,7 @@ public class ChatMessage {
     }
 
     public Date getDateObject() {
-        return dateObject;
+        return this.dateObject;
     }
 
     public void setDateObject(Date dateObject) {

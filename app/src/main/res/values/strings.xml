@@ -59,4 +59,5 @@
     <string name="edit_text_content_chat">Nội dung chat</string>
     <string name="tool_bar_chat_screen_title">Tin nhắn</string>
     <string name="tool_bar_list_chat_screen_title">Danh Sách Chat</string>
+    <string name="tool_bar_statistical_screen_title">Thống Kê </string>
 </resources>

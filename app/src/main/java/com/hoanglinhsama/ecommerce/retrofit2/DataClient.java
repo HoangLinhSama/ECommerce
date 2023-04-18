@@ -3,6 +3,7 @@ package com.hoanglinhsama.ecommerce.retrofit2;
 import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.Order;
 import com.hoanglinhsama.ecommerce.model.Product;
+import com.hoanglinhsama.ecommerce.model.Statistical;
 import com.hoanglinhsama.ecommerce.model.User;
 
 import java.util.List;
@@ -184,4 +185,11 @@ public interface DataClient {
     @FormUrlEncoded
     @POST("gettokenuser.php")
     Call<List<User>> getTokenUser(@Field("orderId") int orderId);
+
+    /**
+     * Lay ra so luong da dat cua cac san pham de thong ke
+     */
+    @GET("incomestatistics.php")
+    Call<List<Statistical>> statisticalIncome();
+
 }

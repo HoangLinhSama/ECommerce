@@ -20,6 +20,7 @@
         android:scaleType="centerInside" />
 
     <TextView
+        android:layout_gravity="center"
         android:id="@+id/text_view_type_product"
         android:layout_width="0dp"
         android:layout_height="match_parent"
