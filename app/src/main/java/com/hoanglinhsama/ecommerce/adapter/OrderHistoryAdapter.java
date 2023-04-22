@@ -49,19 +49,16 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     @Override
     public void onBindViewHolder(@NonNull OrderHistoryAdapter.MyViewHolder holder, int position) {
         Order order = listOrderHistory.get(position);
-        if (ApiUtils.currentUser.getType() == 2) // an address va status doi voi user
+        holder.textViewStatusOrderHistory.setText(statusOrder(order.getStatus()));
+        if (ApiUtils.currentUser.getType() == 2) // an address doi voi user
         {
             holder.linearLayoutAddress.setVisibility(View.INVISIBLE);
-            holder.linearLayoutStatus.setVisibility(View.INVISIBLE);
         } else { // admin
             holder.textViewAddressOrderHistory.setText(order.getAddress());
-            holder.textViewStatusOrderHistory.setText(statusOrder(order.getStatus()));
-            holder.setOnItemClickListener(new OnItemClickListener() { // chi admin moi duoc bat su kien click doi voi moi item_order_history
-                @Override
-                public void onClick(View view, int position, boolean isLongClick) {
-                    if (!isLongClick) {
-                        EventBus.getDefault().post(new UpdateStatusOrderEvent(order));
-                    }
+            // chi admin moi duoc bat su kien click doi voi moi item_order_history
+            holder.setOnItemClickListener((view, position1, isLongClick) -> {
+                if (!isLongClick) {
+                    EventBus.getDefault().post(new UpdateStatusOrderEvent(order));
                 }
             });
         }
@@ -121,7 +118,9 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onClick(v, getAdapterPosition(), false);
+            if (ApiUtils.currentUser.getType() == 1) { // chi bat su kien click doi voi admin
+                onItemClickListener.onClick(v, getAdapterPosition(), false);
+            }
         }
     }
 

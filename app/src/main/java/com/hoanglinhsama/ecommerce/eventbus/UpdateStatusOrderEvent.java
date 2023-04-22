@@ -3,7 +3,7 @@ package com.hoanglinhsama.ecommerce.eventbus;
 import com.hoanglinhsama.ecommerce.model.Order;
 
 /**
- * Gui du lieu cua don hang tu OrderHistoryAdapter qua OrderManageActivity de xu lys
+ * Gui du lieu cua don hang tu OrderHistoryAdapter qua OrderManageActivity de xu ly
  */
 public class UpdateStatusOrderEvent {
     Order order;
