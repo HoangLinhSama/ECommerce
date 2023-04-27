@@ -91,13 +91,6 @@ public interface DataClient {
             , @Field("password") String password);
 
     /**
-     * Reset lai password khi quen
-     */
-    @FormUrlEncoded
-    @POST("sendlinkresetpassword.php")
-    Call<String> resetPassword(@Field("email") String email);
-
-    /**
      * Them du lieu vao bang don hang va don hang chi tiet tren server khi bam dat hang, truyen ca list cac san pham cho moi don hang
      */
     @FormUrlEncoded

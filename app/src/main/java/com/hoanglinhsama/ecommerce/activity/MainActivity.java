@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.protobuf.Api;
 import com.hoanglinhsama.ecommerce.ItemDecoration;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.AdminFeatureAdapter;
@@ -151,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getEventLogout() {
         activityMainBinding.imageViewLogOut.setOnClickListener(v -> {
+            ApiUtils.isSignUp = false;
             /* Log out doi voi account tren MySQL (Server) */
             SharedPreferences sharedPreferences = getSharedPreferences("dataLogin", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();

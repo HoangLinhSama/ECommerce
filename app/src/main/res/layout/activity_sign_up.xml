@@ -128,23 +128,24 @@
 
     <CheckBox
         android:id="@+id/checkbox_signup_screen"
-        android:buttonTint="@color/indigo_700"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
+        android:buttonTint="@color/indigo_700"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_phone_number_signup_screen" />
 
     <TextView
-        android:textStyle="bold"
-        android:textSize="17sp"
+        android:id="@+id/text_view_type_user_signup_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
         android:text="@string/text_view_type_user"
         android:textColor="@color/indigo_700"
+        android:textSize="17sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/checkbox_signup_screen"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_phone_number_signup_screen" />
 
@@ -163,5 +164,5 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkbox_signup_screen"
         tools:ignore="TextSizeCheck" />
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>

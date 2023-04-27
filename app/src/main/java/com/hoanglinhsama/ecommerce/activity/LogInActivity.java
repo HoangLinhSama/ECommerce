@@ -52,11 +52,15 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() { // Sau khi dang ky thanh cong thi se quay ve trang dang nhap
+    protected void onResume() { // Sau khi dang ky thanh cong hoac khi dang xuat thi se quay ve trang dang nhap, va vao state nay
         super.onResume();
         if (ApiUtils.currentUser.getEmail() != null && ApiUtils.currentUser.getPassword() != null) {
             activityLogInBinding.editTextEmailLoginScreen.setText(ApiUtils.currentUser.getEmail());
-            activityLogInBinding.editTextPasswordLoginScreen.setText(ApiUtils.currentUser.getPassword());
+            if (ApiUtils.isSignUp) { // do dang ky ma tro ve dang nhap
+                activityLogInBinding.editTextPasswordLoginScreen.setText(ApiUtils.currentUser.getPassword());
+            } else { // do dang xuat ma tro ve dang nhap
+                activityLogInBinding.editTextPasswordLoginScreen.setText(sharedPreferences.getString("password", ""));
+            }
         }
     }
 
@@ -108,7 +112,6 @@ public class LogInActivity extends AppCompatActivity {
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.isSuccessful()) { // dang nhap thanh cong
                     activityLogInBinding.progressBarLoginScreen.setVisibility(View.INVISIBLE);
-                    ApiUtils.isResetPassword = false; // phan lon khi vao man hinh dang nhap thi khong phai truong hop dang nhap sau khi reset password nen phai set lai tarng thai cho isResetPassword
                     ApiUtils.currentUser = response.body().get(0);
 
                     /* Luu thong tin dang nhap sau khi dang nhap thanh cong */
@@ -119,6 +122,7 @@ public class LogInActivity extends AppCompatActivity {
                     editor.putString("user", new Gson().toJson(ApiUtils.currentUser)); // luu thong tin user tra ve khi dang nhap thanh cong, de tu lan dang nhap tiep theo se tu man hinh welcome vao thang man hinh main
                     editor.apply();
 
+                    activityLogInBinding.progressBarLoginScreen.setVisibility(View.INVISIBLE);
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish(); // finish de khi vao man hinh khac ma dieu huong bang back tren he thong android thi se khong tro lai man hinh nay nua
                 }
@@ -126,7 +130,6 @@ public class LogInActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                Toast.makeText(LogInActivity.this, "Email hoặc mật khẩu không đúng, đăng nhập không thành công !", Toast.LENGTH_SHORT).show();
                 Log.d("getEventLogin", t.getMessage());
             }
         });
@@ -139,77 +142,21 @@ public class LogInActivity extends AppCompatActivity {
             } else if (TextUtils.isEmpty(activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim())) {
                 Toast.makeText(this, "Chưa nhập mật khẩu !", Toast.LENGTH_SHORT).show();
             } else {
-                if (!ApiUtils.isResetPassword) { // truong hop moi dang ky xong hoac moi dang xuat
-                    caseLogin();
-                } else // truong hop sau khi reset password xong
-                {
-                    caseResetPassWord();
-                }
-            }
-        });
-    }
-
-    private void caseResetPassWord() {
-        activityLogInBinding.progressBarLoginScreen.setVisibility(View.VISIBLE);
-        DataClient dataClient = ApiUtils.getData();
-        Call<List<User>> call = dataClient.logIn(activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim(), activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim());
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if (response.isSuccessful()) {
-                    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                    firebaseAuth.signInWithEmailAndPassword(sharedPreferences.getString("email", ""), sharedPreferences.getString("password", ""))
-                            .addOnCompleteListener(LogInActivity.this, task -> {
+                activityLogInBinding.progressBarLoginScreen.setVisibility(View.VISIBLE);
+                if (firebaseUser != null) { // user (dang ky dich vu firebase thanh cong) da dang nhap tren ung dung nay
+                    logIn(); // xu ly dang nhap dua tren database MySQL
+                } else {
+                    firebaseAuth.signInWithEmailAndPassword(activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim(), activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim())
+                            .addOnCompleteListener(this, task -> {
                                 if (task.isSuccessful()) {
-                                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                                    if (firebaseUser != null) {
-                                        firebaseUser.updatePassword(response.body().get(0).getPassword())
-                                                .addOnCompleteListener(LogInActivity.this, task1 -> {
-                                                    if (task1.isSuccessful()) {
-                                                        firebaseAuth.signInWithEmailAndPassword(activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim(), activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim())
-                                                                .addOnCompleteListener(LogInActivity.this, task11 -> {
-                                                                    if (task11.isSuccessful()) { // dang nhap thanh cong
-                                                                        ApiUtils.isResetPassword = false;
-                                                                        ApiUtils.currentUser = response.body().get(0);
-                                                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                                                        editor.putString("email", activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim());
-                                                                        editor.putString("password", activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim());
-                                                                        editor.putString("user", new Gson().toJson(ApiUtils.currentUser)); // luu thong tin user tra ve khi dang nhap thanh cong, de tu lan dang nhap tiep theo se tu man hinh welcome vao thang man hinh main
-                                                                        editor.apply();
-                                                                        activityLogInBinding.progressBarLoginScreen.setVisibility(View.INVISIBLE);
-                                                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                                                        finish();
-                                                                    }
-                                                                });
-                                                    }
-                                                });
-                                    }
+                                    logIn(); // Neu dang nhap thanh cong user firebase Authentication thi tiep tuc thuc hien xu ly dang nhap dua tren database MySQL
+                                } else {
+                                    Toast.makeText(LogInActivity.this, "Email hoặc mật khẩu không đúng, đăng nhập không thành công !", Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }
             }
-
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                Toast.makeText(LogInActivity.this, "Email hoặc mật khẩu không đúng, đăng nhập không thành công !", Toast.LENGTH_SHORT).show();
-                Log.d("getEventLogin", t.getMessage());
-            }
         });
-    }
-
-    private void caseLogin() {
-        activityLogInBinding.progressBarLoginScreen.setVisibility(View.VISIBLE);
-        if (firebaseUser != null) { // user (dang ky dich vu firebase thanh cong) da dang nhap tren ung dung nay
-            logIn(); // xu ly dang nhap dua tren database MySQL
-        } else { // user (dang ky dich vu firebase thanh cong) da logout ra khoi ung dung nay thi phai dang nhap lai de co the su dung chuc nang token cua firebase
-            firebaseAuth.signInWithEmailAndPassword(activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim(), activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim())
-                    .addOnCompleteListener(this, task -> {
-                        if (task.isSuccessful()) {
-                            logIn(); // Neu dang nhap thanh cong user firebase Authentication thi tiep tuc thuc hien xu ly dang nhap dua tren database MySQL
-                        }
-                    });
-        }
-
     }
 
     private void getEventSignUp() {

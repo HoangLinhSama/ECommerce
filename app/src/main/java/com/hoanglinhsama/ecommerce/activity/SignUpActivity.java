@@ -6,6 +6,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +16,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.databinding.ActivitySignUpBinding;
+import com.hoanglinhsama.ecommerce.model.User;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +29,11 @@ import retrofit2.Response;
 public class SignUpActivity extends AppCompatActivity {
     private ActivitySignUpBinding activitySignUpBinding;
     private FirebaseAuth firebaseAuth;
+    private String email;
+    private String password;
+    private String name;
+    private String phoneNumber;
+    private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +43,34 @@ public class SignUpActivity extends AppCompatActivity {
 
         setUpActionBar();
         if (MainActivity.isConnected(getApplicationContext())) {
+            initData();
             getEventSignUp();
             getEventShowPassword();
         } else {
             Toast.makeText(this, "Không có Internet ! Hãy kết nối Internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void initData() {
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        /* Kiem tra xem da co ai dang ky tai khoan admin chua, neu roi thi chi duoc phep dang ky tai khoan khach hang */
+        DataClient dataClient = ApiUtils.getData();
+        Call<List<User>> call = dataClient.getTokenAdmin();
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.isSuccessful()) { // da co admin 
+                    activitySignUpBinding.textViewTypeUserSignupScreen.setVisibility(View.INVISIBLE);
+                    activitySignUpBinding.checkboxSignupScreen.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.d("checkExistAdmin", t.getMessage());
+            }
+        });
     }
 
     private void setUpActionBar() {
@@ -90,12 +122,12 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void getEventSignUp() {
         activitySignUpBinding.buttonSignupScreen.setOnClickListener(v -> {
-            String email = activitySignUpBinding.editTextEmailSignupScreen.getText().toString().trim();
-            String password = activitySignUpBinding.editTextPasswordSignupScreen.getText().toString().trim();
+            ApiUtils.isSignUp = true;
+            email = activitySignUpBinding.editTextEmailSignupScreen.getText().toString().trim();
+            password = activitySignUpBinding.editTextPasswordSignupScreen.getText().toString().trim();
             String rePassword = activitySignUpBinding.editTextRepasswordSignupScreen.getText().toString().trim();
-            String name = activitySignUpBinding.editTextNameSignupScreen.getText().toString().trim();
-            String phoneNumber = activitySignUpBinding.editTextPhoneNumberSignupScreen.getText().toString().trim();
-            int type;
+            name = activitySignUpBinding.editTextNameSignupScreen.getText().toString().trim();
+            phoneNumber = activitySignUpBinding.editTextPhoneNumberSignupScreen.getText().toString().trim();
             if (activitySignUpBinding.checkboxSignupScreen.isChecked()) {
                 type = 1;
             } else {
@@ -116,15 +148,14 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(this, "Chưa nhập số điện thoại !", Toast.LENGTH_SHORT).show();
                 } else {
                     /* Dang ky tai khoan tren firebase Authentication de su dung duoc chuc nang token */
-                    firebaseAuth = FirebaseAuth.getInstance();
                     firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                             if (firebaseUser != null) { // sau khi dang ky tai khoan tren firebase Authentication thanh cong
-                                signUp(email, password, name, phoneNumber, type, firebaseUser.getUid()); // dang ky tai khoan tren MySQL (Server)
-                            } else {
-                                Toast.makeText(this, "Email đã tồn tại !", Toast.LENGTH_SHORT).show();
+                                signUp(email, password, name, phoneNumber, type, firebaseUser.getUid());// dang ky tai khoan tren MySQL (Server)
                             }
+                        } else {
+                            Toast.makeText(this, "Email đã tồn tại !", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -133,11 +164,12 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     /**
-     * Dang ky user tren MySQL (Server) sau khi dang ky thanh cong tren Firebase Authentication
+     * Dang ky user tren MySQL (Server) (de du lieu truc quan hon) sau khi dang ky thanh cong tren Firebase Authentication
      */
-    private void signUp(String email, String password, String name, String phoneNumber, int type, String firebaseUId) {
+    private void signUp(String email, String password, String name, String phoneNumber,
+                        int type, String firebaseUId) {
         DataClient dataClient = ApiUtils.getData();
-        Call<String> call = dataClient.signUp(email, password, name, phoneNumber, type, firebaseUId);
+        Call<String> call = dataClient.signUp(email, password, name, phoneNumber, type, firebaseUId); // mac dinh password tren MySQL se hien thi la on firebase
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
