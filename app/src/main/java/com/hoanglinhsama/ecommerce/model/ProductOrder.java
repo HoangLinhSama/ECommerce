@@ -20,6 +20,17 @@ public class ProductOrder {
     @SerializedName("price")
     @Expose
     private long price;
+    @SerializedName("quantityRemain")
+    @Expose
+    private int quantityRemain;
+
+    public int getQuantityRemain() {
+        return this.quantityRemain;
+    }
+
+    public void setQuantityRemain(int quantityRemain) {
+        this.quantityRemain = quantityRemain;
+    }
 
     public int getIdProduct() {
         return this.idProduct;

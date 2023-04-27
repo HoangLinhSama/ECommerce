@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.firebase.firestore.util.ApiUtil;
 import com.hoanglinhsama.ecommerce.ItemDecoration;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.AdminFeatureAdapter;
@@ -23,9 +22,11 @@ import com.hoanglinhsama.ecommerce.adapter.OrderHistoryAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityOrderManageBinding;
 import com.hoanglinhsama.ecommerce.eventbus.UpdateStatusOrderEvent;
 import com.hoanglinhsama.ecommerce.model.AdminFeature;
+import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.NotificationReceiveData;
 import com.hoanglinhsama.ecommerce.model.NotificationSendData;
 import com.hoanglinhsama.ecommerce.model.Order;
+import com.hoanglinhsama.ecommerce.model.ProductOrder;
 import com.hoanglinhsama.ecommerce.model.User;
 import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
@@ -198,6 +199,10 @@ public class OrderManageActivity extends AppCompatActivity {
                     public void onResponse(Call<String> call, Response<String> response) {
                         if (response.isSuccessful()) {
                             dialogUpdateStatusOrder.cancel();
+                            if (status == 4) // neu don hang bi huy
+                            {
+                                updateQuantityProduct(order.getListProductOrder()); // hoan lai so luong cua moi san pham trong don hang da dat
+                            }
                             pushNotificationToUser();
                         }
                     }
@@ -212,6 +217,28 @@ public class OrderManageActivity extends AppCompatActivity {
                 dialogUpdateStatusOrder.cancel();
             });
         }
+    }
+
+    /**
+     * Hoan lai so luong cua moi loai san pham trong don hang neu don hang bi huy
+     */
+    private void updateQuantityProduct(List<ProductOrder> listProductOrder) {
+        DataClient dataClient = ApiUtils.getData();
+        listProductOrder.forEach(product -> {
+            Call<String> call = dataClient.updateQuantityProduct(product.getIdProduct(), product.getQuantityRemain() + product.getQuantity());
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.isSuccessful()) {
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.d("updateQuantityProduct", t.getMessage());
+                }
+            });
+        });
     }
 
     /**
