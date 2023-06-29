@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.protobuf.Api;
 import com.hoanglinhsama.ecommerce.ItemDecoration;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.adapter.AdminFeatureAdapter;
@@ -38,6 +37,8 @@ import com.hoanglinhsama.ecommerce.retrofit2.DataClient;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         getCartDetail();
+
     }
 
 

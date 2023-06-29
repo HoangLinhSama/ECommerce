@@ -1,6 +1,5 @@
 package com.hoanglinhsama.ecommerce.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;

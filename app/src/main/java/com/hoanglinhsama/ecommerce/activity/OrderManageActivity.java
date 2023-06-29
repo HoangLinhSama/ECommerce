@@ -22,7 +22,6 @@ import com.hoanglinhsama.ecommerce.adapter.OrderHistoryAdapter;
 import com.hoanglinhsama.ecommerce.databinding.ActivityOrderManageBinding;
 import com.hoanglinhsama.ecommerce.eventbus.UpdateStatusOrderEvent;
 import com.hoanglinhsama.ecommerce.model.AdminFeature;
-import com.hoanglinhsama.ecommerce.model.Cart;
 import com.hoanglinhsama.ecommerce.model.NotificationReceiveData;
 import com.hoanglinhsama.ecommerce.model.NotificationSendData;
 import com.hoanglinhsama.ecommerce.model.Order;
@@ -155,6 +154,9 @@ public class OrderManageActivity extends AppCompatActivity {
         activityOrderManageBinding.toolBarOrderManageScreen.setNavigationOnClickListener(v -> activityOrderManageBinding.drawerLayoutOrderManageScreen.openDrawer(GravityCompat.START));
     }
 
+    /**
+     * Xu ly event cap nhat status cho don hang do OrderHistoryAdapter gui den OrderManageActivity
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpdateStatusOrder(UpdateStatusOrderEvent event) {
         if (event != null) {
@@ -166,7 +168,7 @@ public class OrderManageActivity extends AppCompatActivity {
             spinnerUpdateStatusOrder = dialogUpdateStatusOrder.findViewById(R.id.spinner_update_status_order);
             buttonUpdateStatusOrder = dialogUpdateStatusOrder.findViewById(R.id.button_update_status_order);
             buttonCacelUpdateStatusOrder = dialogUpdateStatusOrder.findViewById(R.id.button_cancel_update_status_order);
-            dialogUpdateStatusOrder.show(); // dialog phai show thi no moi hien thi
+            dialogUpdateStatusOrder.show();
 
             /* Khoi tao Spinner */
             List<String> listStatus = new ArrayList<>();
@@ -253,7 +255,7 @@ public class OrderManageActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     String tokenUser = response.body().get(0).getToken(); // moi don hang chi thuoc 1 user
                     Map<String, String> notification = new HashMap<>();
-                    notification.put("tile", "Trạng thái đơn hàng");
+                    notification.put("title", "Trạng thái đơn hàng");
                     notification.put("body", OrderHistoryAdapter.statusOrder(status));
                     NotificationSendData notificationSendData = new NotificationSendData(tokenUser, notification);
                     DataPushNotification dataPushNotification = ApiUtils.getDataNotification();

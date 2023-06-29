@@ -118,11 +118,9 @@ public class LogInActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("email", activityLogInBinding.editTextEmailLoginScreen.getText().toString().trim());
                     editor.putString("password", activityLogInBinding.editTextPasswordLoginScreen.getText().toString().trim());
-
                     editor.putString("user", new Gson().toJson(ApiUtils.currentUser)); // luu thong tin user tra ve khi dang nhap thanh cong, de tu lan dang nhap tiep theo se tu man hinh welcome vao thang man hinh main
                     editor.apply();
 
-                    activityLogInBinding.progressBarLoginScreen.setVisibility(View.INVISIBLE);
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish(); // finish de khi vao man hinh khac ma dieu huong bang back tren he thong android thi se khong tro lai man hinh nay nua
                 }

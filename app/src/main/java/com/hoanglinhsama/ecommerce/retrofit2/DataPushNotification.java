@@ -14,7 +14,7 @@ import retrofit2.http.POST;
 public interface DataPushNotification {
     @Headers(
             {
-                    "Content-Type: application/json"
+                    "Content-Type: application/json" // kieu muon gui la json
                     , "Authorization: key=AAAA8Too4Nc:APA91bHIbk6Bb03AyrgnBpUzZ_ijUuIFSmmNy7nS41DtlmuSpiCcaDpfDRBSWIygcDDe74vbcjIjQK-VqUGZIS9xzhbI6AW-stBv3T0oOi7wYq3qBCh9pMoweQOKWLJxSWN6hsvHIlhl"
 
             }
@@ -22,5 +22,5 @@ public interface DataPushNotification {
 
 
     @POST("fcm/send")
-    Call<NotificationReceiveData> sendNotification(@Body NotificationSendData notificationSendData); // @Body de truyen du kieu kieu POJO (Plain Old Java Object)
+    Call<NotificationReceiveData> sendNotification(@Body NotificationSendData notificationSendData);
 }

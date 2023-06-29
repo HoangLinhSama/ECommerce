@@ -68,7 +68,6 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                Log.d("checkExistAdmin", t.getMessage());
             }
         });
     }
@@ -135,30 +134,28 @@ public class SignUpActivity extends AppCompatActivity {
             }
             if (TextUtils.isEmpty(email)) {
                 Toast.makeText(this, "Chưa nhập email !", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(password)) {
+                Toast.makeText(this, "Chưa nhập mật khẩu !", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(rePassword)) {
+                Toast.makeText(this, "Chưa nhập lại mật khẩu !", Toast.LENGTH_SHORT).show();
+            } else if (!password.equals(rePassword)) {
+                Toast.makeText(this, "Nhập lại mật khẩu không trùng khớp !", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(name)) {
+                Toast.makeText(this, "Chưa nhập họ và tên !", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(phoneNumber)) {
+                Toast.makeText(this, "Chưa nhập số điện thoại !", Toast.LENGTH_SHORT).show();
             } else {
-                if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(this, "Chưa nhập mật khẩu !", Toast.LENGTH_SHORT).show();
-                } else if (TextUtils.isEmpty(rePassword)) {
-                    Toast.makeText(this, "Chưa nhập lại mật khẩu !", Toast.LENGTH_SHORT).show();
-                } else if (!password.equals(rePassword)) {
-                    Toast.makeText(this, "Nhập lại mật khẩu không trùng khớp !", Toast.LENGTH_SHORT).show();
-                } else if (TextUtils.isEmpty(name)) {
-                    Toast.makeText(this, "Chưa nhập họ và tên !", Toast.LENGTH_SHORT).show();
-                } else if (TextUtils.isEmpty(phoneNumber)) {
-                    Toast.makeText(this, "Chưa nhập số điện thoại !", Toast.LENGTH_SHORT).show();
-                } else {
-                    /* Dang ky tai khoan tren firebase Authentication de su dung duoc chuc nang token */
-                    firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-                        if (task.isSuccessful()) {
-                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                            if (firebaseUser != null) { // sau khi dang ky tai khoan tren firebase Authentication thanh cong
-                                signUp(email, password, name, phoneNumber, type, firebaseUser.getUid());// dang ky tai khoan tren MySQL (Server)
-                            }
-                        } else {
-                            Toast.makeText(this, "Email đã tồn tại !", Toast.LENGTH_SHORT).show();
+                /* Dang ky tai khoan tren firebase Authentication de su dung duoc chuc nang token */
+                firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        if (firebaseUser != null) { // sau khi dang ky tai khoan tren firebase Authentication thanh cong
+                            signUp(email, password, name, phoneNumber, type, firebaseUser.getUid());// dang ky tai khoan tren MySQL (Server)
                         }
-                    });
-                }
+                    } else {
+                        Toast.makeText(this, "Email đã tồn tại !", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

@@ -60,4 +60,5 @@
     <string name="tool_bar_chat_screen_title">Tin nhắn</string>
     <string name="tool_bar_list_chat_screen_title">Danh Sách Chat</string>
     <string name="tool_bar_statistical_screen_title">Thống Kê </string>
+    <string name="text_view_payment_order_screen">Thanh toán</string>
 </resources>

@@ -97,7 +97,9 @@ public interface DataClient {
     @POST("insertorderdetail.php")
     Call<String> insertOrderDetail(@Field("userId") int userId
             , @Field("address") String address
-            , @Field("listCart") String listCart);
+            , @Field("listCart") String listCart
+            , @Field("totalMoney") long totalMoney
+            , @Field("zaloPayTransactionId") String zaloPayTransactionId);
 
     /**
      * Cap nhat so luong san pham con lai khi dat hang, neu huy don hang thi hoan lai so luong da dat

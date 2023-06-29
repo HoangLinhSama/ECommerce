@@ -52,19 +52,16 @@ public class ListChatActivity extends AppCompatActivity {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(ApiUtils.PATH_USER)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                                User user = new User();
-                                user.setName(queryDocumentSnapshot.getString("userName"));
-                                user.setId(Integer.parseInt(queryDocumentSnapshot.getString("id")));
-                                listUser.add(user);
-                            }
-                            if (listUser.size() > 0) {
-                                listChatAdapter.notifyDataSetChanged();
-                            }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                            User user = new User();
+                            user.setName(queryDocumentSnapshot.getString("userName"));
+                            user.setId(Integer.parseInt(queryDocumentSnapshot.getString("id")));
+                            listUser.add(user);
+                        }
+                        if (listUser.size() > 0) {
+                            listChatAdapter.notifyDataSetChanged();
                         }
                     }
                 });

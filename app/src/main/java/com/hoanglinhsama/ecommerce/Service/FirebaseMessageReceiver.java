@@ -14,9 +14,6 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.hoanglinhsama.ecommerce.R;
 import com.hoanglinhsama.ecommerce.activity.MainActivity;
-import com.hoanglinhsama.ecommerce.activity.OrderHistoryActivity;
-import com.hoanglinhsama.ecommerce.activity.OrderManageActivity;
-import com.hoanglinhsama.ecommerce.retrofit2.ApiUtils;
 
 /**
  * Xu ly tin nhan nhan duoc tu Firebase Cloud Message (Service nay tu dong duoc goi khi nhan duoc message tu FCM)
@@ -36,9 +33,9 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         /* Dieu huong mac dinh den MainActivity khi click vao thong bao cho du dang o bat ky activity nao khong phai la MainActivity */
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT); // PendingIntent de start activity khi event xay ra, requestCode = 0 de khong can doi ket qua tra ve
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE); // PendingIntent de start activity khi event xay ra, requestCode = 0 de khong can doi ket qua tra ve
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelId)
-                .setSmallIcon(R.drawable.ic_notifications)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setAutoCancel(true)
                 .setVibrate(new long[]{1000, 1000, 1000, 1000})
                 .setOnlyAlertOnce(true)
@@ -62,7 +59,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         RemoteViews remoteViews = new RemoteViews(getApplicationContext().getPackageName(), R.layout.notification);
         remoteViews.setTextViewText(R.id.text_view_title_notification, title);
         remoteViews.setTextViewText(R.id.text_view_body_notification, body);
-        remoteViews.setImageViewResource(R.id.image_view_notification, R.drawable.ic_notifications); // Thay bang icon app cho dong bo
+        remoteViews.setImageViewResource(R.id.image_view_notification, R.drawable.ic_notification); // Thay bang icon app cho dong bo
         return remoteViews;
     }
 }

@@ -42,7 +42,7 @@ public class ChatActivity extends AppCompatActivity {
         initData();
         if (MainActivity.isConnected(getApplicationContext())) {
             getEventSendMessage();
-            if (ApiUtils.currentUser.getType() == 2) { // neu la user thi tu dang ky minh vao danh sach nhung nguoi duoc phep chat voi admin, logic la 1 admin duoc quyen chat voi nhieu user, nhung 1 user chi duoc phpe chat voi 1 admin
+            if (ApiUtils.currentUser.getType() == 2) { // neu la user thi tu dang ky minh vao danh sach nhung nguoi duoc phep chat voi admin, logic la 1 admin duoc quyen chat voi nhieu user, nhung 1 user chi duoc phep chat voi 1 admin
                 registerUser();
             }
             listenerMessage();
@@ -59,7 +59,6 @@ public class ChatActivity extends AppCompatActivity {
         user.put("id", String.valueOf(ApiUtils.currentUser.getId()));
         user.put("userName", ApiUtils.currentUser.getName());
         database.collection(ApiUtils.PATH_USER).document(String.valueOf(ApiUtils.currentUser.getId())).set(user); // moi document trong collection user co key la id cua user va value la hashmap user chua cac thong tin tuong ung voi user do
-
     }
 
     private void initData() {
@@ -84,7 +83,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void sendMessageToFireStore() {
         if (TextUtils.isEmpty(activityChatBinding.editTextContentMessage.getText().toString().trim())) {
-
+            Toast.makeText(this, "Chưa nhập nội dung tin nhắn !", Toast.LENGTH_SHORT).show();
         } else {
             /* Chu y : neu la kieu du lieu nguyen thuy thi phai put vao kieu String vi khi lay du lieu se dung getString() :(( */
             HashMap<String, Object> message = new HashMap<>();
@@ -98,6 +97,7 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    /* implement interface EventListener */
     private final EventListener<QuerySnapshot> eventListener = (value, error) ->
     {
         if (error != null) { // co loi xay ra
@@ -118,9 +118,9 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
             Collections.sort(listMessage, Comparator.comparing(ChatMessage::getDateObject)); // sap xep theo field dateObject cua object ChatMessages
-            if (count == 0) { // lan dau va chua co tin nhan nao duoc luu tren firestore
+            if (count == 0) { // lan dau se load tat ca cac tin nhan thoa dieu kien da co tren firestore
                 chatAdapter.notifyDataSetChanged();
-            } else {
+            } else { // chi cap nhat nhung tin nhan moi duoc them vao
                 chatAdapter.notifyDataSetChanged();
                 activityChatBinding.recyclerViewChatScreen.smoothScrollToPosition(listMessage.size() - 1);
             }
@@ -130,7 +130,7 @@ public class ChatActivity extends AppCompatActivity {
     private void listenerMessage() {
         /* Thuc hien query doi voi truong hop nguoi gui la user, nguoi nhan la admin */
         database.collection(ApiUtils.PATH_CHAT)
-                .whereEqualTo(ApiUtils.KEY_SEND, String.valueOf(ApiUtils.currentUser.getId()))// tao query de lay cai document ma value cua field = gia tri xac dinh
+                .whereEqualTo(ApiUtils.KEY_SEND, String.valueOf(ApiUtils.currentUser.getId()))// tao query de lay ra cac document ma value cua field = gia tri xac dinh
                 .whereEqualTo(ApiUtils.KEY_RECEIVE, ApiUtils.receiveId)
                 .addSnapshotListener(eventListener); // lang nghe cac event thay doi cua cac collection hoac document thoa dieu kien truy van tren, va tu dong duoc goi khi co thay doi tren cac document hoac collection do
 

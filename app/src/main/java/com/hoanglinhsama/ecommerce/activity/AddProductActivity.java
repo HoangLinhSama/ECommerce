@@ -15,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -44,7 +43,6 @@ public class AddProductActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private static final int REQUEST_CODE = 7;
     private Intent intentGallery;
-    private MultipartBody.Part body;
     private Product productModify;
     private boolean isModify = false; // flag kiem tra sua hay them moi
 
@@ -66,17 +64,22 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Nhan ket qua tra ve tu mot Activity khac (cai Activity duoc no goi bang startActivityForResult )
+     */
     private void setRegisterForActivityResult() {
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 Intent data = result.getData();
-                getPicturePath(result, data);
+                getPicturePath(data);
             }
         });
     }
 
-    /* Lay ra duong dan cua hinh anh tren server sau khi upload thanh cong len server */
-    private void getPicturePath(ActivityResult result, Intent data) {
+    /**
+     * Lay ra duong dan cua hinh anh tren server sau khi upload thanh cong len server
+     */
+    private void getPicturePath(Intent data) {
         Uri uri = data.getData();
         String realPath = getRealPathFromURI(uri);
         File file = new File(realPath);
@@ -105,13 +108,16 @@ public class AddProductActivity extends AppCompatActivity {
     private void getEventSelectPicture() {
         activityAddProductBinding.imageButtonGalleryAddProductScreen.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                activityResultLauncher.launch(intentGallery);
+                activityResultLauncher.launch(intentGallery); // execute ActivityResultContract (ActivityResultContract thay cho REQUEST_CODE)
             } else {
                 requestPermissions(new String[]{READ_EXTERNAL_STORAGE}, REQUEST_CODE);
             }
         });
     }
 
+    /**
+     * Nhan ket qua tu viec yeu cau cap quyen
+     */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CODE:

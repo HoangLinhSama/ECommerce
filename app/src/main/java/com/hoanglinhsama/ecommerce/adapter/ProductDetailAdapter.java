@@ -56,15 +56,12 @@ public class ProductDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
             myViewHolder.textViewPriceProduct.setText(decimalFormat.format(Double.parseDouble(String.valueOf(product.getPrice()))) + "₫");
 
-            myViewHolder.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onClick(View view, int position, boolean isLongClick) {
-                    if (!isLongClick) {
-                        Intent intent = new Intent(context, ProductDetailActivity.class);
-                        intent.putExtra("data", product);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // FLAG_ACTIVITY_NEW_TASK la flag de thiet lap cac thuoc tinh khi mo activity moi tu mot context khac
-                        context.startActivity(intent);
-                    }
+            myViewHolder.setOnItemClickListener((view, position1, isLongClick) -> {
+                if (!isLongClick) {
+                    Intent intent = new Intent(context, ProductDetailActivity.class);
+                    intent.putExtra("data", product);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // FLAG_ACTIVITY_NEW_TASK la flag de thiet lap cac thuoc tinh khi mo activity moi tu mot context khac
+                    context.startActivity(intent);
                 }
             });
         } else {

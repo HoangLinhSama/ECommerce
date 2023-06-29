@@ -96,7 +96,7 @@ public class ManageProductAdapter extends RecyclerView.Adapter<ManageProductAdap
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(0, 0, getAdapterPosition(), "Sửa");
+            menu.add(0, 0, getAdapterPosition(), "Sửa"); // tham so: groupId, itemId, vi tri item de context menu gan vao, title
             menu.add(0, 1, getAdapterPosition(), "Xóa");
         }
 

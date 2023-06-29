@@ -53,20 +53,17 @@ public class StatisticalActivity extends AppCompatActivity {
     }
 
     /**
-     * Lay du lieu ve so luong san pham da dat de thong ke
+     * Thong ke doanh thu theo tung ngay trong thang
      */
     private void getDataStatistical() {
         List<BarEntry> listDataOrder = new ArrayList<>();
-        //List<PieEntry> listDataPieEntry = new ArrayList<>();
         DataClient dataClient = ApiUtils.getData();
         Call<List<Statistical>> call = dataClient.statisticalIncome();
         call.enqueue(new Callback<List<Statistical>>() {
             @Override
             public void onResponse(Call<List<Statistical>> call, Response<List<Statistical>> response) {
                 if (response.isSuccessful()) {
-                    response.body().forEach(statistical -> {
-                        listDataOrder.add(new BarEntry(statistical.getDayOrder(), statistical.getIncome()));
-                    });
+                    response.body().forEach(statistical -> listDataOrder.add(new BarEntry(statistical.getDayOrder(), statistical.getIncome())));
                     BarDataSet barDataSet = new BarDataSet(listDataOrder, "Doanh thu (₫)");
                     barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
                     barDataSet.setValueTextColor(Color.BLACK);

@@ -135,6 +135,36 @@
         app:layout_constraintTop_toBottomOf="@+id/card_view_order_screen"
         tools:ignore="SpeakableTextPresentCheck" />
 
+    <LinearLayout
+        android:id="@+id/linear_layout_order_screen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_address_order_screen">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_payment_order_screen"
+            android:textColor="@color/indigo_700"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/image_button_order_screen"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_zalopay"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </LinearLayout>
+
+
     <Button
         android:id="@+id/button_order_screen"
         android:layout_width="match_parent"
@@ -142,13 +172,13 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
         android:backgroundTint="@color/indigo_700"
         android:gravity="center"
         android:text="@string/tool_bar_order_screen_title"
         android:textAllCaps="false"
         android:textColor="@color/white"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_address_order_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout_order_screen" />
 </androidx.constraintlayout.widget.ConstraintLayout>

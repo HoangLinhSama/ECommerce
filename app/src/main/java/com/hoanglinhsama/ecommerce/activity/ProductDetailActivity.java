@@ -102,7 +102,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                         exist.set(true);
                     }
                 });
-                if (exist.get() == false) { // loai san pham moi them vao chua ton tai trong gio hang
+                if (!exist.get()) { // loai san pham moi them vao chua ton tai trong gio hang
                     addNewProductToCart(quantityChoose.get());
                 }
             } else { // gio hang hien dang trong

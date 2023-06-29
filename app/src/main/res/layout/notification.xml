@@ -2,31 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:weightSum="5">
 
     <ImageView
         android:id="@+id/image_view_notification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
+        android:layout_weight="1"
         android:scaleType="centerInside" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
-        android:orientation="vertical">
+        android:layout_weight="4"
+        android:orientation="vertical"
+        android:weightSum="2">
 
         <TextView
             android:id="@+id/text_view_title_notification"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="17sp"
@@ -34,8 +39,9 @@
 
         <TextView
             android:id="@+id/text_view_body_notification"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center"
             android:textColor="@color/unselected_color"
             android:textSize="17sp" />

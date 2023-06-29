@@ -3,7 +3,6 @@ package com.hoanglinhsama.ecommerce.adapter;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,24 +79,21 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         });
 
         /* Bat su kien thi click vao image button tang hoac giam so luong hoac button xoa */
-        holder.setOnImageViewClickListener(new OnImageViewClickListener() {
-            @Override
-            public void onClick(View view, int position, int value) { // view o day la imageViewButton tang hoac giam
-                if (value == 1) // giam
-                {
-                    if (ApiUtils.listCart.get(position).getQuantity() > 1) {
-                        int quantity = ApiUtils.listCart.get(position).getQuantity() - 1;
-                        updateProductToCart(quantity, ApiUtils.listCart.get(position).getIdProduct()); // cap nhat lai len server
-                    } else { // neu so luong con 1 ma giam nua thi se xoa san pham ra khoi gio hang
-                        delete(view, position, holder);
-                    }
-                } else {
-                    if (value == 2) { // tang
-                        int quantity = ApiUtils.listCart.get(position).getQuantity() + 1;
-                        updateProductToCart(quantity, ApiUtils.listCart.get(position).getIdProduct()); // cap nhat lai len server
-                    } else { // button xoa
-                        delete(view, position, holder);
-                    }
+        holder.setOnImageViewClickListener((view, position1, value) -> { // view o day la imageViewButton tang hoac giam
+            if (value == 1) // giam
+            {
+                if (ApiUtils.listCart.get(position1).getQuantity() > 1) {
+                    int quantity = ApiUtils.listCart.get(position1).getQuantity() - 1;
+                    updateProductToCart(quantity, ApiUtils.listCart.get(position1).getIdProduct()); // cap nhat lai len server
+                } else { // neu so luong con 1 ma giam nua thi se xoa san pham ra khoi gio hang
+                    delete(view, position1, holder);
+                }
+            } else {
+                if (value == 2) { // tang
+                    int quantity = ApiUtils.listCart.get(position1).getQuantity() + 1;
+                    updateProductToCart(quantity, ApiUtils.listCart.get(position1).getIdProduct()); // cap nhat lai len server
+                } else { // button xoa
+                    delete(view, position1, holder);
                 }
             }
         });
@@ -133,7 +129,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 if (response.isSuccessful()) {
                     Toast.makeText(context, "Xóa sản phẩm thành công ! ", Toast.LENGTH_SHORT).show();
 
-                    /* Dong thoi xoa cung san pham bi xoa ra khoi listCartChecked */
+                    /* Dong thoi cung xoa san pham bi xoa ra khoi listCartChecked */
                     for (int i = 0; i < ApiUtils.listCartChecked.size(); i++) {
                         if (ApiUtils.listCartChecked.get(i).getIdProduct() == productId) {
                             ApiUtils.listCartChecked.remove(i);
@@ -201,7 +197,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 if (t.getMessage().equals("Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $") || t.getMessage().equals("End of input at line 1 column 1 path $")) { // loi xay ra khi khong get duoc data tu table cart_detail (khi xoa tat ca san pham ra khoi gio hang), cach xu ly nay khong tot
                     ApiUtils.listCart.clear();
                     notifyDataSetChanged();
-                    EventBus.getDefault().post(new DisplayCartEvent());// Post event den eventbus de hien thi recyclerview cart khi gio hnag trong
+                    EventBus.getDefault().post(new DisplayCartEvent());// Post event den eventbus de hien thi recyclerview cart khi gio hang trong
                 }
             }
         });

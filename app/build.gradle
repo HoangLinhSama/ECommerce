@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.hoanglinhsama.ecommerce'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.hoanglinhsama.ecommerce"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -35,11 +35,12 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.firebase:firebase-auth:21.3.0'
+    implementation 'com.google.firebase:firebase-auth:22.0.0'
     implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
-    implementation 'com.google.firebase:firebase-firestore:24.5.0'
+    implementation 'com.google.firebase:firebase-firestore:24.6.1'
+    implementation fileTree(dir: 'D:\\job\\mobile\\android\\android\\project\\androidstudio\\ECommerce', include: ['*.aar', '*.jar'], exclude: [])
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -57,14 +58,16 @@ dependencies {
     implementation 'com.nex3z:notification-badge:1.0.4'
 
     // Bottom Navigation Bar
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
 
     // Event Bus
     implementation 'org.greenrobot:eventbus:3.2.0'
-
-    // Neu-morphism
-    implementation 'com.github.fornewid:neumorphism:0.3.2'
-
+    
     // MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // ZaloPay
+    implementation("com.squareup.okhttp3:okhttp:4.6.0")
+    implementation("commons-codec:commons-codec:1.14")
+
 }

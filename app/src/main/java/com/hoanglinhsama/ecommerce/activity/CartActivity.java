@@ -151,7 +151,6 @@ public class CartActivity extends AppCompatActivity {
             new Handler().postDelayed(() -> {
                 startActivity(new Intent(CartActivity.this, MainActivity.class));
             }, 1000);
-
         }
     }
 
@@ -159,7 +158,7 @@ public class CartActivity extends AppCompatActivity {
      * Xu ly su kien cap nhat RecyclerView khi dat hang thanh cong
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onNotifyChangeOrder(NotifyChangeOrderEvent event) {
+    public void onNotifyChangeOrderEvent(NotifyChangeOrderEvent event) {
         if (event != null) {
             cartAdapter.notifyDataSetChanged();
         }
